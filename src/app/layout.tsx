@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import ThemeProvider from "@/styles/ThemeProvider";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import PageLayout from "@/components/page-layout/PageLayout";
+const inter = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -11,7 +13,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <AppRouterCacheProvider>
+          <ThemeProvider>
+            <PageLayout>{children}</PageLayout>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }

@@ -1,26 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import XLSX from "xlsx";
-import { multerUpload } from "@/lib/server/multer";
+import { multerUpload } from "@/lib/server/services/multer";
+import { handleCSVUpload } from "@/lib/server/routeHandlers.ts/handleCSVUpload";
 
 interface NextApiRequestExtended extends NextApiRequest {
-  file: Express.Multer.File;
+  files: Express.Multer.File[];
 }
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
 router
-  .use(multerUpload.single("file") as any)
-  .post((req: NextApiRequestExtended, res: NextApiResponse) => {
-    console.log(req.file);
-    const workbook = XLSX.readFile(req.file.path);
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    const json = XLSX.utils.sheet_to_json(sheet, { defval: "" });
-    console.log("JSON: ", json);
-    return res
-      .status(200)
-      .json({ message: "File uploaded successfully", file: req.file });
+  .use(multerUpload.array("files", 10) as any)
+  .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
+    try {
+      if (req.files?.[0]) {
+        const file = req.files[0];
+        handleCSVUpload(file);
+        return res
+          .status(200)
+          .json({ message: "File uploaded successfully", file: file });
+      }
+      return res.status(400).json({ message: "File not uploaded" });
+    } catch (error: any) {
+      return res.status(400).json({ message: error.message });
+    }
   });
 
 export const config = {
