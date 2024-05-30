@@ -115,7 +115,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 });
 
 const PageLayout: FC<PageLayoutProps> = ({ children }): ReactElement => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawer = () => setOpen((prev) => !prev);
   return (
@@ -168,7 +168,14 @@ const PageLayout: FC<PageLayoutProps> = ({ children }): ReactElement => {
       </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, minHeight: "90vh", display: "flex" }}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          minHeight: "90vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         {children}
       </Box>

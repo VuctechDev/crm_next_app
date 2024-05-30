@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import { multerUpload } from "@/lib/server/services/multer";
-import { handleCardsUpload } from "@/lib/server/routeHandlers.ts/handleCardsUpload";
+import { getItems } from "@/db/local";
 import { localInit } from "@/lib/server/middlewares/localDBInit";
 
 interface NextApiRequestExtended extends NextApiRequest {
@@ -11,22 +10,13 @@ interface NextApiRequestExtended extends NextApiRequest {
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
 router
-.use(localInit)
-  .use(multerUpload.array("files", 10) as any)
-  .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
-    if (!req.files?.length) {
-      return res.status(400).json({ message: "Files not uploaded" });
-    }
-    handleCardsUpload(req.files);
-    return res
-      .status(200)
-      .json({ message: "Files uploaded successfully", files: req.files });
+  .use(localInit)
+  .get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
+    res.status(200).json({ data: getItems() });
   });
 
 export const config = {
-  api: {
-    bodyParser: false,
-  },
+  api: {},
 };
 
 export default router.handler({

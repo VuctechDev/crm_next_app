@@ -11,7 +11,7 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 const theme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
     background: {
       // default: "#E5E4E2",
     },
@@ -29,7 +29,6 @@ const theme = createTheme({
           fontSize: "0.75rem",
           color: "#fff",
           zIndex: 50000,
-          // backgroundColor: "red"
         },
       },
     },

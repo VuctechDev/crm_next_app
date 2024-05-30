@@ -41,6 +41,7 @@ const AddLeads: FC<AddLeadsProps> = (): ReactElement => {
       {options.map((item) => (
         <Link href={item.href} key={item.label}>
           <Card
+            elevation={3}
             sx={{
               mx: "30px",
               width: "260px",
