@@ -1,8 +1,8 @@
-import { DBRecord, addItem } from "@/db/local";
 import { getTextFromImage } from "../services/getTextFromImage";
 import { getDataFromPrompt } from "../services/openAI";
 import { isValidJsonObject } from "../utils/parseUserJSON";
 import Queue from "queue";
+import { LeadType, insertNewLead } from "@/db/leads";
 
 const q = new Queue({ concurrency: 1, autostart: true });
 
@@ -10,9 +10,9 @@ const newCardJob = async (filePath: string) => {
   const extractedText = await getTextFromImage(filePath);
   const promptResult = await getDataFromPrompt(extractedText);
   if (promptResult) {
-    const newItem = isValidJsonObject<DBRecord>(promptResult);
+    const newItem = isValidJsonObject<LeadType>(promptResult);
     if (newItem) {
-      addItem(newItem);
+      insertNewLead(newItem);
     }
   }
 };

@@ -11,7 +11,8 @@ Correct any potential errors and fill in missing information from external sourc
 Required JSON Structure:
 
 {
-  "name": "",
+  "firstName": "",
+  "lastName": "",
   "role" : "",
   "company": "",
   "email": "",

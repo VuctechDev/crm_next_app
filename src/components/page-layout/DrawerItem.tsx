@@ -45,18 +45,18 @@ const DrawerItem: FC<DrawerItemProps> = ({
           })}
         >
           <ListItemIcon
-            sx={{
+            sx={(t) => ({
               minWidth: 0,
               mr: open ? 3 : "auto",
               justifyContent: "center",
-              color: active ? "red" : "inherit",
-            }}
+              color: active ? t.palette.primary.main : t.palette.text.secondary,
+            })}
           >
             {data.icon}
           </ListItemIcon>
           <ListItemText
             primary={data.label}
-            sx={{ opacity: open ? 1 : 0, color: active ? "red" : "inherit" }}
+            sx={(t) => ({ opacity: open ? 1 : 0, color: active ? t.palette.primary.main : t.palette.text.secondary })}
           />
         </ListItemButton>
       </ListItem>

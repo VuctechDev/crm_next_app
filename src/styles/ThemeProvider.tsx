@@ -11,12 +11,13 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 const theme = createTheme({
   palette: {
-    mode: "light",
+    // mode: "light",
+    mode: "dark",
     background: {
       // default: "#E5E4E2",
     },
     primary: {
-      main: "#588117",
+      main: "#e07a5f",
     },
     secondary: {
       main: "#e07a5f",
@@ -32,10 +33,30 @@ const theme = createTheme({
         },
       },
     },
+    MuiButton: {
+      defaultProps: {},
+      styleOverrides: {
+        text: {
+          textTransform: "capitalize",
+        },
+        root: {
+          // fontSize: "0.75rem",
+          // color: "#fff",
+          // zIndex: 50000,
+          borderRadius: "10px",
+          textTransform: "capitalize",
+          fontSize: "14px",
+        },
+      },
+    },
   },
 
   typography: {
     fontFamily: jakarta.style.fontFamily,
+    h2: {
+      fontSize: "28px",
+      fontWeight: 500,
+    },
     h4: {
       fontSize: "1.75rem",
       fontWeight: 600,
@@ -49,7 +70,7 @@ const theme = createTheme({
     },
     body1: {
       // color: "#c9c8c7",
-      fontSize: "0.9rem",
+      fontSize: "14px",
     },
     body2: {
       color: "#787b80",

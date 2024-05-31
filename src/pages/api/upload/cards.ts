@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { multerUpload } from "@/lib/server/services/multer";
 import { handleCardsUpload } from "@/lib/server/routeHandlers.ts/handleCardsUpload";
-import { localInit } from "@/lib/server/middlewares/localDBInit";
 
 interface NextApiRequestExtended extends NextApiRequest {
   files: Express.Multer.File[];
@@ -11,7 +10,6 @@ interface NextApiRequestExtended extends NextApiRequest {
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
 router
-.use(localInit)
   .use(multerUpload.array("files", 10) as any)
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     if (!req.files?.length) {

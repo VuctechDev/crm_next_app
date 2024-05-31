@@ -61,7 +61,7 @@ const TableWrapper: React.FC<Props> = ({
             hover={hover}
             key={item._id}
             sx={{
-              backgroundColor: i % 2 === 0 ? "transparent" : "rgba(0,0,0,0.04)",
+              // backgroundColor: i % 2 === 0 ? "transparent" : "rgba(0,0,0,0.04)",
               p: "14px",
               marginBottom: "8px",
               "& :hover": {
@@ -108,15 +108,17 @@ const TableWrapper: React.FC<Props> = ({
     <TableContainer>
       <Table>
         <TableHead
-          sx={{
-            backgroundColor: "rgba(0,0,0,0.04)",
-          }}
-          
+          sx={(t) => ({
+            backgroundColor:
+              t.palette.mode === "dark"
+                ? "rgba(256,256,256,0.06)"
+                : "rgba(0,0,0,0.04)",
+          })}
         >
           <TableRow>
             {headers.map((item) => (
               <TableCell key={item} align="right">
-                <Typography variant="h5">{t(item)}</Typography>
+                <Typography fontWeight={500}>{t(item)}</Typography>
               </TableCell>
             ))}
           </TableRow>

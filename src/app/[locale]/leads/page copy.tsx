@@ -1,8 +1,8 @@
 "use client";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import ScreenSearchDesktopOutlinedIcon from '@mui/icons-material/ScreenSearchDesktopOutlined';
-import TableWrapper from "../../components/table/TableWrapper";
+import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
+import TableWrapper from "../../../components/table/TableWrapper";
 
 interface LeadsPageProps {}
 

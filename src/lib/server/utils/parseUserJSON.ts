@@ -1,4 +1,3 @@
-import { DBRecord } from "@/db/local";
 
 export const isValidJsonObject = <T>(str: string): T | null => {
   try {

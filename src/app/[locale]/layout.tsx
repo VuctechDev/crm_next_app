@@ -4,6 +4,7 @@ import "./globals.css";
 import ThemeProvider from "@/styles/ThemeProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import PageLayout from "@/components/page-layout/PageLayout";
+import QueryProvider from "@/components/providers/QueryProvider";
 const inter = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -15,9 +16,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppRouterCacheProvider>
-          <ThemeProvider>
-            <PageLayout>{children}</PageLayout>
-          </ThemeProvider>
+          <QueryProvider>
+            <ThemeProvider>
+              <PageLayout>{children}</PageLayout>
+            </ThemeProvider>
+          </QueryProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

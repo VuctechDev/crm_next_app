@@ -2,8 +2,10 @@ import fs from "fs";
 import crypto from "crypto";
 
 export interface DBRecord {
+  _id: string;
   website: string;
-  name: string;
+  fName: string;
+  lName: string;
   role: string;
   company: string;
   email: string;
@@ -24,10 +26,7 @@ let state: any[] = [];
 export const removeItem = (_id: string) => {
   const handler = state.filter((item) => item._id !== _id);
   state = handler;
-  fs.writeFileSync(
-    __filename + "/../../../../../state.json",
-    JSON.stringify(handler)
-  );
+  fs.writeFileSync(`state.json`, JSON.stringify(handler));
   console.log("REMOVED");
 };
 
@@ -40,9 +39,7 @@ export const getItem = (_id: string) => {
 };
 
 export const initState = async () => {
-  const initialState = await JSON.parse(
-    fs.readFileSync(__filename + `/../../../../../state.json`, "utf8")
-  );
+  const initialState = await JSON.parse(fs.readFileSync(`state.json`, "utf8"));
   state = initialState;
   console.log("State initialized");
 };
@@ -65,7 +62,8 @@ const getID = (length: number = 10) => {
 };
 
 export const entryModel = {
-  name: "",
+  firstName: "",
+  lastName: "",
   role: "",
   company: "",
   email: "",
@@ -93,10 +91,7 @@ export const addItem = (newItem: DBRecord, _id?: string) => {
   console.log("NEW ITEM: ", newItem);
 
   state = [...state, standardizedItem];
-  fs.writeFileSync(
-    __filename + "/../../../../../state.json",
-    JSON.stringify(state)
-  );
+  fs.writeFileSync(`state.json`, JSON.stringify(state));
 };
 
 // const entryModel = [
