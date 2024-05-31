@@ -5,11 +5,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { DrawerItemType } from "./PageLayout";
 import Link from "next/link";
-import {
-  useRouter,
-  ReadonlyURLSearchParams,
-  usePathname,
-} from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useTranslation } from "next-i18next";
 
 interface DrawerItemProps {
   open: boolean;
@@ -22,6 +19,7 @@ const DrawerItem: FC<DrawerItemProps> = ({
   data,
   nested,
 }): ReactElement => {
+  const { t } = useTranslation();
   const path = usePathname();
   const active = data.href === path;
   return (
@@ -55,8 +53,11 @@ const DrawerItem: FC<DrawerItemProps> = ({
             {data.icon}
           </ListItemIcon>
           <ListItemText
-            primary={data.label}
-            sx={(t) => ({ opacity: open ? 1 : 0, color: active ? t.palette.primary.main : t.palette.text.secondary })}
+            primary={t(data.label)}
+            sx={(t) => ({
+              opacity: open ? 1 : 0,
+              color: active ? t.palette.primary.main : t.palette.text.secondary,
+            })}
           />
         </ListItemButton>
       </ListItem>

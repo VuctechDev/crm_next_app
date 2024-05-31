@@ -1,6 +1,4 @@
-"use client";
-import React, { FC, ReactElement, useEffect, useState } from "react";
-import Box from "@mui/material/Box";
+import React, { FC, ReactElement, useState } from "react";
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 import Card from "@mui/material/Card";
 import QueryPanel from "@/components/table/header/QueryPanel";
@@ -10,24 +8,25 @@ import { useQuery } from "@tanstack/react-query";
 import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface LeadsPageProps {
   params: { locale: string };
 }
 
 const headers = [
-  "Name",
-  "Role",
-  "Email",
-  "Company",
-  "Industry",
+  "name",
+  "role",
+  "email",
+  "company",
+  "industry",
+  "country",
+  "website",
   // "Employees",
-
   // "Phone",
-  "Country",
   // "Post code",
   // "Address",
-  "Website",
+  
 ];
 
 const getData = async (query: string): Promise<LeadType[]> => {
@@ -39,7 +38,7 @@ const getData = async (query: string): Promise<LeadType[]> => {
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const [query, setQuery] = useState("");
-  const t = (k: string) => k;
+  
 
   const { data, isLoading } = useQuery({
     queryKey: ["leads", query],
@@ -90,7 +89,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   };
 
   return (
-    <PageContentWrapper title={t("hello")}>
+    <PageContentWrapper title="leads">
       <Card
         elevation={1}
         sx={{ p: "0px", height: "1", borderRadius: "20px", width: "100%" }}
@@ -107,6 +106,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
           loading={isLoading}
           pageRows={10}
           totalCount={100}
+          skeletonCount={8}
           handlePagination={() => null}
           handleRowSelect={(_id: string) => router.push(path + `/${_id}`, {})}
           hover={false}
@@ -115,5 +115,14 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     </PageContentWrapper>
   );
 };
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale)),
+    },
+    revalidate: 60,
+  };
+}
 
 export default LeadsPage;

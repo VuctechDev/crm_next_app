@@ -6,30 +6,33 @@ import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
 import Link from "next/link";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface AddLeadsProps {}
 
 const options = [
   {
-    label: "Create",
+    label: "create",
     icon: <PersonAddAltOutlinedIcon fontSize="large" />,
     href: "/leads/add/new",
   },
   {
-    label: "Upload business cards",
+    label: "uploadBusinessCards",
     icon: <AddPhotoAlternateOutlinedIcon fontSize="large" />,
     href: "/leads/add/cards",
   },
   {
-    label: "Import CSV",
+    label: "importCSV",
     icon: <UploadFileOutlinedIcon fontSize="large" />,
     href: "/leads/add/csv",
   },
 ];
 
 const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
+  const { t } = useTranslation();
   return (
-    <PageContentWrapper title="New Lead">
+    <PageContentWrapper title="addNewLeads">
       <Box
         width={1}
         sx={{
@@ -59,7 +62,7 @@ const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
                 },
               }}
             >
-              <Typography variant="h6">{item.label}</Typography>
+              <Typography variant="h6">{t(item.label)}</Typography>
               <Box sx={{ mt: "16px" }}>{item.icon}</Box>
             </Card>
           </Link>
@@ -68,5 +71,14 @@ const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
     </PageContentWrapper>
   );
 };
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale)),
+    },
+    revalidate: 60,
+  };
+}
 
 export default AddLeadsPage;

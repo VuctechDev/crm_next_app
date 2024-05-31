@@ -20,6 +20,7 @@
     "mysql": "^2.18.1",
     "next": "14.2.3",
     "next-connect": "^1.0.0",
+    "next-i18next": "^15.3.0",
     "openai": "^4.47.1",
     "queue": "^7.0.0",
     "react": "^18",

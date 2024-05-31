@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import { Button, Typography } from "@mui/material";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
+import { useTranslation } from "next-i18next";
 
 interface FilePickerProps {
   type: "img" | "csv";
@@ -35,6 +36,7 @@ const config = {
 };
 
 const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
+  const { t } = useTranslation();
   const [dragActive, setDragActive] = useState(false);
   const [myFile, setMyFile] = useState<File[]>([]);
 
@@ -137,7 +139,7 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
                   },
                 })}
               >
-                <span>Click to upload</span> or drag and drop
+                <span>{t("clickToUpload")}</span> {t("orDragAndDrop")}
               </Typography>
               <input
                 accept={accept}
@@ -185,7 +187,7 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
           sx={{ mt: "40px" }}
           onClick={handleSubmit}
         >
-          SAVE
+          {t("save")}
         </Button>
       </Box>
       {type === "img" && (

@@ -10,7 +10,7 @@ interface DataLoaderSkeletonProps {
 }
 
 const DataLoaderSkeleton: FC<DataLoaderSkeletonProps> = ({
-  height = 6,
+  height = 3,
   mb = 8,
   count = 10,
 }): ReactElement => {

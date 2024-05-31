@@ -3,8 +3,9 @@ import QueryProvider from "@/components/providers/QueryProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
+import { appWithTranslation } from "next-i18next";
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryProvider>
       <ThemeProvider>
@@ -15,3 +16,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </QueryProvider>
   );
 }
+
+export default appWithTranslation(App);

@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { Button, TextField, Typography } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { useTranslation } from "next-i18next";
 
 interface FilterButtonProps {
   label: string;
@@ -16,6 +17,8 @@ const FilterButton: FC<FilterButtonProps> = ({
   value,
   handleFilterSelect,
 }) => {
+  const { t } = useTranslation();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -85,7 +88,7 @@ const FilterButton: FC<FilterButtonProps> = ({
             },
           })}
         >
-          {label}
+          {t(label)}
           {value ? ":" : ""}
           <span>{value ? ` ${value}` : ""}</span>
         </Typography>
@@ -109,7 +112,9 @@ const FilterButton: FC<FilterButtonProps> = ({
         }}
       >
         <Box sx={{ p: "20px" }}>
-          <Typography>Filter by {label}</Typography>
+          <Typography>
+            {t("filterBy")} {t(label)}
+          </Typography>
           <TextField
             inputRef={inputRef}
             name={label}
@@ -125,7 +130,7 @@ const FilterButton: FC<FilterButtonProps> = ({
             }}
           />
           <Button onClick={handleFilterApply} variant="contained">
-            Apply
+            {t("apply")}
           </Button>
         </Box>
       </Popover>

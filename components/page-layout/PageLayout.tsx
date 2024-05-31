@@ -18,6 +18,7 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import DrawerItem from "./DrawerItem";
 
+
 export interface DrawerItemType {
   label: string;
   icon: React.ReactNode;
@@ -37,47 +38,47 @@ interface PageLayoutProps {
 
 const drawerItems = [
   {
-    label: "Leads",
+    label: "leads",
     icon: <PeopleAltOutlinedIcon />,
     href: "/leads",
     nestedLinks: [
       {
-        label: "Add",
+        label: "addNew",
         icon: <GroupAddOutlinedIcon />,
         href: "/leads/add",
       },
     ],
   },
   {
-    label: "Tags",
+    label: "tags",
     icon: <TagIcon />,
     href: "/tags",
     nestedLinks: [],
   },
   {
-    label: "Mailing",
+    label: "email",
     icon: <EmailOutlinedIcon />,
     href: "/mailing",
     nestedLinks: [
       {
-        label: "New",
+        label: "new",
         icon: <ForwardToInboxOutlinedIcon />,
         href: "/mailing/new",
       },
       {
-        label: "Templates",
+        label: "templates",
         icon: <DescriptionOutlinedIcon />,
         href: "/mailing/templates",
       },
       {
-        label: "Mailing lists",
+        label: "mailingLists",
         icon: <FormatListBulletedOutlinedIcon />,
         href: "/mailing/lists",
       },
     ],
   },
   {
-    label: "Usage",
+    label: "usage",
     icon: <BarChartOutlinedIcon />,
     href: "/usage",
     nestedLinks: [],

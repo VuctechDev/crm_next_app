@@ -7,6 +7,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import DataLoaderSkeleton from "./DataLoaderSkeleton";
 import Typography from "@mui/material/Typography";
+import { useTranslation } from "next-i18next";
 
 interface Props {
   data: any[];
@@ -38,13 +39,12 @@ const TableWrapper: React.FC<Props> = ({
   handleRowSelect,
   hover = true,
 }) => {
-  // const { t } = useTranslation();
-  const t = (k: string) => k;
+  const { t } = useTranslation();
   let componentToRender = (
     <TableRow>
       <TableCell align="center" colSpan={headers.length} sx={{ py: 1 }}>
         <DataLoaderSkeleton
-          height={35}
+          height={32}
           mb={10}
           count={skeletonCount ?? pageRows}
         />

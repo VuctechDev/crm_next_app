@@ -6,7 +6,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import { handleTableQuery } from "@/lib/client/handleTableQuery";
 import useDebounce from "@/hooks/useDebounce";
-
+import { useTranslation } from "next-i18next";
 interface QueryPanelProps {
   keys: string[];
   handleQueriesChange: (query: string) => void;
@@ -16,6 +16,7 @@ const QueryPanel: FC<QueryPanelProps> = ({
   keys,
   handleQueriesChange,
 }): ReactElement => {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>(
     [...keys, "search"].reduce((acc: Record<string, string>, key) => {
@@ -64,7 +65,7 @@ const QueryPanel: FC<QueryPanelProps> = ({
           fullWidth
           name="search"
           variant="outlined"
-          placeholder="Search..."
+          placeholder={t("search...")}
           InputProps={{
             sx: { borderRadius: "20px", padding: "0px 14px" },
             startAdornment: (
