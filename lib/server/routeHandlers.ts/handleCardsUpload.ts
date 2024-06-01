@@ -6,8 +6,8 @@ import { LeadType, insertNewLead } from "@/db/leads";
 
 const q = new Queue({ concurrency: 1, autostart: true });
 
-const newCardJob = async (filePath: string) => {
-  const extractedText = await getTextFromImage(filePath);
+const newCardJob = async (fileKey: string) => {
+  const extractedText = await getTextFromImage(fileKey);
   console.log("Extracted text: " + extractedText);
   const promptResult = await getDataFromPrompt(extractedText);
   if (promptResult) {
@@ -19,15 +19,15 @@ const newCardJob = async (filePath: string) => {
 };
 // files: Express.Multer.File[]
 export const handleCardsUpload = async (files: any) => {
-  console.log("FILE in process2 " + files?.[0]?.key);
   for (const item of files) {
-    const contents = await newCardJob(item?.key);
-    console.log("FILE in process " + item?.key);
+    try {
+      console.log("Processing file:", item.key);
+      await newCardJob(item.key);
+      console.log("File processed:", item.key);
+    } catch (error) {
+      console.error("Error processing file:", item.key, error);
+    }
   }
-  // files?.forEach((item: any) => {
-  //   console.log(item);
-  //   q.push(async () => await newCardJob(item?.key));
-  // });
 };
 
 q.addEventListener("success", (result: any) => {
