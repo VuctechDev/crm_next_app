@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 import config from "./next-i18next.config.js";
 const nextConfig = {
-  output: "export",
+  // output: "export",
   reactStrictMode: true,
   i18n: config.i18n,
   experimental: {
