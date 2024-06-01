@@ -3,6 +3,11 @@ import config from "./next-i18next.config.js";
 const nextConfig = {
   reactStrictMode: true,
   i18n: config.i18n,
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/**/*': ['./node_modules/**/*.wasm', './node_modules/**/*.proto'],
+    },
+  },
 };
 
 export default nextConfig;
