@@ -8,6 +8,7 @@ const q = new Queue({ concurrency: 1, autostart: true });
 
 const newCardJob = async (filePath: string) => {
   const extractedText = await getTextFromImage(filePath);
+  console.log("Extracted text: " + extractedText);
   const promptResult = await getDataFromPrompt(extractedText);
   if (promptResult) {
     const newItem = isValidJsonObject<LeadType>(promptResult);

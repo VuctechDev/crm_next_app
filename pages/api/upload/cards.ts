@@ -15,7 +15,7 @@ router
     if (!req.files?.length) {
       return res.status(400).json({ message: "Files not uploaded" });
     }
-    handleCardsUpload(req.files);
+    await handleCardsUpload(req.files);
     return res
       .status(200)
       .json({ message: "Files uploaded successfully", files: req.files });
