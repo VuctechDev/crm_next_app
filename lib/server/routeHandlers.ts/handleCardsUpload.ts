@@ -16,10 +16,11 @@ const newCardJob = async (filePath: string) => {
     }
   }
 };
-
-export const handleCardsUpload = async (files: Express.Multer.File[]) => {
-  files?.forEach((item) => {
-    q.push(() => newCardJob(item?.path));
+// files: Express.Multer.File[]
+export const handleCardsUpload = async (files: any) => {
+  files?.forEach((item: any) => {
+    console.log(item);
+    q.push(() => newCardJob(item?.key));
   });
 };
 

@@ -1,14 +1,15 @@
 import { createWorker } from "tesseract.js";
 import sharp from "sharp";
+import { getS3File } from "./s3";
 
-export const getTextFromImage = async (filePath: string) => {
+export const getTextFromImage = async (fileKey: string) => {
   const rotations = [0, -90, 90, 180];
   let maxConfidence = 0;
   let bestText = "";
   let bestRotation = 0;
   for (let rotation of rotations) {
-    const buffer = await sharp(filePath)
-      // .resize(1000) // Resize to width 1000px to enhance text clarity
+    const imageBuffer: Buffer = await getS3File(fileKey);
+    const buffer = await sharp(imageBuffer)
       .grayscale()
       .sharpen()
       .rotate(rotation)
