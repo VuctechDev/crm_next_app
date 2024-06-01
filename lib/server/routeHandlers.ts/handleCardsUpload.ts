@@ -20,7 +20,7 @@ const newCardJob = async (filePath: string) => {
 export const handleCardsUpload = async (files: any) => {
   files?.forEach((item: any) => {
     console.log(item);
-    q.push(() => newCardJob(item?.key));
+    q.push(async () => await newCardJob(item?.key));
   });
 };
 
