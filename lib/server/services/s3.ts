@@ -3,12 +3,12 @@ const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY,
+    accessKeyId: process.env.S3_ACCESS_KEY,
+    secretAccessKey: process.env.S3_SECRET_KEY,
   },
 });
 
-export const getS3Client = () => s3Client
+export const getS3Client = () => s3Client;
 
 export const getS3File = async (key: string): Promise<Buffer> => {
   const getObjectParams = {
