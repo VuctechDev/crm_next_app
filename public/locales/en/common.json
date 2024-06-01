@@ -26,5 +26,7 @@
   "clickToUpload": "Click to upload",
   "addNewLeads": "Add New Leads",
   "save": "Save",
-  "add": "Add"
+  "add": "Add",
+  "downloadCSVTemplate": "Download CSV template", 
+  "csvUploadDescription": "All fields are not required, but file will not be processed if different keys are provided"
 }

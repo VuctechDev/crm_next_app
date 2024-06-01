@@ -19,6 +19,7 @@ const newCardJob = async (filePath: string) => {
 };
 // files: Express.Multer.File[]
 export const handleCardsUpload = async (files: any) => {
+  console.log("FILE in process2 " + files?.[0]?.key);
   for (const item of files) {
     const contents = await newCardJob(item?.key);
     console.log("FILE in process " + item?.key);
