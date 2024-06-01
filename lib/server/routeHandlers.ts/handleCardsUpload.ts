@@ -18,10 +18,14 @@ const newCardJob = async (filePath: string) => {
 };
 // files: Express.Multer.File[]
 export const handleCardsUpload = async (files: any) => {
-  files?.forEach((item: any) => {
-    console.log(item);
-    q.push(async () => await newCardJob(item?.key));
-  });
+  for (const item of files) {
+    const contents = await newCardJob(item?.key);
+    console.log("FILE in process " + item?.key);
+  }
+  // files?.forEach((item: any) => {
+  //   console.log(item);
+  //   q.push(async () => await newCardJob(item?.key));
+  // });
 };
 
 q.addEventListener("success", (result: any) => {
