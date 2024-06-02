@@ -41,7 +41,7 @@ const newCardJob = async (fileKey: string) => {
 // files: Express.Multer.File[]
 export const handleCardsUpload = async (files: any[]) => {
   const keys = files.map((item) => item.key);
-  forwardKeysToService("card", keys);
+  await forwardKeysToService("card", keys);
 };
 
 q.addEventListener("success", (result: any) => {
