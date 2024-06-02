@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import FilePicker from "@/components/file-picker/FIlePicker";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 
 interface CSVUploadProps {}
@@ -22,11 +22,14 @@ const CSVUpload: FC<CSVUploadProps> = (): ReactElement => {
         }}
       >
         <FilePicker type="csv" />
+
         <Typography variant="h6" my="28px">
           {t("csvUploadDescription")}
         </Typography>
         <a download href="/template.csv">
-          <Typography color="info.main"> {t("downloadCSVTemplate")}</Typography>
+          <Button color="info" variant="outlined">
+            {t("downloadCSVTemplate")}
+          </Button>
         </a>
       </Box>
     </PageContentWrapper>

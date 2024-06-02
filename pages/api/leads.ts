@@ -7,23 +7,11 @@ interface NextApiRequestExtended extends NextApiRequest {
   files: Express.Multer.File[];
 }
 
-// function parseFilters(query:) {
-//   const filters = {};
-//   for (const key in query) {
-//       if (key.startsWith('filter[')) {
-//           const filterKey = key.match(/filter\[(.*?)\]/)[1]; // Extracts string between brackets
-//           filters[filterKey] = query[key];
-//       }
-//   }
-//   return filters;
-// }
-
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
 router.get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
   // createTable();
   // dropTable();
-
   const filters = req.query as Record<string, string>;
   const data = await getLeads(filters);
   res.status(200).json({ data });

@@ -6,6 +6,27 @@ import { LeadType, insertNewLead } from "@/db/leads";
 
 const q = new Queue({ concurrency: 1, autostart: true });
 
+const forwardKeysToService = async (type: "card" | "csv", keys: string[]) => {
+  const apiUrl = "https://stefan.pikado.net/process"; // Change to your API's URL
+  const itemData = {
+    type,
+    keys,
+  };
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      body: JSON.stringify(itemData),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 const newCardJob = async (fileKey: string) => {
   const extractedText = await getTextFromImage(fileKey);
   console.log("Extracted text: " + extractedText);
@@ -18,16 +39,9 @@ const newCardJob = async (fileKey: string) => {
   }
 };
 // files: Express.Multer.File[]
-export const handleCardsUpload = async (files: any) => {
-  for (const item of files) {
-    try {
-      console.log("Processing file:", item.key);
-      await newCardJob(item.key);
-      console.log("File processed:", item.key);
-    } catch (error) {
-      console.error("Error processing file:", item.key, error);
-    }
-  }
+export const handleCardsUpload = async (files: any[]) => {
+  const keys = files.map((item) => item.key);
+  forwardKeysToService("card", keys);
 };
 
 q.addEventListener("success", (result: any) => {
