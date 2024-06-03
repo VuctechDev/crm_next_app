@@ -79,9 +79,13 @@ export const insertNewLead = async (data: LeadType) => {
 export const getLeads = async (filters: Record<string, string>) => {
   const filtersQuery = handleRequestQuery(filters);
   try {
-    const data = await query(`SELECT * from ${tableName} ${filtersQuery}`);
+    const data = await query(
+      `SELECT * from ${tableName} ${filtersQuery} ORDER BY _id DESC`
+    );
     return data;
   } catch (error) {
     throw error;
   }
 };
+
+// LIMIT ${limit} OFFSET ${page * limit}`)

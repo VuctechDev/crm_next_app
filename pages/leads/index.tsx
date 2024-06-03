@@ -9,12 +9,14 @@ import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 
 interface LeadsPageProps {
   params: { locale: string };
 }
 
 const headers = [
+  // "ID",
   "name",
   "role",
   "email",
@@ -26,7 +28,6 @@ const headers = [
   // "Phone",
   // "Post code",
   // "Address",
-  
 ];
 
 const getData = async (query: string): Promise<LeadType[]> => {
@@ -38,7 +39,6 @@ const getData = async (query: string): Promise<LeadType[]> => {
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const [query, setQuery] = useState("");
-  
 
   const { data, isLoading } = useQuery({
     queryKey: ["leads", query],
@@ -50,6 +50,9 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const path = usePathname();
 
   const keys = [
+    // {
+    //   key: "_id",
+    // },
     {
       key: "firstName",
       render: (value: string, data: LeadType) => `${value} ${data?.lastName}`,
@@ -73,6 +76,10 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     {
       key: "country",
     },
+    // {
+    //   key: "created",
+    //   render: (value: string) => getDisplayDateTime(value),
+    // },
     {
       key: "website",
       render: (value: string) => (
@@ -83,7 +90,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
       preventClick: true,
     },
   ];
-
+  // getDisplayDateTime
   const handleQueriesChange = (query: string) => {
     setQuery(query);
   };

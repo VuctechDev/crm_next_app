@@ -14,8 +14,8 @@ router
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     try {
       if (req.files?.[0]) {
-        const file = req.files[0];
-        handleCSVUpload(file);
+        const file = req.files[0] as unknown as { key: string };
+        await handleCSVUpload(file.key);
         return res
           .status(200)
           .json({ message: "File uploaded successfully", file: file });
