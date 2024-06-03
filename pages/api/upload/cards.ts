@@ -13,7 +13,9 @@ router
   .use(multerUpload.array("files", 10) as any)
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     if (!req.files?.length) {
-      return res.status(400).json({ message: "Files not uploaded" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Files not uploaded" });
     }
     await handleCardsUpload(req.files);
     return res

@@ -48,11 +48,26 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
       myFile.forEach((file) => {
         formData.append("files", file);
       });
-      await fetch(`/api/upload${path}`, {
+      const response = await fetch(`/api/upload${path}`, {
         method: "POST",
         body: formData,
       });
-    } catch (err) {}
+      const data = await response.json();
+      console.log(data);
+      if (!data.success) {
+        // throw new Error("stefan");
+        if (data.message === "csvKeysMismatchException") {
+          alert(
+            "Not valid CSV keys are provided, please download the provided template."
+          );
+        } else {
+          alert(data.message);
+        }
+      }
+    } catch (err) {
+      console.log("ERROR: ", err);
+      alert(JSON.stringify(err));
+    }
   };
 
   const handleDrag = (e: DragEvent<HTMLDivElement>) => {
@@ -109,7 +124,9 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
               : error
               ? t.palette.error.main
               : "",
-            backgroundColor: dragActive ? "#00000033" : t.palette.background.paper,
+            backgroundColor: dragActive
+              ? "#00000033"
+              : t.palette.background.paper,
             mb: error ? "4px" : "20px",
             transition: "background-color 0.3s",
           })}
@@ -152,16 +169,11 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
             </label>
           ) : (
             myFile.map((file) => (
-              <Typography key={file?.name}>
-                {file?.name}
-              </Typography>
+              <Typography key={file?.name}>{file?.name}</Typography>
             ))
           )}
           {!myFile.length && (
-            <Typography
-              fontWeight={600}
-              fontSize={14}
-            >
+            <Typography fontWeight={600} fontSize={14}>
               {label}
             </Typography>
           )}

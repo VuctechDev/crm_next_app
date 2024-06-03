@@ -20,9 +20,9 @@ router
           .status(200)
           .json({ message: "File uploaded successfully", file: file });
       }
-      return res.status(400).json({ message: "File not uploaded" });
+      return res.status(400).json({ success: false, message: "Missing File" });
     } catch (error: any) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ success: false, message: error.message });
     }
   });
 
