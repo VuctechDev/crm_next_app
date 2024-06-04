@@ -26,7 +26,7 @@ export const forwardJobToFileService = async (
   }
 };
 
-export const handleCardsUpload = async (files: any[]) => {
+export const handleCardsUpload = async (files: Express.MulterS3.File[]) => {
   const keys = files.map((item) => item.key);
   await forwardJobToFileService("card", keys);
 };

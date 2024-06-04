@@ -4,7 +4,7 @@ import { multerUpload } from "@/lib/server/services/multer";
 import { handleCSVUpload } from "@/lib/server/routeHandlers.ts/handleCSVUpload";
 
 interface NextApiRequestExtended extends NextApiRequest {
-  files: Express.Multer.File[];
+  files: Express.MulterS3.File[];
 }
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
@@ -13,14 +13,17 @@ router
   .use(multerUpload.array("files", 10) as any)
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     try {
-      if (req.files?.[0]) {
-        const file = req.files[0] as unknown as { key: string };
-        await handleCSVUpload(file.key);
+      if (!req.files?.length) {
         return res
-          .status(200)
-          .json({ message: "File uploaded successfully", file: file });
+          .status(400)
+          .json({ success: false, message: "missingFilesException" });
       }
-      return res.status(400).json({ success: false, message: "Missing File" });
+
+      const file = req.files[0];
+      await handleCSVUpload(file?.key);
+      return res
+        .status(200)
+        .json({ success: true, message: "csvFilesUploadSuccess", file: file });
     } catch (error: any) {
       return res.status(400).json({ success: false, message: error.message });
     }

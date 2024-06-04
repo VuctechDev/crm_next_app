@@ -14,7 +14,7 @@ router.get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
   // dropTable();
   const filters = req.query as Record<string, string>;
   const data = await getLeads(filters);
-  res.status(200).json({ data });
+  res.status(200).json(data);
 });
 
 export const config = {

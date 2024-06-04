@@ -20,7 +20,7 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
 }): ReactElement => {
   const { t } = useTranslation();
   const path = usePathname();
-  console.log(path?.split("/"));
+  console.log(path?.split("/"), path);
   const breadcrumbItems = path?.split("/");
   return (
     <Box
@@ -45,7 +45,11 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
         <Breadcrumbs aria-label="breadcrumb">
           {breadcrumbItems?.map((item, i) =>
             i !== breadcrumbItems.length - 1 ? (
-              <Link key={item} color="inherit" href="/">
+              <Link
+                key={item}
+                color="inherit"
+                href={breadcrumbItems.slice(0, i).join("/")}
+              >
                 <Typography color="info.main">
                   {!i ? t("home") : t(item)}
                 </Typography>

@@ -11,6 +11,7 @@ import { Button, Typography } from "@mui/material";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import { useTranslation } from "next-i18next";
+import { useSnackbar } from "../providers/SnackbarContext";
 
 interface FilePickerProps {
   type: "img" | "csv";
@@ -37,6 +38,7 @@ const config = {
 
 const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
   const { t } = useTranslation();
+  const { openSnackbar } = useSnackbar();
   const [dragActive, setDragActive] = useState(false);
   const [myFile, setMyFile] = useState<File[]>([]);
 
@@ -53,17 +55,11 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
         body: formData,
       });
       const data = await response.json();
-      console.log(data);
       if (!data.success) {
-        // throw new Error("stefan");
-        if (data.message === "csvKeysMismatchException") {
-          alert(
-            "Not valid CSV keys are provided, please download the provided template."
-          );
-        } else {
-          alert(data.message);
-        }
+        return openSnackbar(data.message, "error");
       }
+      setMyFile([]);
+      return openSnackbar(data.message, "success");
     } catch (err) {
       console.log("ERROR: ", err);
       alert(JSON.stringify(err));

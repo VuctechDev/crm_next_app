@@ -8,6 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import DataLoaderSkeleton from "./DataLoaderSkeleton";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "next-i18next";
+import { useEffect, useRef } from "react";
 
 interface Props {
   data: any[];
@@ -17,12 +18,13 @@ interface Props {
     preventClick?: boolean;
   }[];
   headers: string[];
-  page: number;
-  pageRows: number;
+  page?: number;
+  pageRows?: number;
   skeletonCount?: number;
   totalCount: number;
   loading: boolean;
-  handlePagination: (page: number, pageRows: number) => void;
+  paginationReset: string;
+  handlePagination: (query: string) => void;
   handleRowSelect: (id: string) => void;
   hover?: boolean;
 }
@@ -30,23 +32,39 @@ const TableWrapper: React.FC<Props> = ({
   data,
   keys,
   headers,
-  page,
-  pageRows,
   skeletonCount,
   totalCount,
   loading,
+  paginationReset,
   handlePagination,
   handleRowSelect,
   hover = true,
 }) => {
   const { t } = useTranslation();
+  const page = useRef(0);
+  const rowsPerPage = useRef(10);
+
+  const handleChange = (type: "page" | "rows", value: number) => {
+    if (type === "page") {
+      page.current = value;
+    } else if (type === "rows") {
+      rowsPerPage.current = value;
+    }
+    handlePagination(`page=${page.current}&limit=${rowsPerPage.current}`);
+  };
+
+  useEffect(() => {
+    page.current = 0;
+    rowsPerPage.current = 10;
+  }, [paginationReset]);
+
   let componentToRender = (
     <TableRow>
       <TableCell align="center" colSpan={headers.length} sx={{ py: 1 }}>
         <DataLoaderSkeleton
           height={32}
           mb={10}
-          count={skeletonCount ?? pageRows}
+          count={skeletonCount ?? rowsPerPage.current}
         />
       </TableCell>
     </TableRow>
@@ -128,10 +146,10 @@ const TableWrapper: React.FC<Props> = ({
         rowsPerPageOptions={[5, 10]}
         component="div"
         count={totalCount ?? 0}
-        rowsPerPage={pageRows}
-        page={page}
-        onPageChange={(a, b) => handlePagination(b, pageRows)}
-        onRowsPerPageChange={(e) => handlePagination(page, +e.target.value)}
+        rowsPerPage={rowsPerPage.current}
+        page={page.current}
+        onPageChange={(a, b) => handleChange("page", b)}
+        onRowsPerPageChange={(e) => handleChange("rows", +e.target.value)}
         labelRowsPerPage={t("rowsPerPage")}
       />
     </TableContainer>

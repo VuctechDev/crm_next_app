@@ -76,13 +76,23 @@ export const insertNewLead = async (data: LeadType) => {
   }
 };
 
-export const getLeads = async (filters: Record<string, string>) => {
+export const getLeads = async (
+  filters: Record<string, string>
+): Promise<{
+  data: any;
+  total: number;
+}> => {
   const filtersQuery = handleRequestQuery(filters);
   try {
+    const total = (await query(
+      `SELECT COUNT(*) AS total FROM ${tableName} ${filtersQuery}`
+    )) as [{ total: number }];
+    console.log("TOT: ", total);
+    const offset = +filters?.page * +filters.limit;
     const data = await query(
-      `SELECT * from ${tableName} ${filtersQuery} ORDER BY _id DESC`
+      `SELECT * from ${tableName} ${filtersQuery} ORDER BY _id DESC LIMIT ${filters?.limit} OFFSET ${offset} `
     );
-    return data;
+    return { data, total: total?.[0]?.total ?? 0 };
   } catch (error) {
     throw error;
   }

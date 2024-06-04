@@ -4,7 +4,7 @@ import { multerUpload } from "@/lib/server/services/multer";
 import { handleCardsUpload } from "@/lib/server/routeHandlers.ts/handleCardsUpload";
 
 interface NextApiRequestExtended extends NextApiRequest {
-  files: Express.Multer.File[];
+  files: Express.MulterS3.File[];
 }
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
@@ -15,12 +15,13 @@ router
     if (!req.files?.length) {
       return res
         .status(400)
-        .json({ success: false, message: "Files not uploaded" });
+        .json({ success: false, message: "missingFilesException" });
     }
-    await handleCardsUpload(req.files);
+    console.log(req.files)
+    // await handleCardsUpload(req.files);
     return res
       .status(200)
-      .json({ message: "Files uploaded successfully", files: req.files });
+      .json({ success: true, message: "cardFilesUploadSuccess", files: req.files });
   });
 
 export const config = {

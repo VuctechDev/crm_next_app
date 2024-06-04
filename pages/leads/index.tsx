@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from "react";
+import React, { FC, ReactElement, useEffect, useState } from "react";
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 import Card from "@mui/material/Card";
 import QueryPanel from "@/components/table/header/QueryPanel";
@@ -10,6 +10,7 @@ import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
+import { useSnackbar } from "@/components/providers/SnackbarContext";
 
 interface LeadsPageProps {
   params: { locale: string };
@@ -30,20 +31,23 @@ const headers = [
   // "Address",
 ];
 
-const getData = async (query: string): Promise<LeadType[]> => {
-  const response = await fetch(`/api/leads${query}`);
+const getData = async (
+  filterQuery: string,
+  paginationQuery: string
+): Promise<{ data: LeadType[]; total: number }> => {
+  const response = await fetch(`/api/leads?${paginationQuery}${filterQuery}`);
   const data = await response.json();
-  console.log(data.data);
-  return data.data;
+  return data;
 };
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
-  const [query, setQuery] = useState("");
+  const { openSnackbar } = useSnackbar();
+  const [filterQuery, setFilterQuery] = useState("");
+  const [paginationQuery, setPaginationQuery] = useState("page=0&limit=10");
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["leads", query],
-    queryFn: () => getData(query),
-    // initialData: getItems(),
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["leads", filterQuery, paginationQuery],
+    queryFn: () => getData(filterQuery, paginationQuery),
   });
 
   const router = useRouter();
@@ -90,10 +94,21 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
       preventClick: true,
     },
   ];
-  // getDisplayDateTime
-  const handleQueriesChange = (query: string) => {
-    setQuery(query);
+
+  const handleFilters = (query: string) => {
+    setFilterQuery(query);
+    setPaginationQuery("page=0&limit=10");
   };
+
+  const handlePagination = (query: string) => {
+    setPaginationQuery(query);
+  };
+
+  useEffect(() => {
+    if (error) {
+      openSnackbar(error?.message ?? "", "error");
+    }
+  }, [error]);
 
   return (
     <PageContentWrapper title="leads">
@@ -103,18 +118,17 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
       >
         <QueryPanel
           keys={["role", "industry", "country"]}
-          handleQueriesChange={handleQueriesChange}
+          handleQueriesChange={handleFilters}
         />
         <TableWrapper
-          data={data ?? []}
+          data={data?.data ?? []}
           headers={headers}
           keys={keys}
-          page={0}
           loading={isLoading}
-          pageRows={10}
-          totalCount={100}
+          totalCount={data?.total ?? 0}
           skeletonCount={8}
-          handlePagination={() => null}
+          paginationReset={filterQuery}
+          handlePagination={handlePagination}
           handleRowSelect={(_id: string) => router.push(path + `/${_id}`, {})}
           hover={false}
         />
