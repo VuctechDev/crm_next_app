@@ -98,4 +98,15 @@ export const getLeads = async (
   }
 };
 
+export const getLead = async (_id: string): Promise<any> => {
+  try {
+    const data = (await query(`SELECT * from ${tableName} WHERE _id = ? `, [
+      [_id],
+    ])) as LeadType[];
+    return data?.length ? data[0] : {};
+  } catch (error) {
+    throw error;
+  }
+};
+
 // LIMIT ${limit} OFFSET ${page * limit}`)

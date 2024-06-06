@@ -9,6 +9,7 @@ import DataLoaderSkeleton from "./DataLoaderSkeleton";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "next-i18next";
 import { useEffect, useRef } from "react";
+import HeaderCell from "./TableHeaderCell";
 
 interface Props {
   data: any[];
@@ -17,7 +18,7 @@ interface Props {
     render?: (value: any, data: any, i: number) => any;
     preventClick?: boolean;
   }[];
-  headers: string[];
+  headers: { key: string; sort?: boolean }[];
   page?: number;
   pageRows?: number;
   skeletonCount?: number;
@@ -41,6 +42,7 @@ const TableWrapper: React.FC<Props> = ({
   hover = true,
 }) => {
   const { t } = useTranslation();
+
   const page = useRef(0);
   const rowsPerPage = useRef(10);
 
@@ -134,16 +136,14 @@ const TableWrapper: React.FC<Props> = ({
         >
           <TableRow>
             {headers.map((item) => (
-              <TableCell key={item} align="right">
-                <Typography fontWeight={500}>{t(item)}</Typography>
-              </TableCell>
+              <HeaderCell key={item.key} data={item} />
             ))}
           </TableRow>
         </TableHead>
         <TableBody>{componentToRender}</TableBody>
       </Table>
       <TablePagination
-        rowsPerPageOptions={[5, 10]}
+        rowsPerPageOptions={[5, 10, 20]}
         component="div"
         count={totalCount ?? 0}
         rowsPerPage={rowsPerPage.current}

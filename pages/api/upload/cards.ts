@@ -17,7 +17,6 @@ router
         .status(400)
         .json({ success: false, message: "missingFilesException" });
     }
-    // console.log(req.files)
     await handleCardsUpload(req.files);
     return res
       .status(200)

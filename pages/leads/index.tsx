@@ -18,13 +18,13 @@ interface LeadsPageProps {
 
 const headers = [
   // "ID",
-  "name",
-  "role",
-  "email",
-  "company",
-  "industry",
-  "country",
-  "website",
+  { key: "name", sort: true },
+  { key: "role" },
+  { key: "email" },
+  { key: "company" },
+  { key: "industry" },
+  { key: "country" },
+  { key: "website" },
   // "Employees",
   // "Phone",
   // "Post code",
@@ -46,7 +46,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const [paginationQuery, setPaginationQuery] = useState("page=0&limit=10");
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["leads", filterQuery, paginationQuery],
+    queryKey: ["leads", paginationQuery, filterQuery],
     queryFn: () => getData(filterQuery, paginationQuery),
   });
 
