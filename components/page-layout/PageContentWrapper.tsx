@@ -10,6 +10,7 @@ interface PageContentWrapperProps {
   center?: boolean;
   lastBreadcrumb?: string;
   children: React.ReactNode;
+  actions?: React.ReactNode;
 }
 
 const PageContentWrapper: FC<PageContentWrapperProps> = ({
@@ -17,6 +18,7 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
   center,
   lastBreadcrumb,
   children,
+  actions
 }): ReactElement => {
   const { t } = useTranslation();
   return (
@@ -31,14 +33,27 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
         flexDirection: "column",
       }}
     >
-      {title && (
-        <Typography variant="h2" mb="12px">
-          {t(title)}
-        </Typography>
-      )}
-      <Box>
-        <Breadcrumbs aria-label="breadcrumb" lastValue={lastBreadcrumb} />
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexGrow: 1,
+          maxHeight: "80px",
+        }}
+      >
+        <Box>
+          {title && (
+            <Typography variant="h2" mb="12px">
+              {t(title)}
+            </Typography>
+          )}
+          <Breadcrumbs aria-label="breadcrumb" lastValue={lastBreadcrumb} />
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", flexGrow: 1 }}>
+          {actions}
+        </Box>
       </Box>
+
       <Box
         width={1}
         sx={{

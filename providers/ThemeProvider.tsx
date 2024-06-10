@@ -58,11 +58,11 @@ const theme = createTheme({
       fontWeight: 500,
     },
     h4: {
-      fontSize: "1.75rem",
+      fontSize: "1.5rem",
       fontWeight: 600,
     },
     h5: {
-      fontSize: "1.2rem",
+      fontSize: "1.15rem",
       fontWeight: 600,
     },
     h6: {

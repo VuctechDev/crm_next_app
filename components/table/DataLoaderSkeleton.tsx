@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
 import Skeleton from "@mui/material/Skeleton";
 import React, { FC, ReactElement } from "react";
 

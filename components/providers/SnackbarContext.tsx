@@ -43,7 +43,7 @@ export const SnackbarProvider = ({ children }: ProviderProps) => {
     open: false,
     message: "",
     variant: "success",
-    duration: 6,
+    duration: 8,
     icon: undefined,
   });
 
@@ -53,7 +53,7 @@ export const SnackbarProvider = ({ children }: ProviderProps) => {
       variant: Variant = "success",
       icon?: React.ReactElement
     ) => {
-      let duration = 6;
+      let duration = 8;
       setSnackbar({ open: true, variant, message, duration, icon });
     },
     []
@@ -90,6 +90,7 @@ export const SnackbarProvider = ({ children }: ProviderProps) => {
           <Typography
             sx={(t) => ({
               color: "#fff",
+              fontSize: "18px",
             })}
           >
             {t(snackbar.message as string)}

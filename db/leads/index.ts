@@ -20,6 +20,7 @@ export interface LeadType {
   employees: string;
   archived: boolean;
   description: string;
+  created: string;
 }
 
 interface LeadInsertBody extends Omit<LeadType, "email" | "country"> {}

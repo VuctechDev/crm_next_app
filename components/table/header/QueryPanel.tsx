@@ -1,16 +1,28 @@
-import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FC, ReactElement, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import FilterButton from "./FilterButton";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-import { handleTableQuery } from "@/lib/client/handleTableQuery";
 import useDebounce from "@/hooks/useDebounce";
 import { useTranslation } from "next-i18next";
+
 interface QueryPanelProps {
   keys: string[];
   handleQueriesChange: (query: string) => void;
 }
+
+const handleTableQuery = (filters: Record<string, string>): string => {
+  let query = "";
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) {
+      query += `&${key}=${value}`;
+    }
+  });
+
+  return query;
+};
+
 
 const QueryPanel: FC<QueryPanelProps> = ({
   keys,
