@@ -54,7 +54,36 @@ const create_table_leads = `CREATE TABLE leads (
     updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) 
     ENGINE=InnoDB AUTO_INCREMENT=1000`;
 
-const createTableQuery = create_table_leads;
+const create_table_users = `CREATE TABLE leads (
+      _id INT AUTO_INCREMENT PRIMARY KEY, 
+      firstName VARCHAR(30), 
+      lastName VARCHAR(30), 
+      role VARCHAR(50), 
+      company VARCHAR(50), 
+      email VARCHAR(40),  
+      phone VARCHAR(30), 
+      mobile VARCHAR(30), 
+      address VARCHAR(50),
+      postCode VARCHAR(30),  
+      city VARCHAR(30), 
+      country VARCHAR(30), 
+      industry VARCHAR(30),
+      employees VARCHAR(20), 
+      description VARCHAR(200), 
+      website VARCHAR(60), 
+      archived TINYINT,
+      created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) 
+      ENGINE=InnoDB AUTO_INCREMENT=1000`;
+
+const create_table_auth = `CREATE TABLE auth (
+    _id SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    lastLogin TIMESTAMP,
+    failedAttempts INT DEFAULT 0)`;
+
+const createTableQuery = create_table_auth;
 const dropTableQuery = "DROP TABLE leads";
 
 export const createTable = async () => {

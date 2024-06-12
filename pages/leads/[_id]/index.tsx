@@ -1,16 +1,8 @@
 "use client";
 import React, { FC, ReactElement } from "react";
 import Box from "@mui/material/Box";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
 import { useRouter, usePathname, useParams } from "next/navigation";
 import { Button, Card, Divider, TextField, Typography } from "@mui/material";
-import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
@@ -22,112 +14,106 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 import Link from "next/link";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
+import { useGetLeadById } from "@/lib/client/api/leads/queries";
+import PageLayout from "@/components/page-layout/PageLayout";
 
 interface LeadPageProps {}
-
-const getData = async (_id: string): Promise<LeadType> => {
-  const response = await fetch(`/api/leads/${_id}`);
-  const data = await response.json();
-  return data.data;
-};
 
 const LeadPage: FC<LeadPageProps> = (): ReactElement => {
   const { t } = useTranslation();
 
   const params = useParams() as { _id: string };
-  const { data } = useQuery({
-    queryKey: [params?._id, params?._id],
-    queryFn: () => getData(params?._id),
-  });
+  const { data, isLoading } = useGetLeadById(params?._id);
 
-  if (!data) {
+  if (isLoading) {
     return <>Loading...</>;
   }
 
   const name = data?.firstName + " " + data?.lastName;
 
   return (
-    <PageContentWrapper
-      title={name}
-      lastBreadcrumb={data?.firstName}
-      actions={
-        <Link href={`/leads/edit/${params?._id}`}>
-          <Button variant="contained" color="primary">
-            {t("edit")}
-          </Button>
-        </Link>
-      }
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          rowGap: "8px",
-          width: "fit-content",
-        }}
+    <PageLayout>
+      <PageContentWrapper
+        title={name}
+        lastBreadcrumb={data?.firstName}
+        actions={
+          <Link href={`/leads/edit/${params?._id}`}>
+            <Button variant="contained" color="primary">
+              {t("edit")}
+            </Button>
+          </Link>
+        }
       >
-        <Typography variant="body2">
-          {getDisplayDateTime(data?.created)}
-        </Typography>
-        <Typography variant="h5">{data?.role}</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            rowGap: "8px",
+            width: "fit-content",
+          }}
+        >
+          <Typography variant="body2">
+            {getDisplayDateTime(data?.created)}
+          </Typography>
+          <Typography variant="h5">{data?.role}</Typography>
 
-        <Box sx={{ display: "flex", alignItems: "center", mt: "8px" }}>
-          <AlternateEmailIcon sx={{ mr: "10px" }} />
-          <Typography> {data?.email}</Typography>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <SmartphoneIcon sx={{ mr: "10px" }} />
-          <Typography> {data?.mobile}</Typography>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <PhoneEnabledIcon sx={{ mr: "10px" }} />
-          <Typography> {data?.phone}</Typography>
-        </Box>
-      </Box>
-      <Card
-        sx={{
-          display: "inline-flex",
-          flexDirection: "column",
-          rowGap: "8px",
-          mt: "44px",
-          p: "32px",
-          borderRadius: "8px",
-          width: "fit-content",
-          minWidth: "300px",
-        }}
-      >
-        <Typography variant="h4">{data?.company}</Typography>
-        <Typography variant="h5">{data?.industry}</Typography>
-        <Box sx={{ display: "flex", alignItems: "center", mt: "20px" }}>
-          <LocationOnIcon sx={{ mr: "10px" }} />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              rowGap: "6px",
-            }}
-          >
-            <Typography>{data?.address}</Typography>
-            <Typography>
-              {data?.postCode}, {data?.city} - {data?.country}
-            </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", mt: "8px" }}>
+            <AlternateEmailIcon sx={{ mr: "10px" }} />
+            <Typography> {data?.email}</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <SmartphoneIcon sx={{ mr: "10px" }} />
+            <Typography> {data?.mobile}</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <PhoneEnabledIcon sx={{ mr: "10px" }} />
+            <Typography> {data?.phone}</Typography>
           </Box>
         </Box>
+        <Card
+          sx={{
+            display: "inline-flex",
+            flexDirection: "column",
+            rowGap: "8px",
+            mt: "44px",
+            p: "32px",
+            borderRadius: "8px",
+            width: "fit-content",
+            minWidth: "300px",
+          }}
+        >
+          <Typography variant="h4">{data?.company}</Typography>
+          <Typography variant="h5">{data?.industry}</Typography>
+          <Box sx={{ display: "flex", alignItems: "center", mt: "20px" }}>
+            <LocationOnIcon sx={{ mr: "10px" }} />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                rowGap: "6px",
+              }}
+            >
+              <Typography>{data?.address}</Typography>
+              <Typography>
+                {data?.postCode}, {data?.city} - {data?.country}
+              </Typography>
+            </Box>
+          </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center", mb: "20px" }}>
-          <GroupIcon sx={{ mr: "10px" }} />
-          <Typography> {data?.employees}</Typography>
-        </Box>
-        {data?.website && (
-          <a href={data?.website} target="_blak">
-            <Button variant="outlined" color="info">
-              {t("website")}
-            </Button>
-          </a>
-        )}
-      </Card>
+          <Box sx={{ display: "flex", alignItems: "center", mb: "20px" }}>
+            <GroupIcon sx={{ mr: "10px" }} />
+            <Typography> {data?.employees}</Typography>
+          </Box>
+          {data?.website && (
+            <a href={data?.website} target="_blak">
+              <Button variant="outlined" color="info">
+                {t("website")}
+              </Button>
+            </a>
+          )}
+        </Card>
 
-      {/* <Card
+        {/* <Card
         sx={{
           display: "inline-flex",
           flexDirection: "column",
@@ -153,7 +139,7 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
       >
         <Typography variant="h5">{t("email")}</Typography>
       </Card> */}
-      {/* <Card
+        {/* <Card
         sx={{
           display: "inline-flex",
           flexDirection: "column",
@@ -169,12 +155,12 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
         </Button>
       </Card> */}
 
-      {/* {Object.entries(data).map(([key, value]) => (
+        {/* {Object.entries(data).map(([key, value]) => (
         <Typography>
           {t(key)}: {value}
         </Typography>
       ))} */}
-      {/* <Divider sx={{ width: "100%", mt: "50px" }} />
+        {/* <Divider sx={{ width: "100%", mt: "50px" }} />
       <Card sx={{ width: "900px" }}>
         <TextField
           fullWidth
@@ -184,7 +170,8 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
           sx={{ maxWidth: "800px", mt: "50px" }}
         />
       </Card> */}
-    </PageContentWrapper>
+      </PageContentWrapper>
+    </PageLayout>
   );
 };
 

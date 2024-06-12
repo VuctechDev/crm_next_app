@@ -17,7 +17,10 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import DrawerItem from "./DrawerItem";
-
+import { useGetUser } from "@/lib/client/api/user/queries";
+import AuthGuardInner from "../providers/guards/AuthGuardInner";
+import Button from "@mui/material/Button";
+import { useRouter } from "next/router";
 
 export interface DrawerItemType {
   label: string;
@@ -109,59 +112,73 @@ const closedMixin = (theme: Theme): CSSObject => ({
 });
 
 const PageLayout: FC<PageLayoutProps> = ({ children }): ReactElement => {
+  const { data: user, isLoading } = useGetUser({ enabled: true });
   const [open, setOpen] = React.useState(true);
+  const { push, locale, asPath } = useRouter();
 
   const handleDrawer = () => setOpen((prev) => !prev);
   return (
-    <Box width={1} sx={{ display: "flex" }}>
-      <Drawer
-        variant="permanent"
-        open={open}
-        sx={(t) => ({
-          width: drawerWidth,
-          flexShrink: 0,
-          whiteSpace: "nowrap",
-          boxSizing: "border-box",
-          ...(open && {
-            ...openedMixin(t),
-            "& .MuiDrawer-paper": openedMixin(t),
-          }),
-          ...(!open && {
-            ...closedMixin(t),
-            "& .MuiDrawer-paper": closedMixin(t),
-          }),
-        })}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: !open ? "center" : "flex-end",
-            py: "8px",
-          }}
+    <AuthGuardInner>
+      <Box width={1} sx={{ display: "flex" }}>
+        <Drawer
+          variant="permanent"
+          open={open}
+          sx={(t) => ({
+            width: drawerWidth,
+            flexShrink: 0,
+            whiteSpace: "nowrap",
+            boxSizing: "border-box",
+            ...(open && {
+              ...openedMixin(t),
+              "& .MuiDrawer-paper": openedMixin(t),
+            }),
+            ...(!open && {
+              ...closedMixin(t),
+              "& .MuiDrawer-paper": closedMixin(t),
+            }),
+          })}
         >
-          <IconButton onClick={handleDrawer}>
-            {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </Box>
-        <Divider />
-        <List>
-          {drawerItems.map((item) => (
-            <React.Fragment key={item.label}>
-              <DrawerItem open={open} data={item} />
-              {item?.nestedLinks.map((nestedItem) => (
-                <DrawerItem
-                  key={nestedItem.label}
-                  open={open}
-                  data={nestedItem}
-                  nested
-                />
-              ))}
-            </React.Fragment>
-          ))}
-        </List>
-      </Drawer>
-      <>{children}</>
-    </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: !open ? "center" : "flex-end",
+              py: "8px",
+            }}
+          >
+            <IconButton onClick={handleDrawer}>
+              {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </Box>
+          <Divider />
+          <List>
+            {drawerItems.map((item) => (
+              <React.Fragment key={item.label}>
+                <DrawerItem open={open} data={item} />
+                {item?.nestedLinks.map((nestedItem) => (
+                  <DrawerItem
+                    key={nestedItem.label}
+                    open={open}
+                    data={nestedItem}
+                    nested
+                  />
+                ))}
+              </React.Fragment>
+            ))}
+          </List>
+          {user?.username}
+          <Button
+            onClick={() => {
+              localStorage.removeItem("accessToken");
+              localStorage.removeItem("refreshToken");
+              push("/login", "/login", { locale });
+            }}
+          >
+            logout
+          </Button>
+        </Drawer>
+        <>{children}</>
+      </Box>
+    </AuthGuardInner>
   );
 };
 

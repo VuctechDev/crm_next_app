@@ -8,6 +8,7 @@ import Link from "next/link";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import PageLayout from "@/components/page-layout/PageLayout";
 
 interface AddLeadsProps {}
 
@@ -32,43 +33,45 @@ const options = [
 const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
   const { t } = useTranslation();
   return (
-    <PageContentWrapper title="addNewLeads">
-      <Box
-        width={1}
-        sx={{
-          display: "flex",
-          minHeight: "800px",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {options.map((item) => (
-          <Link href={item.href} key={item.label}>
-            <Card
-              elevation={3}
-              sx={{
-                mx: "30px",
-                width: "260px",
-                height: "180px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                cursor: "pointer",
-                transition: "transform 0.4s",
-                borderRadius: "20px",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                },
-              }}
-            >
-              <Typography variant="h6">{t(item.label)}</Typography>
-              <Box sx={{ mt: "16px" }}>{item.icon}</Box>
-            </Card>
-          </Link>
-        ))}
-      </Box>
-    </PageContentWrapper>
+    <PageLayout>
+      <PageContentWrapper title="addNewLeads">
+        <Box
+          width={1}
+          sx={{
+            display: "flex",
+            minHeight: "800px",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {options.map((item) => (
+            <Link href={item.href} key={item.label}>
+              <Card
+                elevation={3}
+                sx={{
+                  mx: "30px",
+                  width: "260px",
+                  height: "180px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  cursor: "pointer",
+                  transition: "transform 0.4s",
+                  borderRadius: "20px",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                  },
+                }}
+              >
+                <Typography variant="h6">{t(item.label)}</Typography>
+                <Box sx={{ mt: "16px" }}>{item.icon}</Box>
+              </Card>
+            </Link>
+          ))}
+        </Box>
+      </PageContentWrapper>
+    </PageLayout>
   );
 };
 

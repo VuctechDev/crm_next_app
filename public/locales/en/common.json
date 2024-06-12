@@ -31,9 +31,14 @@
   "csvUploadDescription": "All fields are not required, but file will not be processed if different keys are provided",
   "csvKeysMismatchException": "Not valid CSV keys are provided, please download the provided template.",
   "missingFilesException": "No files were upload",
+  "invalidCredentialsException": "Invalid credentials",
   "cardFilesUploadSuccess": "Files are successfully uploaded, it may take up to 10 seconds per file to be processed",
   "csvFilesUploadSuccess": "File is successfully uploaded, it may take few seconds for file to be processed",
   "csv": "CSV",
   "card": "Card",
-  "cards": "Cards"
+  "cards": "Cards",
+  "sigin": "Sign In",
+  "passwrod": "Password",
+  "noAccountYet": "Don't have an account?", 
+  "register": "Register"
 }

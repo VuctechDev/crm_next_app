@@ -110,4 +110,3 @@ export const getLead = async (_id: string): Promise<any> => {
   }
 };
 
-// LIMIT ${limit} OFFSET ${page * limit}`)

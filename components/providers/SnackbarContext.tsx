@@ -81,7 +81,7 @@ export const SnackbarProvider = ({ children }: ProviderProps) => {
         onClose={closeSnackbar}
       >
         <Alert
-          sx={{ color: "#fff" }}
+          sx={{ color: "#fff", display: "flex", alignItems: "center" }}
           icon={snackbar.icon}
           variant="filled"
           onClose={closeSnackbar}
@@ -89,8 +89,8 @@ export const SnackbarProvider = ({ children }: ProviderProps) => {
         >
           <Typography
             sx={(t) => ({
-              color: "#fff",
-              fontSize: "18px",
+              // color: "#fff",
+              fontSize: "16px",
             })}
           >
             {t(snackbar.message as string)}

@@ -3,14 +3,17 @@ import Box from "@mui/material/Box";
 import FilePicker from "@/components/file-picker/FIlePicker";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import PageLayout from "@/components/page-layout/PageLayout";
 
 interface CardUploadProps {}
 
 const CardUpload: FC<CardUploadProps> = (): ReactElement => {
   return (
-    <PageContentWrapper title="uploadBusinessCards" center>
-      <FilePicker type="img" />
-    </PageContentWrapper>
+    <PageLayout>
+      <PageContentWrapper title="uploadBusinessCards" center>
+        <FilePicker type="img" />
+      </PageContentWrapper>
+    </PageLayout>
   );
 };
 

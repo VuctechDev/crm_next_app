@@ -40,12 +40,21 @@ const theme = createTheme({
           textTransform: "capitalize",
         },
         root: {
-          // fontSize: "0.75rem",
-          // color: "#fff",
-          // zIndex: 50000,
           borderRadius: "10px",
           textTransform: "capitalize",
-          fontSize: "14px",
+          fontSize: "16px",
+        },
+      },
+    },
+    MuiCard: {
+      defaultProps: {
+        elevation: 1
+      },
+      styleOverrides: {
+        root: {
+          borderRadius: "10px",
+          textTransform: "capitalize",
+          fontSize: "16px",
         },
       },
     },

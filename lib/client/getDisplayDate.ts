@@ -17,7 +17,7 @@ const getFromUTC = (time: string): string => {
     const minutes = formatNumber(d.getMinutes());
     const seconds = formatNumber(d.getSeconds());
   
-    return `${date}.${month}.${year}, ${hours}:${minutes}:${seconds}`;
+    return `${date}.${month}.${year}, ${hours}:${minutes}`;
   };
   
   export const getDisplayTime = (time?: string) => {
