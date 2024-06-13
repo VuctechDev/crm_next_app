@@ -1,10 +1,5 @@
 import mySql from "mysql";
 
-const db_user = "pikadone";
-const db_pass = "n4w55S9;rkXD*U";
-const db_host = "sv95.ifastnet.com";
-const db_db = "pikadone_monitoring_smoke";
-
 const pool = mySql.createPool({
   connectionLimit: 1000,
   user: process.env.DB_USER,
@@ -14,7 +9,10 @@ const pool = mySql.createPool({
   port: 3306,
 });
 
-export const query = (query: string, values?: (string | number)[][]) => {
+export const query = <T>(
+  query: string,
+  values?: (string | number)[][]
+): Promise<T> => {
   console.log("QUERY: ", query);
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
@@ -80,11 +78,17 @@ const create_table_auth = `CREATE TABLE auth (
     _id SERIAL PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
+    verified TINYINT DEFAULT 0,
     lastLogin TIMESTAMP,
     failedAttempts INT DEFAULT 0)`;
 
-const createTableQuery = create_table_auth;
-const dropTableQuery = "DROP TABLE leads";
+const create_table_verification_sessions = `CREATE TABLE verification_sessions (
+      _id INT PRIMARY KEY,
+      code VARCHAR(20) NOT NULL,
+      created TIMESTAMP)`;
+
+const createTableQuery = create_table_verification_sessions;
+const dropTableQuery = "DROP TABLE auth";
 
 export const createTable = async () => {
   try {

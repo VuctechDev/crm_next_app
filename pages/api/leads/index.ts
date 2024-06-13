@@ -13,10 +13,6 @@ router.get(async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json(data);
 });
 
-export const config = {
-  api: {},
-};
-
 export default router.handler({
   onError(error: any, req, res) {
     res.status(501).json({ error: `Something went wrong! ${error.message}` });

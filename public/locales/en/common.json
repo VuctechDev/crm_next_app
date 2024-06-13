@@ -32,13 +32,18 @@
   "csvKeysMismatchException": "Not valid CSV keys are provided, please download the provided template.",
   "missingFilesException": "No files were upload",
   "invalidCredentialsException": "Invalid credentials",
+  "notVerifiedException": "You haven't verified your account, the verification email has been sent to your inbox",
   "cardFilesUploadSuccess": "Files are successfully uploaded, it may take up to 10 seconds per file to be processed",
   "csvFilesUploadSuccess": "File is successfully uploaded, it may take few seconds for file to be processed",
   "csv": "CSV",
   "card": "Card",
   "cards": "Cards",
-  "sigin": "Sign In",
-  "passwrod": "Password",
-  "noAccountYet": "Don't have an account?", 
-  "register": "Register"
+  "signin": "Sign In",
+  "password": "Password",
+  "noAccountYet": "Don't have an account?",
+  "alreadyHaveAccount": "Already have the account?",
+  "register": "Register",
+  "registrationVerificationSent": "The verification email was sent to ",
+  "pleaseCheckVerificatinInbox": "Please check your inbox to verify your account.",
+  "accountVerification": "Account verification"
 }

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "create-table": "node ./lib/scripts/createSQLTable.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.588.0",
@@ -30,7 +31,9 @@
     "next-connect": "^1.0.0",
     "next-i18next": "^15.3.0",
     "node-fetch": "^3.3.2",
+    "nodemailer": "^6.9.13",
     "openai": "^4.47.1",
+    "query-string": "^9.0.0",
     "queue": "^7.0.0",
     "react": "^18",
     "react-dom": "^18",
@@ -39,12 +42,14 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/jwt-decode": "^3.1.0",
     "@types/multer": "^1.4.11",
     "@types/multer-s3": "^3.0.3",
     "@types/mysql": "^2.15.26",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.15",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",

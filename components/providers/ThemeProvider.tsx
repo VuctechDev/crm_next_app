@@ -53,7 +53,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: "10px",
-          textTransform: "capitalize",
+          // textTransform: "capitalize",
           fontSize: "16px",
         },
       },

@@ -10,15 +10,11 @@ import { SnackbarProvider } from "@/components/providers/SnackbarContext";
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryProvider>
-      {/* <AuthGuard> */}
       <ThemeProvider>
         <SnackbarProvider>
-          {/* <PageLayout> */}
           <Component {...pageProps} />
-          {/* </PageLayout> */}
         </SnackbarProvider>
       </ThemeProvider>
-      {/* </AuthGuard> */}
     </QueryProvider>
   );
 };

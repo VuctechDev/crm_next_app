@@ -52,7 +52,25 @@ export const useLogin = () => {
   });
 };
 
-export const register = async (query: string): Promise<any> => {
-  const response = await apiClient.get(`${path}?${query}`);
-  return response.data;
+export const register = async (data: {
+  email: string;
+  password: string;
+}): Promise<any> => {
+  try {
+    const response = await axios.post(`/api${path}/register`, data);
+    return response.data;
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.response?.data?.message);
+  }
+};
+
+export const useRegister = () => {
+  const { openSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: register,
+    onError: (error) => openSnackbar(error.message, "error"),
+    // throwOnError: false,
+  });
 };

@@ -6,18 +6,19 @@ import { useRouter } from "next/router";
 import { Card, TextField, Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useSnackbar } from "@/components/providers/SnackbarContext";
 import Link from "next/link";
+import { getSearchQuery } from "@/lib/client/getSearchQuery";
 
 interface LoginProps {}
 
 const Login: FC<LoginProps> = (): ReactElement => {
   const { mutateAsync, isSuccess } = useLogin();
-  const { openSnackbar } = useSnackbar();
+
+  const email = getSearchQuery("email");
 
   const [values, setValues] = useState({
-    email: "stefan@mail.io",
-    password: "Aa123123@",
+    email: email ?? "stefan@mail.io",
+    password: email ? "" : "Aa123123@",
   });
 
   const { t } = useTranslation();
@@ -57,7 +58,7 @@ const Login: FC<LoginProps> = (): ReactElement => {
           flexDirection: "column",
           rowGap: "24px",
           maxWidth: "360px",
-          p: "34px 24px",
+          p: "24px 24px 36px",
         }}
       >
         <Typography variant="h6">{t("sigin")}</Typography>
@@ -87,9 +88,7 @@ const Login: FC<LoginProps> = (): ReactElement => {
           // minHeight: "98vh",
         }}
       >
-        <Typography sx={{ mr: "8px" }} >
-          {t("noAccountYet")}
-        </Typography>
+        <Typography sx={{ mr: "8px" }}>{t("noAccountYet")}</Typography>
         <Link href="/register">
           <Typography color="info.main">{t("register")}</Typography>
         </Link>
