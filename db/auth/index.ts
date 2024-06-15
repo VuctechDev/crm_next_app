@@ -56,3 +56,19 @@ export const verifyAuth = async (_id: string): Promise<AuthType | null> => {
     throw error;
   }
 };
+
+export const updateLastLogin = async (
+  _id: number
+): Promise<AuthType | null> => {
+  try {
+    const data = await query<AuthType[]>(
+      `UPDATE ${tableName} 
+      SET lastLogin = CURRENT_TIMESTAMP
+      WHERE _id = ?`,
+      [[_id]]
+    );
+    return data.length ? data[0] : null;
+  } catch (error) {
+    throw error;
+  }
+};

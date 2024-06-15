@@ -12,6 +12,7 @@ import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useGetLeads } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
+import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 
 interface LeadsPageProps {
   params: { locale: string };
@@ -25,6 +26,7 @@ const headers = [
   { key: "industry" },
   { key: "country" },
   { key: "website" },
+  // { key: "created" },
 ];
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
@@ -87,7 +89,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
         title="leads"
         actions={
           <Link href="/leads/add">
-            <Button variant="contained" color="primary">
+            <Button variant="outlined" color="primary">
               {t("add")}
             </Button>
           </Link>

@@ -40,6 +40,7 @@ const theme = createTheme({
           textTransform: "capitalize",
         },
         root: {
+          minHeight: "40px",
           borderRadius: "10px",
           textTransform: "capitalize",
           fontSize: "16px",
@@ -48,13 +49,39 @@ const theme = createTheme({
     },
     MuiCard: {
       defaultProps: {
-        elevation: 1
+        elevation: 1,
       },
       styleOverrides: {
         root: {
           borderRadius: "10px",
           // textTransform: "capitalize",
           fontSize: "16px",
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        inputRoot: {
+          fontSize: "14px",
+          paddingTop: "6.5px",
+          paddingBottom: "6.5px",
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          fontSize: "14px",
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: "8px",
+        },
+        input: {
+          padding: "14px",
         },
       },
     },
@@ -83,7 +110,7 @@ const theme = createTheme({
     },
     body2: {
       color: "#787b80",
-      fontSize: "0.7rem",
+      fontSize: "0.75rem",
     },
   },
 });

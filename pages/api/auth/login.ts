@@ -1,4 +1,4 @@
-import { getAuth } from "@/db/auth";
+import { getAuth, updateLastLogin } from "@/db/auth";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -17,8 +17,6 @@ router.post(async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const user = await getAuth(email);
-
-  console.log(user);
   if (!user) {
     return res.status(400).json({ message: "invalidCredentialsException" });
   } else if (!user.verified) {
@@ -29,6 +27,8 @@ router.post(async (req: NextApiRequest, res: NextApiResponse) => {
   if (!passwordMatch) {
     return res.status(400).json({ message: "invalidCredentialsException" });
   }
+
+  await updateLastLogin(user?._id)
 
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);

@@ -8,7 +8,7 @@ const systemPrompt = `
 Extract business information from a provided business card and format it into a JSON object. 
 Correct any potential errors and fill in missing information from external sources if the data appears incomplete.
 
-Required JSON Structure:
+required JSON Structure:
 
 {
   "firstName": "",

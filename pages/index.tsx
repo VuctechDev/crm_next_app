@@ -15,7 +15,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <PageLayout>
-        <div>HOME</div>
+        home
+        {/* <CountrySelect /> */}
+        {/* <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {a.map((item) => (
+            <div style={{ margin: "8px" }}>
+              <img
+                alt="imga"
+                src={`https://flagsapi.com/${item.iso}/shiny/32.png`}
+              />{" "}
+            </div>
+          ))}
+        </div> */}
       </PageLayout>
     </>
   );

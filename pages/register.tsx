@@ -1,98 +1,83 @@
-import React, { FC, ReactElement, useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import React, { FC, ReactElement } from "react";
 import { useRegister } from "@/lib/client/api/auth/actions";
 import { useRouter } from "next/router";
-import { Card, TextField, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+import FormFields from "@/components/forms/register/FormFields";
+import SubmitButton from "@/components/forms/fields/SubmitButton";
+import PublicPageWrapper from "@/components/page-layout/PublicPageWrapper";
 
-interface RegisterProps {}
+export const initialValues = {
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
-const Register: FC<RegisterProps> = (): ReactElement => {
-  const { mutateAsync, isSuccess } = useRegister();
+export type InitialValues = typeof initialValues;
 
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-  });
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("invalidEmail")
+    .required("requiredField")
+    .max(200, "max200char"),
+  password: Yup.string()
+    .required("requiredField")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])(?=.{8,})/,
+      ""
+    ),
+  confirmPassword: Yup.string()
+    .required("requiredField")
+    .oneOf([Yup.ref(`password`)], "passwordMustMatch"),
+});
 
+const Register: FC = (): ReactElement => {
   const { t } = useTranslation();
   const { push, locale } = useRouter();
+  const { mutateAsync } = useRegister();
 
-  if (isSuccess) {
-    push(
-      `/register-confirmation?email=${encodeURIComponent(values.email)}`,
-      `/register-confirmation?email=${encodeURIComponent(values.email)}`,
-      { locale }
-    );
-  }
-
-  const handleInput = (name: string, value: string) => {
-    setValues((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSignin = async () => {
+  const handleSubmit = async (values: InitialValues) => {
     try {
       await mutateAsync(values);
-    } catch (error) {
-      setValues({ email: "", password: "" });
+      push(
+        `/register-confirmation?email=${encodeURIComponent(values.email)}`,
+        `/register-confirmation?email=${encodeURIComponent(values.email)}`,
+        { locale }
+      );
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
-    <Box
-      width={1}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "98vh",
-      }}
+    <PublicPageWrapper
+      title="register"
+      callToAction={
+        <>
+          <Typography sx={{ mr: "8px" }}>{t("alreadyHaveAccount")}</Typography>
+          <Link href="/login">
+            <Typography color="info.main">{t("signin")}</Typography>
+          </Link>
+        </>
+      }
     >
-      <Card
-        sx={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          rowGap: "24px",
-          maxWidth: "360px",
-          p: "24px 24px 36px",
-        }}
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
       >
-        <Typography variant="h6">{t("register")}</Typography>
-        <TextField
-          label={t("email")}
-          type="email"
-          value={values.email}
-          onChange={(e) => handleInput("email", e.target.value)}
-        />
-        <TextField
-          label={t("password")}
-          type="password"
-          value={values.password}
-          onChange={(e) => handleInput("password", e.target.value)}
-        />
-        <Button variant="contained" onClick={handleSignin}>
-          {t("register")}
-        </Button>
-      </Card>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: "20px",
-        }}
-      >
-        <Typography sx={{ mr: "8px" }}>{t("alreadyHaveAccount")}</Typography>
-        <Link href="/login">
-          <Typography color="info.main">{t("signin")}</Typography>
-        </Link>
-      </Box>
-    </Box>
+        {({ isSubmitting }) => (
+          <Form>
+            <FormFields />
+            <SubmitButton loading={isSubmitting} label={t("signin")} />
+          </Form>
+        )}
+      </Formik>
+    </PublicPageWrapper>
   );
 };
 

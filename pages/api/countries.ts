@@ -1,34 +1,31 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { authGuard } from "./auth/authMid";
-import { createNewUser, getUser } from "@/db/users";
-import { countries } from "@/components/forms/fields/CountrySelect";
+import { getAuth } from "@/db/auth";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
 router
   .use(authGuard)
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { userId } = req.headers as { userId: string };
-    let user = await getUser(userId);
-    if (!user) {
-      return res.status(401).json({ message: "notAuthorizedException" });
-    }
-    if (user.country) {
-      const country = countries.find((x) => x["iso3"] === user?.country);
-      if (country) {
-        return res.status(200).json({ ...user, country });
-      }
-    }
-    return res.status(200).json(user);
+    // const { username } = req.headers as { username: string };
+    // const user = await getAuth(username);
+    // if (!user) {
+    //   return res.status(401).json({ message: "notAuthorizedException" });
+    // }
+    res.status(200).json({});
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
     const { userId, username } = req.headers as {
       userId: string;
       username: string;
     };
+    console.log(req.body, userId, username);
 
-    await createNewUser(req.body, userId);
+    // const user = await getAuth(username);
+    // if (!user) {
+    //   return res.status(401).json({ message: "notAuthorizedException" });
+    // }
     res.status(200).json({});
   });
 

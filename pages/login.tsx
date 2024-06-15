@@ -1,99 +1,70 @@
-import React, { FC, ReactElement, useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import React, { FC, ReactElement } from "react";
 import { useLogin } from "@/lib/client/api/auth/actions";
-import { useRouter } from "next/router";
-import { Card, TextField, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import { getSearchQuery } from "@/lib/client/getSearchQuery";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+import FormFields from "@/components/forms/login/FormFields";
+import SubmitButton from "@/components/forms/fields/SubmitButton";
+import PublicPageWrapper from "@/components/page-layout/PublicPageWrapper";
 
-interface LoginProps {}
+export const initialValues = {
+  email: "stefan8vucic@gmail.com",
+  password: "Aa123123@",
+};
 
-const Login: FC<LoginProps> = (): ReactElement => {
-  const { mutateAsync, isSuccess } = useLogin();
+export type InitialValues = typeof initialValues;
 
-  const email = getSearchQuery("email");
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("invalidEmail")
+    .required("requiredField")
+    .max(200, "max200char"),
+  password: Yup.string().required("requiredField"),
+});
 
-  const [values, setValues] = useState({
-    email: email ?? "stefan@mail.io",
-    password: email ? "" : "Aa123123@",
-  });
-
+const Login: FC = (): ReactElement => {
   const { t } = useTranslation();
-  const { push, locale } = useRouter();
+  const { mutateAsync } = useLogin();
 
-  if (isSuccess) {
-    push("/", "/", { locale });
-  }
+  const email = getSearchQuery("email") || "stefan8vucic@gmail.com";
 
-  const handleInput = (name: string, value: string) => {
-    setValues((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSignin = async () => {
+  const handleSubmit = async (values: InitialValues) => {
     try {
       await mutateAsync(values);
-    } catch (error) {
-      setValues({ email: "", password: "" });
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
-    <Box
-      width={1}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "98vh",
-      }}
+    <PublicPageWrapper
+      title="signin"
+      callToAction={
+        <>
+          <Typography sx={{ mr: "8px" }}>{t("noAccountYet")}</Typography>
+          <Link href="/register">
+            <Typography color="info.main">{t("register")}</Typography>
+          </Link>
+        </>
+      }
     >
-      <Card
-        sx={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          rowGap: "24px",
-          maxWidth: "360px",
-          p: "24px 24px 36px",
-        }}
+      <Formik
+        initialValues={{ ...initialValues, email }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
       >
-        <Typography variant="h6">{t("sigin")}</Typography>
-        <TextField
-          label={t("email")}
-          type="email"
-          value={values.email}
-          onChange={(e) => handleInput("email", e.target.value)}
-        />
-        <TextField
-          label={t("password")}
-          type="password"
-          value={values.password}
-          onChange={(e) => handleInput("password", e.target.value)}
-        />
-        <Button variant="contained" onClick={handleSignin}>
-          {t("sigin")}
-        </Button>
-      </Card>
-      <Box
-        sx={{
-          display: "flex",
-          // flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: "20px",
-          // minHeight: "98vh",
-        }}
-      >
-        <Typography sx={{ mr: "8px" }}>{t("noAccountYet")}</Typography>
-        <Link href="/register">
-          <Typography color="info.main">{t("register")}</Typography>
-        </Link>
-      </Box>
-    </Box>
+        {({ isSubmitting }) => (
+          <Form>
+            <FormFields />
+            <SubmitButton loading={isSubmitting} label={t("signin")} />
+          </Form>
+        )}
+      </Formik>
+    </PublicPageWrapper>
   );
 };
 

@@ -18,9 +18,11 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import DrawerItem from "./DrawerItem";
 import { useGetUser } from "@/lib/client/api/user/queries";
-import AuthGuardInner from "../providers/guards/AuthGuardInner";
 import Button from "@mui/material/Button";
-import { useRouter } from "next/router";
+import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
+import { Typography } from "@mui/material";
+import { useTranslation } from "next-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 
 export interface DrawerItemType {
   label: string;
@@ -28,15 +30,9 @@ export interface DrawerItemType {
   href: string;
 }
 
-interface NestedLinks {
-  label: string;
-  icon: React.ReactNode;
-  href: string;
-}
-[];
-
 interface PageLayoutProps {
   children: React.ReactNode;
+  hideLayout?: boolean;
 }
 
 const drawerItems = [
@@ -111,15 +107,29 @@ const closedMixin = (theme: Theme): CSSObject => ({
   },
 });
 
-const PageLayout: FC<PageLayoutProps> = ({ children }): ReactElement => {
-  const { data: user, isLoading } = useGetUser({ enabled: true });
+const PageLayout: FC<PageLayoutProps> = ({
+  children,
+  hideLayout,
+}): ReactElement => {
+  const { t } = useTranslation();
+  const { data: user } = useGetUser();
   const [open, setOpen] = React.useState(true);
-  const { push, locale, asPath } = useRouter();
+  const queryClient = useQueryClient();
+
+  const handleLogout = async () => {
+    try {
+      queryClient.resetQueries({ queryKey: ["user"] });
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleDrawer = () => setOpen((prev) => !prev);
   return (
-    <AuthGuardInner>
-      <Box width={1} sx={{ display: "flex" }}>
+    <Box width={1} sx={{ display: "flex" }}>
+      {!hideLayout && (
         <Drawer
           variant="permanent"
           open={open}
@@ -128,6 +138,7 @@ const PageLayout: FC<PageLayoutProps> = ({ children }): ReactElement => {
             flexShrink: 0,
             whiteSpace: "nowrap",
             boxSizing: "border-box",
+            // display: "flex",
             ...(open && {
               ...openedMixin(t),
               "& .MuiDrawer-paper": openedMixin(t),
@@ -165,20 +176,47 @@ const PageLayout: FC<PageLayoutProps> = ({ children }): ReactElement => {
               </React.Fragment>
             ))}
           </List>
-          {user?.username}
-          <Button
-            onClick={() => {
-              localStorage.removeItem("accessToken");
-              localStorage.removeItem("refreshToken");
-              push("/login", "/login", { locale });
+          <Box
+            width={1}
+            sx={{
+              height: "100%",
+              flexGrow: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              pb: "20px",
+              rowGap: "16px",
             }}
           >
-            logout
-          </Button>
+            {/* <Card
+              sx={{
+                // height: "100%",
+                // flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                p: "28px",
+                rowGap: "16px",
+              }}
+            > */}
+            <Button
+              // size="small"
+              variant="outlined"
+              onClick={handleLogout}
+            >
+              {t("logout")}
+            </Button>
+            <Typography variant="body2">
+              {t("lastLogin")}: {getDisplayDateTime(user?.lastLogin)}
+            </Typography>
+            {/* </Card> */}
+          </Box>
         </Drawer>
-        <>{children}</>
-      </Box>
-    </AuthGuardInner>
+      )}
+      <>{children}</>
+    </Box>
   );
 };
 

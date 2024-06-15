@@ -1,0 +1,78 @@
+import { query } from "..";
+
+const tableName = "users";
+
+export interface UserType {
+  _id: number;
+  email: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+  birthday: string;
+  phone: string;
+  address: string;
+  city: string;
+  zip: string;
+  country: string;
+  avatar: string;
+  organization: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  lastLogin: string;
+}
+
+export const createNewUser = async (data: UserType, userId: string) => {
+  try {
+    const { insertId } = await query<{ insertId: number }>(
+      `INSERT INTO ${tableName} (
+          _id, 
+          email,
+          firstName,
+          lastName,
+          birthday,
+          phone,
+          address,
+          city,
+          zip,
+          country,
+          avatar
+        ) VALUES ?`,
+      [
+        [
+          userId,
+          data.email,
+          data.firstName,
+          data.lastName,
+          data.birthday,
+          data.phone,
+          data.address,
+          data.city,
+          data.zip,
+          data.country,
+          data.avatar,
+        ],
+      ]
+    );
+    console.log("NEW USER CREATED " + insertId);
+    return insertId;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUser = async (_id: string): Promise<UserType | null> => {
+  try {
+    const data = await query<UserType[]>(
+      `SELECT a.username, a.lastLogin, u.* 
+      FROM ${tableName} u
+      RIGHT JOIN auth a 
+      ON a._id = u._id
+      WHERE a._id = ?`,
+      [[_id]]
+    );
+    return data.length ? data[0] : null;
+  } catch (error) {
+    throw error;
+  }
+};

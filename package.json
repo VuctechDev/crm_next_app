@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "create-table": "node ./lib/scripts/createSQLTable.js"
+    "ct": "node ./db/scripts/createTable.js",
+    "dt": "node ./db/scripts/deleteTable.js",
+    "mig": "node ./db/scripts/migrations.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.588.0",
@@ -17,11 +19,14 @@
     "@mui/material": "^5.15.18",
     "@mui/material-nextjs": "^5.15.11",
     "@tanstack/react-query": "^5.40.0",
+    "@tanstack/react-query-devtools": "^5.45.0",
     "aws-sdk": "^2.1632.0",
     "axios": "^1.7.2",
     "axios-retry": "^4.4.0",
     "bcrypt": "^5.1.1",
     "convert-csv-to-json": "^2.47.0",
+    "dotenv": "^16.4.5",
+    "formik": "^2.4.6",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "multer": "^1.4.5-lts.1",
@@ -33,13 +38,15 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.13",
     "openai": "^4.47.1",
+    "phone": "^3.1.45",
     "query-string": "^9.0.0",
     "queue": "^7.0.0",
     "react": "^18",
     "react-dom": "^18",
     "sharp": "^0.33.4",
     "tesseract.js": "^5.1.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

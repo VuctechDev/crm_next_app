@@ -4,17 +4,27 @@ const ACCESS_SECRET = process.env.ACCESS_SECRET as Secret;
 const REFRESH_SECRET = process.env.REFRESH_SECRET as Secret;
 
 export const generateAccessToken = (user: any) => {
-  const auth = JSON.parse(JSON.stringify(user))
-  return jwt.sign(auth, ACCESS_SECRET, {
-    expiresIn: "10s",
+  const auth = JSON.parse(JSON.stringify(user));
+  return jwt.sign({ _id: auth?._id, username: auth?.username }, ACCESS_SECRET, {
+    expiresIn: "30s",
   });
 };
 
 export const generateRefreshToken = (user: any) => {
-  const auth = JSON.parse(JSON.stringify(user))
-  return jwt.sign(auth, REFRESH_SECRET, {
-    expiresIn: "24h",
-  });
+  const auth = JSON.parse(JSON.stringify(user));
+  return jwt.sign(
+    { _id: auth?._id, username: auth?.username },
+    REFRESH_SECRET,
+    {
+      expiresIn: "24h",
+    }
+  );
+};
+// : { _id: number; username: string } 
+export const decodeAccessToken = (
+  token: string
+) => {
+  return jwt.verify(token, ACCESS_SECRET);
 };
 
 // export const validateAccessToken = (token: string) => {
@@ -46,11 +56,11 @@ export const validateRefreshToken = async (token: string) => {
     }
     return {
       accessToken: generateAccessToken({
-        id: user?.id,
+        _id: user?._id,
         username: user?.username,
       }),
       refreshToken: generateRefreshToken({
-        id: user?.id,
+        _id: user?._id,
         username: user?.username,
       }),
     };

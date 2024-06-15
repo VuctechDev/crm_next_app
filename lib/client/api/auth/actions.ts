@@ -48,7 +48,20 @@ export const useLogin = () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => openSnackbar(error.message, "error"),
-    // throwOnError: false,
+  });
+};
+
+export const useLogout = () => {
+  const { openSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => null,
+    onSuccess: () => {
+      queryClient.resetQueries({ queryKey: ["user"] });
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    },
+    onError: (error) => openSnackbar(error.message, "error"),
   });
 };
 
