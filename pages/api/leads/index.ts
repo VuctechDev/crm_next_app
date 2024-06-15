@@ -1,13 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import { createTable, dropTable } from "@/db";
 import { getLeads } from "@/db/leads";
+import { authGuard } from "../auth/authMid";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
-router.get(async (req: NextApiRequest, res: NextApiResponse) => {
-  // createTable();
-  // dropTable();
+router.use(authGuard).get(async (req: NextApiRequest, res: NextApiResponse) => {
   const filters = req.query as Record<string, string>;
   const data = await getLeads(filters);
   res.status(200).json(data);

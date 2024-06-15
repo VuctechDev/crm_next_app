@@ -1,5 +1,4 @@
-import axios, { AxiosError } from "axios";
-import { apiClient } from "..";
+import { apiClient, publicApiClient } from "..";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/components/providers/SnackbarContext";
@@ -29,7 +28,7 @@ export const login = async (data: {
   password: string;
 }): Promise<any> => {
   try {
-    const response = await axios.post(`/api${path}/login`, data);
+    const response = await publicApiClient.post(`${path}/login`, data);
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
     return response.data.user;
@@ -70,7 +69,7 @@ export const register = async (data: {
   password: string;
 }): Promise<any> => {
   try {
-    const response = await axios.post(`/api${path}/register`, data);
+    const response = await publicApiClient.post(`${path}/register`, data);
     return response.data;
   } catch (error: any) {
     console.log(error);

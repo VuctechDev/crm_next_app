@@ -1,36 +1,40 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser, createUser, updateUser } from "./actions";
+import {
+  getOrganization,
+  createOrganization,
+  updateOrganization,
+} from "./actions";
 import { useSnackbar } from "@/components/providers/SnackbarContext";
 
-export const useGetUser = () => {
+export const useGetOrganization = () => {
   return useQuery({
     queryKey: ["user"],
-    queryFn: getUser,
+    queryFn: getOrganization,
     refetchOnWindowFocus: false,
     retry: false,
   });
 };
 
-export const useCreateUser = () => {
+export const useCreateOrganization = () => {
   const { openSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createUser,
+    mutationFn: createOrganization,
     onSuccess: () => {
-      openSnackbar("personalDataSuccessUpdate");
+      openSnackbar("organizationDataSuccessUpdate");
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => openSnackbar(error.message, "error"),
   });
 };
 
-export const useUpdateUser = () => {
+export const useUpdateOrganization = () => {
   const { openSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: updateUser,
+    mutationFn: updateOrganization,
     onSuccess: () => {
-      openSnackbar("personalDataSuccessUpdate");
+      openSnackbar("organizationDataSuccessUpdate");
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => openSnackbar(error.message, "error"),

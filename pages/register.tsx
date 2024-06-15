@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import FormFields from "@/components/forms/register/FormFields";
 import SubmitButton from "@/components/forms/fields/SubmitButton";
 import PublicPageWrapper from "@/components/page-layout/PublicPageWrapper";
+import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 
 export const initialValues = {
   email: "",
@@ -44,8 +45,12 @@ const Register: FC = (): ReactElement => {
     try {
       await mutateAsync(values);
       push(
-        `/register-confirmation?email=${encodeURIComponent(values.email)}`,
-        `/register-confirmation?email=${encodeURIComponent(values.email)}`,
+        `${ROUTES.REGISTER_CONFIRMATION}?email=${encodeURIComponent(
+          values.email
+        )}`,
+        `${ROUTES.REGISTER_CONFIRMATION}?email=${encodeURIComponent(
+          values.email
+        )}`,
         { locale }
       );
     } catch (err) {
@@ -59,7 +64,7 @@ const Register: FC = (): ReactElement => {
       callToAction={
         <>
           <Typography sx={{ mr: "8px" }}>{t("alreadyHaveAccount")}</Typography>
-          <Link href="/login">
+          <Link href={ROUTES.LOGIN}>
             <Typography color="info.main">{t("signin")}</Typography>
           </Link>
         </>

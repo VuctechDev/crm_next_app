@@ -43,15 +43,17 @@ export const getAuth = async (username: string): Promise<AuthType | null> => {
   }
 };
 
-export const verifyAuth = async (_id: string): Promise<AuthType | null> => {
+export const verifyAuth = async (
+  _id: string
+): Promise<{ success: boolean }> => {
   try {
-    const data = await query<AuthType[]>(
+    await query(
       `UPDATE ${tableName} 
       SET verified = 1
       WHERE _id = ?`,
       [[_id]]
     );
-    return data.length ? data[0] : null;
+    return { success: true };
   } catch (error) {
     throw error;
   }

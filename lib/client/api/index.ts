@@ -1,26 +1,13 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 import { JwtPayload, jwtDecode } from "jwt-decode";
-import axiosRetry from "axios-retry";
 
 export const apiClient = axios.create({
   baseURL: "/api",
 });
 
-// axiosRetry(apiClient, {
-//   retries: 1, // Number of retries
-//   retryDelay: (retryCount) => retryCount * 1000,
-
-//   //   retryCondition(error) {
-//   //     // Conditional check the error status code
-//   //     switch (error?.response?.status) {
-//   //       case 401:
-//   //       case 429:
-//   //         return true;
-//   //       default:
-//   //         return false; // Do not retry the others
-//   //     }
-//   //   },
-// });
+export const publicApiClient = axios.create({
+  baseURL: "/api",
+});
 
 export const isTokenExpired = (token: string): boolean => {
   const decoded = jwtDecode<JwtPayload>(token);
@@ -31,7 +18,7 @@ export const isTokenExpired = (token: string): boolean => {
 export const refreshToken = async (): Promise<string> => {
   const refreshToken = localStorage.getItem("refreshToken");
   if (refreshToken) {
-    const response = await axios.post("/api/auth/refresh", {
+    const response = await publicApiClient.post("/auth/refresh", {
       token: refreshToken,
     });
     localStorage.setItem("accessToken", response.data.accessToken);
@@ -44,9 +31,7 @@ export const refreshToken = async (): Promise<string> => {
 export const validateSession = async (): Promise<any> => {
   let accessToken = localStorage.getItem("accessToken") ?? "";
   if (!accessToken) {
-    // return "";
-    // throw new Error("noToken");
-    return Promise.reject("noToken");
+    throw new Error("noToken");
   }
   const expired = isTokenExpired(accessToken);
   if (expired) {

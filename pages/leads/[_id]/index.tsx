@@ -1,8 +1,8 @@
 "use client";
 import React, { FC, ReactElement } from "react";
 import Box from "@mui/material/Box";
-import { useRouter, usePathname, useParams } from "next/navigation";
-import { Button, Card, Divider, TextField, Typography } from "@mui/material";
+import { useParams } from "next/navigation";
+import { Button, Card, Typography } from "@mui/material";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
@@ -11,11 +11,11 @@ import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import GroupIcon from "@mui/icons-material/Group";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 import Link from "next/link";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import { useGetLeadById } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
+import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 
 interface LeadPageProps {}
 
@@ -37,7 +37,7 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
         title={name}
         lastBreadcrumb={data?.firstName}
         actions={
-          <Link href={`/leads/edit/${params?._id}`}>
+          <Link href={`${ROUTES.LEADS.EDIT.ROOT}/${params?._id}`}>
             <Button variant="contained" color="primary">
               {t("edit")}
             </Button>
@@ -155,11 +155,11 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
         </Button>
       </Card> */}
 
-        {/* {Object.entries(data).map(([key, value]) => (
+         {/* {Object.entries(data).map(([key, value]) => (
         <Typography>
           {t(key)}: {value}
         </Typography>
-      ))} */}
+      ))}  */}
         {/* <Divider sx={{ width: "100%", mt: "50px" }} />
       <Card sx={{ width: "900px" }}>
         <TextField

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { multerUpload } from "@/lib/server/services/multer";
 import { handleCSVUpload } from "@/lib/server/routeHandlers.ts/handleCSVUpload";
+import { authGuard } from "../auth/authMid";
 
 interface NextApiRequestExtended extends NextApiRequest {
   files: Express.MulterS3.File[];
@@ -10,6 +11,7 @@ interface NextApiRequestExtended extends NextApiRequest {
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
 router
+  .use(authGuard)
   .use(multerUpload.array("files", 10) as any)
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     try {

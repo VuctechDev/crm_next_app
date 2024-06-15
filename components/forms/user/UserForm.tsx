@@ -50,7 +50,7 @@ const UserForm: FC<UserFormProps> = (): ReactElement => {
   const { mutateAsync: createUser } = useCreateUser();
   const { mutateAsync: updateUser } = useUpdateUser();
   const { t } = useTranslation();
-  const { push, locale, asPath } = useRouter();
+  const { asPath } = useRouter();
 
   const handleSubmit = async (values: InitialValues) => {
     try {
@@ -59,11 +59,6 @@ const UserForm: FC<UserFormProps> = (): ReactElement => {
       } else {
         await updateUser({ ...values, country: values?.country?.iso3 });
       }
-      // push(
-      //   `/register-confirmation?email=${encodeURIComponent(values.email)}`,
-      //   `/register-confirmation?email=${encodeURIComponent(values.email)}`,
-      //   { locale }
-      // );
     } catch (error) {
       console.error(error);
     }

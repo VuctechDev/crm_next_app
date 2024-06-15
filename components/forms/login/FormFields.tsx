@@ -24,12 +24,7 @@ const FormFields: FC<FormFieldsProps> = (): ReactElement => {
   return (
     <Grid container rowGap={1}>
       <Grid xs={12} item>
-        <Typography
-          variant="body2"
-          sx={{
-            mb: "6px",
-          }}
-        >
+        <Typography variant="body2" mb="6px">
           {t("email")}
         </Typography>
         <TextField

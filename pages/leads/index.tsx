@@ -1,7 +1,7 @@
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 import Card from "@mui/material/Card";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
@@ -12,7 +12,7 @@ import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useGetLeads } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
-import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
+import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 
 interface LeadsPageProps {
   params: { locale: string };
@@ -26,14 +26,12 @@ const headers = [
   { key: "industry" },
   { key: "country" },
   { key: "website" },
-  // { key: "created" },
 ];
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const { openSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const router = useRouter();
-  const path = usePathname();
 
   const [query, setQuery] = useState("page=0&limit=10");
   const { data, isLoading, error } = useGetLeads(query);
@@ -58,10 +56,6 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     {
       key: "country",
     },
-    // {
-    //   key: "created",
-    //   render: (value: string) => getDisplayDateTime(value),
-    // },
     {
       key: "website",
       render: (value: string) => (
@@ -88,7 +82,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
       <PageContentWrapper
         title="leads"
         actions={
-          <Link href="/leads/add">
+          <Link href={ROUTES.LEADS.ADD.ROOT}>
             <Button variant="outlined" color="primary">
               {t("add")}
             </Button>
@@ -107,7 +101,9 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
             totalCount={data?.total ?? 0}
             skeletonCount={8}
             handleQueryChange={handleQueryChange}
-            handleRowSelect={(_id: string) => router.push(path + `/${_id}`, {})}
+            handleRowSelect={(_id: string) =>
+              router.push(ROUTES.LEADS.ROOT + `/${_id}`, {})
+            }
             hover={true}
             filterKeys={["role", "industry", "country"]}
           />

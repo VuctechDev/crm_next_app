@@ -12,6 +12,7 @@ import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import { useTranslation } from "next-i18next";
 import { useSnackbar } from "../providers/SnackbarContext";
+import { apiClient } from "@/lib/client/api";
 
 interface FilePickerProps {
   type: "img" | "csv";
@@ -50,11 +51,8 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
       myFile.forEach((file) => {
         formData.append("files", file);
       });
-      const response = await fetch(`/api/upload${path}`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
+      const response = await apiClient.post(`/upload${path}`, formData);
+      const data = response.data;
       if (!data.success) {
         return openSnackbar(data.message, "error");
       }

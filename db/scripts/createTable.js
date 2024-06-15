@@ -50,28 +50,6 @@ const create_table_leads = `CREATE TABLE leads (
     updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) 
     ENGINE=InnoDB AUTO_INCREMENT=1000`;
 
-const create_table_users = `CREATE TABLE leads (
-      _id INT AUTO_INCREMENT PRIMARY KEY, 
-      firstName VARCHAR(30), 
-      lastName VARCHAR(30), 
-      role VARCHAR(50), 
-      company VARCHAR(50), 
-      email VARCHAR(40),  
-      phone VARCHAR(30), 
-      mobile VARCHAR(30), 
-      address VARCHAR(50),
-      postCode VARCHAR(30),  
-      city VARCHAR(30), 
-      country VARCHAR(30), 
-      industry VARCHAR(30),
-      employees VARCHAR(20), 
-      description VARCHAR(200), 
-      website VARCHAR(60), 
-      archived TINYINT,
-      created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) 
-      ENGINE=InnoDB AUTO_INCREMENT=1000`;
-
 const create_table_auth = `CREATE TABLE auth (
     _id SERIAL PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
@@ -104,7 +82,22 @@ const users = `CREATE TABLE users (
     status VARCHAR(20) DEFAULT 'active'
 );`;
 
-const createTableQuery = users;
+const organizations = `CREATE TABLE organizations (
+  _id SERIAL PRIMARY KEY,
+  name VARCHAR(50),
+  industry VARCHAR(100),
+  website VARCHAR(100),
+  address VARCHAR(255),
+  city VARCHAR(40),
+  zip VARCHAR(20),
+  country VARCHAR(100),
+  createdBy INT,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  status VARCHAR(20) DEFAULT 'active'
+);`;
+
+const createTableQuery = organizations;
 
 const createTable = async () => {
   try {

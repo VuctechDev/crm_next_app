@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import FormFields from "@/components/forms/login/FormFields";
 import SubmitButton from "@/components/forms/fields/SubmitButton";
 import PublicPageWrapper from "@/components/page-layout/PublicPageWrapper";
+import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 
 export const initialValues = {
   email: "stefan8vucic@gmail.com",
@@ -46,7 +47,7 @@ const Login: FC = (): ReactElement => {
       callToAction={
         <>
           <Typography sx={{ mr: "8px" }}>{t("noAccountYet")}</Typography>
-          <Link href="/register">
+          <Link href={ROUTES.REGISTER}>
             <Typography color="info.main">{t("register")}</Typography>
           </Link>
         </>

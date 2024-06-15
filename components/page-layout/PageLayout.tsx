@@ -23,6 +23,7 @@ import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import { Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { useQueryClient } from "@tanstack/react-query";
+import { ROUTES } from "../providers/guards/AuthRouteGuard";
 
 export interface DrawerItemType {
   label: string;
@@ -39,12 +40,12 @@ const drawerItems = [
   {
     label: "leads",
     icon: <PeopleAltOutlinedIcon />,
-    href: "/leads",
+    href: ROUTES.LEADS.ROOT,
     nestedLinks: [
       {
         label: "addNew",
         icon: <GroupAddOutlinedIcon />,
-        href: "/leads/add",
+        href: ROUTES.LEADS.ADD.ROOT,
       },
     ],
   },

@@ -9,6 +9,7 @@ import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import PageLayout from "@/components/page-layout/PageLayout";
+import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 
 interface AddLeadsProps {}
 
@@ -16,17 +17,17 @@ const options = [
   {
     label: "create",
     icon: <PersonAddAltOutlinedIcon fontSize="large" />,
-    href: "/leads/add/new",
+    href: ROUTES.LEADS.ADD.NEW,
   },
   {
     label: "uploadBusinessCards",
     icon: <AddPhotoAlternateOutlinedIcon fontSize="large" />,
-    href: "/leads/add/cards",
+    href: ROUTES.LEADS.ADD.CARDS,
   },
   {
     label: "importCSV",
     icon: <UploadFileOutlinedIcon fontSize="large" />,
-    href: "/leads/add/csv",
+    href: ROUTES.LEADS.ADD.CSV,
   },
 ];
 

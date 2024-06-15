@@ -52,6 +52,7 @@
   "requiredField": "Required field",
   "max200char": "Maximum 200 characters",
   "personalInfo": "Personal information",
+  "organizationInfo": "Organization information",
   "zip": "Postal Code",
   "city": "City",
   "address": "Address",
@@ -67,5 +68,8 @@
   "oneUppercase": "One uppercase letter",
   "oneSpecialChar": "One special character",
   "oneNumber": "One digit",
-  "min8Chra": "Min 8 characters long"
+  "min8Chra": "Min 8 characters long",
+  "mustBeURL": "Must be a valid URL",
+  "mustStartHTTPS": "URL must start with https://www",
+  "yourRole": "Your Role"
 }

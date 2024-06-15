@@ -77,3 +77,20 @@ export const getUser = async (_id: string): Promise<UserType | null> => {
     throw error;
   }
 };
+
+export const updateUserFromOrganization = async (
+  organizationId: number,
+  role: string,
+  userId: string
+): Promise<{ success: boolean }> => {
+  try {
+    await query(
+      `UPDATE ${tableName} 
+      SET role = '${role}', organization = '${organizationId}'
+      WHERE _id = '${userId}'`
+    );
+    return { success: true };
+  } catch (error) {
+    throw error;
+  }
+};

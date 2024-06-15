@@ -7,7 +7,7 @@ interface RouteGuardProps {
   children: React.ReactNode;
 }
 
-const ROUTES = {
+export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
@@ -22,6 +22,10 @@ const ROUTES = {
       ROOT: "/leads/add",
       CARDS: "/leads/add/cards",
       CSV: "/leads/add/csv",
+      NEW: "/leads/add/new",
+    },
+    EDIT: {
+      ROOT: "/leads/edit",
     },
   },
 };
@@ -41,34 +45,37 @@ const RouteGuard: FC<RouteGuardProps> = ({ children }): ReactElement => {
   const { data: user, isLoading } = useGetUser();
 
   useEffect(() => {
-    if (!isLoading) {
-      console.log(user, isLoading, checking, path);
+    if (isLoading) {
+      setChecking(true);
+      return;
+    }
 
-      if (user) {
-        console.log(publicPages.includes(path));
-        if (!user.firstName) {
-          replace(ROUTES.ONBOARDING.USER);
-        }
-        // else if (!user.organization) {
-        //   // replace(ROUTES.ONBOARDING.ORGANIZATION);
-        // }
-        else if (publicPages.includes(path)) {
-          replace("/", "/");
-        } else {
-          console.log("USER");
-          setChecking(false);
-        }
+    const handleRedirect = (path: string, delay: number = 500) => {
+      replace(path);
+      setTimeout(() => {
+        setChecking(false);
+      }, delay);
+    };
+
+    // console.log(user, isLoading, checking, path);
+
+    if (user) {
+      console.log(publicPages.includes(path));
+      if (!user.firstName) {
+        handleRedirect(ROUTES.ONBOARDING.USER);
+      } else if (!user.organization) {
+        handleRedirect(ROUTES.ONBOARDING.ORGANIZATION);
+      } else if (publicPages.includes(path)) {
+        handleRedirect(ROUTES.HOME);
       } else {
-        if (!isLoading && !publicPages.includes(path)) {
-          replace(ROUTES.LOGIN);
-        } else {
-          console.log("!USER");
-
-          setChecking(false);
-        }
+        setChecking(false);
       }
     } else {
-      setChecking(true);
+      if (!isLoading && !publicPages.includes(path)) {
+        handleRedirect(ROUTES.LOGIN);
+      } else {
+        setChecking(false);
+      }
     }
   }, [asPath, user, isLoading]);
 

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { multerUpload } from "@/lib/server/services/multer";
 import { handleCardsUpload } from "@/lib/server/routeHandlers.ts/handleCardsUpload";
+import { authGuard } from "../auth/authMid";
 
 interface NextApiRequestExtended extends NextApiRequest {
   files: Express.MulterS3.File[];
@@ -10,6 +11,7 @@ interface NextApiRequestExtended extends NextApiRequest {
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
 router
+  .use(authGuard)
   .use(multerUpload.array("files", 10) as any)
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     if (!req.files?.length) {
@@ -20,7 +22,11 @@ router
     await handleCardsUpload(req.files);
     return res
       .status(200)
-      .json({ success: true, message: "cardFilesUploadSuccess", files: req.files });
+      .json({
+        success: true,
+        message: "cardFilesUploadSuccess",
+        files: req.files,
+      });
   });
 
 export const config = {
