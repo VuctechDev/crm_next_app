@@ -20,6 +20,7 @@ export interface UserType {
   updatedAt: string;
   status: string;
   lastLogin: string;
+  username?: string;
 }
 
 export const createNewUser = async (data: UserType, userId: string) => {
