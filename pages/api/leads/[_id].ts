@@ -1,11 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { getLead } from "@/db/leads";
 import { authGuard } from "../auth/authMid";
-
-interface NextApiRequestExtended extends NextApiRequest {
-  files: Express.Multer.File[];
-}
+import { NextApiRequestExtended } from "@/types/reaquest";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 

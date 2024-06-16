@@ -37,15 +37,11 @@
     "next-i18next": "^15.3.0",
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.13",
-    "openai": "^4.47.1",
     "phone": "^3.1.45",
     "query-string": "^9.0.0",
-    "queue": "^7.0.0",
     "react": "^18",
     "react-dom": "^18",
     "sharp": "^0.33.4",
-    "tesseract.js": "^5.1.0",
-    "xlsx": "^0.18.5",
     "yup": "^1.4.0"
   },
   "devDependencies": {

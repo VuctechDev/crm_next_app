@@ -52,33 +52,3 @@ apiClient.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-const MAX_RETRY_ATTEMPTS = 1;
-
-// apiClient.interceptors.response.use(
-//   (response: AxiosResponse) => {
-//     return response;
-//   },
-//   async (error: AxiosError) => {
-//     const originalRequest = error.config as AxiosRequestConfig & {
-//       _retryCount?: number;
-//     };
-
-//     // Initialize _retryCount if it doesn't exist
-//     originalRequest._retryCount = originalRequest._retryCount ?? 0;
-
-//     // Check if the request has been retried already
-//     if (error.response?.status === 401 && originalRequest._retryCount < 2) {
-//       originalRequest._retryCount += 1;
-//       try {
-//         // Retry the original request
-//         return await apiClient(originalRequest);
-//       } catch (retryError) {
-//         // If retry fails, return the original error
-//         return Promise.reject(retryError);
-//       }
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );

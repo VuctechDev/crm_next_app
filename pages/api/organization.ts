@@ -1,18 +1,16 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { authGuard } from "./auth/authMid";
 import { updateUserFromOrganization } from "@/db/users";
 import { createNewOrganization } from "@/db/organizations";
+import { NextApiRequestExtended } from "@/types/reaquest";
 
-const router = createRouter<NextApiRequest, NextApiResponse>();
+const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
 router
   .use(authGuard)
-  .post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { userId } = req.headers as {
-      userId: string;
-      username: string;
-    };
+  .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
+    const { userId } = req.headers;
     const role = req.body?.role;
     const organizationId = await createNewOrganization(req.body, userId);
     await updateUserFromOrganization(organizationId, role, userId);

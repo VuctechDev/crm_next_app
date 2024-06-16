@@ -52,9 +52,9 @@ const RouteGuard: FC<RouteGuardProps> = ({ children }): ReactElement => {
 
     const handleRedirect = (path: string, delay: number = 500) => {
       replace(path);
-      setTimeout(() => {
-        setChecking(false);
-      }, delay);
+      // setTimeout(() => {
+      setChecking(false);
+      // }, delay);
     };
 
     // console.log(user, isLoading, checking, path);

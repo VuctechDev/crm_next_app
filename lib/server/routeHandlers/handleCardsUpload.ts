@@ -1,12 +1,19 @@
+export interface Payload {
+  createdBy: string;
+  owner: string;
+}
+
 export const forwardJobToFileService = async (
   type: "card" | "csv",
-  keys: string[]
+  keys: string[],
+  payload: Payload
 ) => {
   const apiUrl = "https://stefan.pikado.net/process";
   // const apiUrl = "http://localhost:2302/process"; // Change to your API's URL
   const itemData = {
     type,
     keys,
+    ...payload,
   };
 
   try {
@@ -26,7 +33,10 @@ export const forwardJobToFileService = async (
   }
 };
 
-export const handleCardsUpload = async (files: Express.MulterS3.File[]) => {
+export const handleCardsUpload = async (
+  files: Express.MulterS3.File[],
+  payload: Payload
+) => {
   const keys = files.map((item) => item.key);
-  await forwardJobToFileService("card", keys);
+  await forwardJobToFileService("card", keys, payload);
 };

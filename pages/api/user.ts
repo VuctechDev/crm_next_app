@@ -4,13 +4,14 @@ import { authGuard } from "./auth/authMid";
 import { createNewUser, getUser } from "@/db/users";
 import { getOrganization } from "@/db/organizations";
 import { countries } from "@/lib/shared/consts/countries";
+import { NextApiRequestExtended } from "@/types/reaquest";
 
-const router = createRouter<NextApiRequest, NextApiResponse>();
+const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
 router
   .use(authGuard)
-  .get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { userId } = req.headers as { userId: string };
+  .get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
+    const { userId } = req.headers;
     let user = await getUser(userId);
     if (!user) {
       return res.status(401).json({ message: "notAuthorizedException" });
@@ -30,10 +31,8 @@ router
     }
     return res.status(200).json(handler);
   })
-  .post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { userId } = req.headers as {
-      userId: string;
-    };
+  .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
+    const { userId } = req.headers;
 
     await createNewUser(req.body, userId);
     res.status(200).json({ success: true });

@@ -1,12 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { multerUpload } from "@/lib/server/services/multer";
-import { handleCSVUpload } from "@/lib/server/routeHandlers.ts/handleCSVUpload";
+import { handleCSVUpload } from "@/lib/server/routeHandlers/handleCSVUpload";
 import { authGuard } from "../auth/authMid";
-
-interface NextApiRequestExtended extends NextApiRequest {
-  files: Express.MulterS3.File[];
-}
+import { NextApiRequestExtended } from "@/types/reaquest";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
@@ -21,8 +18,13 @@ router
           .json({ success: false, message: "missingFilesException" });
       }
 
+      const { userId, organizationId } = req.headers;
       const file = req.files[0];
-      await handleCSVUpload(file?.key);
+      
+      await handleCSVUpload(file?.key, {
+        createdBy: userId,
+        owner: organizationId,
+      });
       return res
         .status(200)
         .json({ success: true, message: "csvFilesUploadSuccess", file: file });

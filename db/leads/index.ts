@@ -1,3 +1,4 @@
+import { Payload } from "@/lib/server/routeHandlers/handleCardsUpload";
 import { query } from "..";
 import { parseHTTPS } from "../helpers";
 import { handleRequestQuery } from "../helpers/handleRequestQuery";
@@ -27,7 +28,7 @@ interface LeadInsertBody extends Omit<LeadType, "email" | "country"> {}
 
 const tableName = "leads";
 
-export const insertNewLead = async (data: LeadType) => {
+export const insertNewLead = async (data: LeadType, payload: Payload) => {
   const webite = parseHTTPS(data.website);
   try {
     const { insertId } = (await query(
@@ -46,6 +47,8 @@ export const insertNewLead = async (data: LeadType) => {
                 industry, 
                 employees, 
                 description, 
+                createdBy,
+                owner,
                 website,
                 archived
             ) VALUES?`,
@@ -65,6 +68,8 @@ export const insertNewLead = async (data: LeadType) => {
           data.industry,
           data.employees,
           data.description,
+          payload.createdBy,
+          payload.owner,
           webite,
           0,
         ],
@@ -78,12 +83,13 @@ export const insertNewLead = async (data: LeadType) => {
 };
 
 export const getLeads = async (
-  filters: Record<string, string>
+  filters: Record<string, string>,
+  owner: string
 ): Promise<{
   data: any;
   total: number;
 }> => {
-  const filtersQuery = handleRequestQuery(filters);
+  const filtersQuery = handleRequestQuery({ ...filters, owner });
   try {
     const total = (await query(
       `SELECT COUNT(*) AS total FROM ${tableName} ${filtersQuery}`
@@ -109,4 +115,3 @@ export const getLead = async (_id: string): Promise<any> => {
     throw error;
   }
 };
-

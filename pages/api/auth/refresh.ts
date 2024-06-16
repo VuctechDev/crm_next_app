@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import jwt, { Secret } from "jsonwebtoken";
 import { validateRefreshToken } from "@/lib/server/services/jwt";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
@@ -13,7 +12,6 @@ router.post(async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const data = await validateRefreshToken(token);
-    console.log(data);
     return res.status(200).json(data);
   } catch (error) {
     res.status(401).json({ message: "unauthorizedException" });

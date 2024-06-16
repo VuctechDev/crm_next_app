@@ -6,6 +6,7 @@ import {
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import bcrypt from "bcrypt";
+import { getUser } from "@/db/users";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -16,19 +17,19 @@ router.post(async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ message: "invalidCredentialsException" });
   }
 
-  const user = await getAuth(email);
-  if (!user) {
+  const auth = await getAuth(email);
+  if (!auth) {
     return res.status(400).json({ message: "invalidCredentialsException" });
-  } else if (!user.verified) {
+  } else if (!auth.verified) {
     return res.status(400).json({ message: "notVerifiedException" });
   }
 
-  const passwordMatch = await bcrypt.compare(password, user.password);
+  const passwordMatch = await bcrypt.compare(password, auth.password);
   if (!passwordMatch) {
     return res.status(400).json({ message: "invalidCredentialsException" });
   }
-
-  await updateLastLogin(user?._id)
+  await updateLastLogin(auth._id);
+  const user = await getUser(auth._id);
 
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);

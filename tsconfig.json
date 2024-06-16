@@ -16,6 +16,11 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "lib/server/routeHandlers"
+  ],
   "exclude": ["node_modules"]
 }

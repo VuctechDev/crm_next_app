@@ -62,7 +62,9 @@ export const createNewUser = async (data: UserType, userId: string) => {
   }
 };
 
-export const getUser = async (_id: string): Promise<UserType | null> => {
+export const getUser = async (
+  _id: string | number
+): Promise<UserType | null> => {
   try {
     const data = await query<UserType[]>(
       `SELECT a.username, a.lastLogin, u.* 

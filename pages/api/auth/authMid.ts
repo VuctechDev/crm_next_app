@@ -12,9 +12,11 @@ export const authGuard = (
       return res.status(401).json({ message: "notAuthorizedException" });
     }
     const user = decodeAccessToken(token) as any;
+
     req.headers.userId = user?._id;
+    req.headers.organizationId = user?.organization;
     req.headers.username = user?.username;
-    console.log(`Received ${JSON.stringify(user)}`);
+
     next();
   } catch (err) {
     return res.status(401).json({ message: "notAuthorizedException" });

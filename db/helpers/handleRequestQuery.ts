@@ -12,6 +12,8 @@ export const handleRequestQuery = (query: Record<string, string>): string => {
       );
     } else if (["country", "role", "industry"].includes(key)) {
       addCondition(`${key} LIKE '%${value}%'`);
+    } else if (["owner"].includes(key)) {
+      addCondition(`${key} = '${value}'`);
     }
   });
 

@@ -1,6 +1,8 @@
 const mySql = require("mysql");
 require("dotenv/config");
 
+// Compress-Archive -Path 'C:\Users\stefa\OneDrive\Desktop\Projekti\CRM/crm-api/dist' -DestinationPath 'C:\Users\stefa\OneDrive\Desktop\Projekti\CRM\build152.zip'
+
 const pool = mySql.createPool({
   connectionLimit: 1000,
   user: process.env.DB_USER,
@@ -44,6 +46,8 @@ const create_table_leads = `CREATE TABLE leads (
     industry VARCHAR(30),
     employees VARCHAR(20), 
     description VARCHAR(200), 
+    createdBy INT,
+    owner INT,
     website VARCHAR(60), 
     archived TINYINT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -7,7 +7,7 @@ import React, {
   ChangeEvent,
 } from "react";
 import Box from "@mui/material/Box";
-import { Button, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import { useTranslation } from "next-i18next";
@@ -95,8 +95,16 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" width={1}>
-      <Box width="400px" mr="100px">
+    <Box
+      display="flex"
+      flexDirection="column"
+      width={1}
+      sx={{ alignItems: "center" }}
+    >
+      <Box
+        width="350px"
+        sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+      >
         <Box
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -190,29 +198,30 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
         <Button
           disabled={!myFile.length}
           variant="contained"
-          sx={{ mt: "40px" }}
+          sx={{ mt: "10px" }}
           onClick={handleSubmit}
         >
           {t("save")}
         </Button>
       </Box>
       {type === "img" && (
-        <Box sx={{ m: "20px", display: "flex" }}>
+        <Grid container columnSpacing={2} rowGap={3} mt="30px">
           {myFile.map((file) => (
-            <Box
-              key={file.name}
-              sx={{
-                width: "250px",
-                height: "140px",
-                background: `url(${URL.createObjectURL(file)})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                m: "10px",
-                borderRadius: "10px",
-              }}
-            />
+            <Grid item xs={12} sm={6} md={4} lg={2} key={file.name}>
+              <Box
+                sx={(t) => ({
+                  width: "100%",
+                  height: "150px",
+                  background: `url(${URL.createObjectURL(file)})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  borderRadius: "8px",
+                  border: `1px solid ${t.palette.text.secondary}`,
+                })}
+              />
+            </Grid>
           ))}
-        </Box>
+        </Grid>
       )}
     </Box>
   );

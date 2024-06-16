@@ -1,12 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { multerUpload } from "@/lib/server/services/multer";
-import { handleCardsUpload } from "@/lib/server/routeHandlers.ts/handleCardsUpload";
+import { handleCardsUpload } from "@/lib/server/routeHandlers/handleCardsUpload";
 import { authGuard } from "../auth/authMid";
-
-interface NextApiRequestExtended extends NextApiRequest {
-  files: Express.MulterS3.File[];
-}
+import { NextApiRequestExtended } from "@/types/reaquest";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
@@ -19,14 +16,16 @@ router
         .status(400)
         .json({ success: false, message: "missingFilesException" });
     }
-    await handleCardsUpload(req.files);
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "cardFilesUploadSuccess",
-        files: req.files,
-      });
+    const { userId, organizationId } = req.headers;
+    await handleCardsUpload(req.files, {
+      createdBy: userId,
+      owner: organizationId,
+    });
+    return res.status(200).json({
+      success: true,
+      message: "cardFilesUploadSuccess",
+      files: req.files,
+    });
   });
 
 export const config = {
