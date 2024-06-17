@@ -40,7 +40,7 @@ const create_table_leads = `CREATE TABLE leads (
     phone VARCHAR(30), 
     mobile VARCHAR(30), 
     address VARCHAR(50),
-    postCode VARCHAR(30),  
+    zip VARCHAR(30),  
     city VARCHAR(30), 
     country VARCHAR(30), 
     industry VARCHAR(30),

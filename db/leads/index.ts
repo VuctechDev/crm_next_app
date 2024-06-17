@@ -2,6 +2,7 @@ import { Payload } from "@/lib/server/routeHandlers/handleCardsUpload";
 import { query } from "..";
 import { parseHTTPS } from "../helpers";
 import { handleRequestQuery } from "../helpers/handleRequestQuery";
+import { getChangedValuesQuery } from "@/lib/shared/getChangedValues";
 
 export interface LeadType {
   _id: number;
@@ -14,7 +15,7 @@ export interface LeadType {
   phone: string;
   mobile: string;
   address: string;
-  postCode: string;
+  zip: string;
   city: string;
   country: string;
   industry: string;
@@ -23,8 +24,6 @@ export interface LeadType {
   description: string;
   created: string;
 }
-
-interface LeadInsertBody extends Omit<LeadType, "email" | "country"> {}
 
 const tableName = "leads";
 
@@ -41,7 +40,7 @@ export const insertNewLead = async (data: LeadType, payload: Payload) => {
                 phone, 
                 mobile, 
                 address, 
-                postCode, 
+                zip, 
                 city,
                 country, 
                 industry, 
@@ -62,7 +61,7 @@ export const insertNewLead = async (data: LeadType, payload: Payload) => {
           data.phone,
           data.mobile,
           data.address,
-          data.postCode,
+          data.zip,
           data.city,
           data.country,
           data.industry,
@@ -105,11 +104,26 @@ export const getLeads = async (
   }
 };
 
-export const getLead = async (_id: string): Promise<any> => {
+export const getLead = async (_id: string): Promise<LeadType | null> => {
   try {
     const data = (await query(`SELECT * from ${tableName} WHERE _id = ? `, [
       [_id],
     ])) as LeadType[];
+    return data?.length ? data[0] : null;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateLead = async (
+  values: LeadType,
+  _id: string
+): Promise<any> => {
+  const parsedQuery = getChangedValuesQuery(values);
+  try {
+    const data = (await query(
+      `UPDATE ${tableName} SET ${parsedQuery} WHERE _id = ${_id}`
+    )) as LeadType[];
     return data?.length ? data[0] : {};
   } catch (error) {
     throw error;

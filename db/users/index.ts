@@ -69,11 +69,20 @@ export const getUser = async (
     const data = await query<UserType[]>(
       `SELECT a.username, a.lastLogin, u.* 
       FROM ${tableName} u
-      RIGHT JOIN auth a 
+      LEFT JOIN auth a 
       ON a._id = u._id
       WHERE a._id = ?`,
       [[_id]]
     );
+    if (!data.length) {
+      const authData = await query<UserType[]>(
+        `SELECT username, lastLogin, _id 
+        FROM auth 
+        WHERE _id = ?`,
+        [[_id]]
+      );
+      return authData.length ? authData[0] : null;
+    }
     return data.length ? data[0] : null;
   } catch (error) {
     throw error;

@@ -47,20 +47,20 @@ interface OrganizationFormProps {}
 
 const OrganizationForm: FC<OrganizationFormProps> = (): ReactElement => {
   const { asPath, push } = useRouter();
-  const { mutateAsync: createUser } = useCreateOrganization();
-  const { mutateAsync: updateUser } = useUpdateOrganization();
+  const { mutateAsync: createOrganization } = useCreateOrganization();
+  const { mutateAsync: updateOrganization } = useUpdateOrganization();
   const { t } = useTranslation();
 
   const handleSubmit = async (values: InitialValues) => {
     try {
       if (asPath === ROUTES.ONBOARDING.ORGANIZATION) {
-        await createUser({
+        await createOrganization({
           ...values,
           country: values?.country?.iso3,
           role: values?.yourRole,
         });
       } else {
-        await updateUser({
+        await updateOrganization({
           ...values,
           country: values?.country?.iso3,
           role: values?.yourRole,

@@ -20,6 +20,7 @@ const CountrySelect: FC<CountrySelectProps> = ({
   return (
     <Autocomplete
       fullWidth
+      {...elementProps}
       id="country-select"
       options={countries}
       componentsProps={{
@@ -46,7 +47,7 @@ const CountrySelect: FC<CountrySelectProps> = ({
       getOptionLabel={(option: any) => `${t(option.name)}`}
       renderInput={(params: any) => (
         <TextField
-          {...elementProps}
+          // {...elementProps}
           {...params}
           error={!!error}
           helperText={

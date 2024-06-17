@@ -57,10 +57,8 @@ const RouteGuard: FC<RouteGuardProps> = ({ children }): ReactElement => {
       // }, delay);
     };
 
-    // console.log(user, isLoading, checking, path);
 
     if (user) {
-      console.log(publicPages.includes(path));
       if (!user.firstName) {
         handleRedirect(ROUTES.ONBOARDING.USER);
       } else if (!user.organization) {

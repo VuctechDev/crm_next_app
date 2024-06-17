@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useGetLeads } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
+import { getCountry, getCountryName } from "@/lib/client/getCountry";
 
 interface LeadsPageProps {
   params: { locale: string };
@@ -55,6 +56,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     },
     {
       key: "country",
+      render: (value: string) => getCountryName(value),
     },
     {
       key: "website",

@@ -5,16 +5,18 @@ import CircularProgress from "@mui/material/CircularProgress";
 interface SubmitButtonProps {
   loading: boolean;
   label: string;
+  disabled?: boolean;
 }
 
 const SubmitButton: FC<SubmitButtonProps> = ({
   loading,
   label,
+  disabled,
 }): ReactElement => {
   return (
     <Button
       fullWidth
-      disabled={loading}
+      disabled={loading || disabled}
       variant="contained"
       type="submit"
       sx={(t) => ({

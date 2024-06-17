@@ -16,6 +16,9 @@ router
         .json({ success: false, message: "missingIDException" });
     }
     const data = await getLead(_id as string);
+    if (!data) {
+      return res.status(404).json({ success: false, message: "notFound" });
+    }
     res.status(200).json({ data, success: true });
   });
 

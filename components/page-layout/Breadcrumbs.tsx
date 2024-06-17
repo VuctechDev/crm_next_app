@@ -31,17 +31,17 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ lastValue }): ReactElement => {
 
   return (
     <MuiBreadcrumbs aria-label="breadcrumb">
-      {data?.map(({ label, href }, i) =>
-        i !== breadcrumbItems.length - 1 ? (
+      {data?.map(({ label, href }, i) => {
+        const lastLabel = lastValue ?? label;
+        const nonLinkLabel = label === "edit" ? "edit" : lastLabel;
+        return i !== breadcrumbItems.length - 1 && label !== "edit" ? (
           <Link key={label} color="inherit" href={href}>
             <Typography color="info.main">{t(label)}</Typography>
           </Link>
         ) : (
-          <Typography key={label}>
-            {lastValue ? t(lastValue) : t(label)}
-          </Typography>
-        )
-      )}
+          <Typography key={label}>{t(nonLinkLabel)}</Typography>
+        );
+      })}
     </MuiBreadcrumbs>
   );
 };

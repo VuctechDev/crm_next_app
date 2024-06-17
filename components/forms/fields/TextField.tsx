@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 
 const placeholders: Record<string, string> = {
   phone: "+...",
+  mobile: "+...",
+  website: "https://",
 };
 
 interface TextFieldProps {
@@ -27,6 +29,8 @@ const TextField: FC<TextFieldProps> = ({
       {...elementProps}
       fullWidth
       error={!!error}
+      multiline={elementProps.name === "description"}
+      rows={4}
       type={type}
       helperText={
         !hideErrorMessage && (

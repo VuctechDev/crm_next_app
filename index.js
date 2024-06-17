@@ -278,4 +278,4 @@ const a = () => {
   fs.writeFileSync(`state2.json`, JSON.stringify(b));
 };
 
-a()
+a();

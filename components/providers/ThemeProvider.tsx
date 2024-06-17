@@ -54,7 +54,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: "10px",
-          // textTransform: "capitalize",
           fontSize: "16px",
         },
       },
@@ -79,6 +78,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: "8px",
+          padding: "0px",
         },
         input: {
           padding: "14px",

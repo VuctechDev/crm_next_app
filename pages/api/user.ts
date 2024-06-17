@@ -7,12 +7,18 @@ import { countries } from "@/lib/shared/consts/countries";
 import { NextApiRequestExtended } from "@/types/reaquest";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
-
+// email
+// :
+// "nemanja.elas@gmail.com"
+// password
+// :
+// "Lesinari1987@"
 router
   .use(authGuard)
   .get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     const { userId } = req.headers;
     let user = await getUser(userId);
+    console.log("USER: ", user);
     if (!user) {
       return res.status(401).json({ message: "notAuthorizedException" });
     }

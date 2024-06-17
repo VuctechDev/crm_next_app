@@ -8,8 +8,7 @@ export const forwardJobToFileService = async (
   keys: string[],
   payload: Payload
 ) => {
-  const apiUrl = "https://stefan.pikado.net/process";
-  // const apiUrl = "http://localhost:2302/process"; // Change to your API's URL
+  const apiUrl = process.env.FILE_PROCESSOR_URL ?? "";
   const itemData = {
     type,
     keys,

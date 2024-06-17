@@ -28,16 +28,17 @@ const query = (query, values) => {
   });
 };
 
+
 const table = "leads";
 
-const query1 = `ALTER TABLE ${table} ADD COLUMN owner INT;`;
+const query1 = `ALTER TABLE ${table} RENAME COLUMN postCode TO zip;`;
 
 const query2 = `UPDATE ${table} SET owner = '5'`;
 
 const migrate = async () => {
   try {
     await query(query1);
-    await query(query2);
+    // await query(query2);
     console.log("TABLE UPDATED");
   } catch (error) {
     console.log(error);

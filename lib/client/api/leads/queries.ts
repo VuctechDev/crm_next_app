@@ -6,6 +6,7 @@ import {
   updateLead,
   deleteLead,
 } from "./actions";
+import { useSnackbar } from "@/components/providers/SnackbarContext";
 
 export const useGetLeads = (query: string) => {
   return useQuery({
@@ -14,33 +15,38 @@ export const useGetLeads = (query: string) => {
   });
 };
 
-export const useGetLeadById = (id: string) => {
+export const useGetLeadById = (_id: string) => {
   return useQuery({
-    queryKey: ["lead", id],
-    queryFn: () => getLeadById(id),
+    queryKey: ["lead", _id],
+    queryFn: () => getLeadById(_id),
   });
 };
 
-// // Hook to create a new customer
-// export const useCreateCustomer = () => {
-//   const queryClient = useQueryClient();
-//   return useMutation(createCustomer, {
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(["customers"]);
-//     },
-//   });
-// };
+export const useCreateLead = () => {
+  const queryClient = useQueryClient();
+  const { openSnackbar } = useSnackbar();
+  return useMutation({
+    mutationFn: createLead,
+    onSuccess: () => {
+      openSnackbar("leadCreatedSuccess");
+      queryClient.invalidateQueries({ queryKey: ["leads"] });
+    },
+    onError: (error) => openSnackbar(error.message, "error"),
+  });
+};
 
-// // Hook to update a customer
-// export const useUpdateCustomer = (id) => {
-//   const queryClient = useQueryClient();
-//   return useMutation((customerData) => updateCustomer(id, customerData), {
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(["customer", id]);
-//       queryClient.invalidateQueries(["customers"]);
-//     },
-//   });
-// };
+export const useUpdateLead = (_id: string) => {
+  const queryClient = useQueryClient();
+  const { openSnackbar } = useSnackbar();
+  return useMutation({
+    mutationFn: updateLead,
+    onSuccess: () => {
+      openSnackbar("leadUpdatedSuccess");
+      queryClient.invalidateQueries({ queryKey: ["lead", _id] });
+    },
+    onError: (error) => openSnackbar(error.message, "error"),
+  });
+};
 
 // // Hook to delete a customer
 // export const useDeleteCustomer = () => {

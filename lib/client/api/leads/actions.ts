@@ -15,13 +15,21 @@ export const getLeadById = async (id: string): Promise<LeadType> => {
   return response.data.data;
 };
 
-export const createLead = async (data: any) => {
+export const createLead = async (data: LeadType): Promise<any> => {
   const response = await apiClient.post(path, data);
   return response.data;
 };
 
-export const updateLead = async (id: string, data: any) => {
-  const response = await apiClient.put(`${path}/${id}`, data);
+type UpdateLeadArgs = {
+  _id: number;
+  data: LeadType;
+};
+
+export const updateLead = async ({
+  _id,
+  data,
+}: UpdateLeadArgs): Promise<any> => {
+  const response = await apiClient.patch(`${path}?_id=${_id}`, data);
   return response.data;
 };
 

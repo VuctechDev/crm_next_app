@@ -16,6 +16,7 @@ import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import { useGetLeadById } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
+import { getCountryName } from "@/lib/client/getCountry";
 
 interface LeadPageProps {}
 
@@ -95,8 +96,11 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
             >
               <Typography>{data?.address}</Typography>
               <Typography>
-                {data?.postCode}, {data?.city} - {data?.country}
+                {data?.zip}, {data?.city}
               </Typography>
+              {data?.country && (
+                <Typography>{getCountryName(data?.country)}</Typography>
+              )}
             </Box>
           </Box>
 
@@ -155,7 +159,7 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
         </Button>
       </Card> */}
 
-         {/* {Object.entries(data).map(([key, value]) => (
+        {/* {Object.entries(data).map(([key, value]) => (
         <Typography>
           {t(key)}: {value}
         </Typography>
