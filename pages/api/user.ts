@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { authGuard } from "./auth/authMid";
 import { createNewUser, getUser } from "@/db/users";

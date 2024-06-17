@@ -3,7 +3,7 @@ import * as Yup from "yup";
 
 const dev = process.env.NODE_ENV === "development";
 
-export const initialValues = !dev
+export const initialValues = dev
   ? {
       firstName: "Igor",
       lastName: "Djukic",

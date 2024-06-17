@@ -12,17 +12,29 @@ import {
 } from "@/lib/client/api/organization/queries";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 
-export const initialValues = {
-  name: "ELAS doo",
-  industry: "Metal",
-  yourRole: "Sales Manager",
-  website: "https://www.elas.ba",
-  // website: "https://www.",
-  address: "Ramici bb",
-  city: "Banja Luka",
-  zip: "78000",
-  country: { name: "", iso3: "", iso: "", phoneCode: "" },
-};
+const dev = process.env.NODE_ENV === "development";
+
+export const initialValues = dev
+  ? {
+      name: "ELAS doo",
+      industry: "Metal",
+      yourRole: "Sales Manager",
+      website: "https://www.elas.ba",
+      address: "Ramici bb",
+      city: "Banja Luka",
+      zip: "78000",
+      country: { name: "", iso3: "", iso: "", phoneCode: "" },
+    }
+  : {
+      name: "",
+      industry: "",
+      yourRole: "",
+      website: "",
+      address: "",
+      city: "",
+      zip: "",
+      country: { name: "", iso3: "", iso: "", phoneCode: "" },
+    };
 
 export type InitialValues = typeof initialValues;
 

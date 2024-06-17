@@ -58,18 +58,24 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
           </Typography>
           <Typography variant="h5">{data?.role}</Typography>
 
-          <Box sx={{ display: "flex", alignItems: "center", mt: "8px" }}>
-            <AlternateEmailIcon sx={{ mr: "10px" }} />
-            <Typography> {data?.email}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <SmartphoneIcon sx={{ mr: "10px" }} />
-            <Typography> {data?.mobile}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <PhoneEnabledIcon sx={{ mr: "10px" }} />
-            <Typography> {data?.phone}</Typography>
-          </Box>
+          {data?.email && (
+            <Box sx={{ display: "flex", alignItems: "center", mt: "8px" }}>
+              <AlternateEmailIcon sx={{ mr: "10px" }} />
+              <Typography> {data?.email}</Typography>
+            </Box>
+          )}
+          {data?.mobile && (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <SmartphoneIcon sx={{ mr: "10px" }} />
+              <Typography> {data?.mobile}</Typography>
+            </Box>
+          )}
+          {data?.phone && (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <PhoneEnabledIcon sx={{ mr: "10px" }} />
+              <Typography> {data?.phone}</Typography>
+            </Box>
+          )}
         </Box>
         <Card
           sx={{
@@ -83,8 +89,12 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
             minWidth: "300px",
           }}
         >
-          <Typography variant="h4">{data?.company}</Typography>
-          <Typography variant="h5">{data?.industry}</Typography>
+          {data?.company && (
+            <Typography variant="h4">{data?.company}</Typography>
+          )}
+          {data?.industry && (
+            <Typography variant="h5">{data?.industry}</Typography>
+          )}
           <Box sx={{ display: "flex", alignItems: "center", mt: "20px" }}>
             <LocationOnIcon sx={{ mr: "10px" }} />
             <Box
@@ -95,19 +105,25 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
               }}
             >
               <Typography>{data?.address}</Typography>
-              <Typography>
-                {data?.zip}, {data?.city}
-              </Typography>
+              {(data?.zip || data?.city) && (
+                <Typography>
+                  {data?.zip && data?.city
+                    ? `${data?.zip}, ${data?.city}`
+                    : `${data?.zip} ${data?.city}`}
+                </Typography>
+              )}
               {data?.country && (
                 <Typography>{getCountryName(data?.country)}</Typography>
               )}
             </Box>
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", mb: "20px" }}>
-            <GroupIcon sx={{ mr: "10px" }} />
-            <Typography> {data?.employees}</Typography>
-          </Box>
+          {data?.employees && (
+            <Box sx={{ display: "flex", alignItems: "center", mb: "20px" }}>
+              <GroupIcon sx={{ mr: "10px" }} />
+              <Typography> {data.employees}</Typography>
+            </Box>
+          )}
           {data?.website && (
             <a href={data?.website} target="_blak">
               <Button variant="outlined" color="info">

@@ -13,16 +13,29 @@ import { phone } from "phone";
 import { useRouter } from "next/router";
 import SubmitButton from "../fields/SubmitButton";
 
-export const initialValues = {
-  firstName: "",
-  lastName: "",
-  phone: "+33642792263",
-  email: "",
-  address: "",
-  city: "",
-  zip: "",
-  country: { name: "", iso3: "", iso: "", phoneCode: "" },
-};
+const dev = process.env.NODE_ENV === "development";
+
+export const initialValues = dev
+  ? {
+      firstName: "",
+      lastName: "",
+      phone: "+33642792263",
+      email: "",
+      address: "",
+      city: "",
+      zip: "",
+      country: { name: "", iso3: "", iso: "", phoneCode: "" },
+    }
+  : {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      email: "",
+      address: "",
+      city: "",
+      zip: "",
+      country: { name: "", iso3: "", iso: "", phoneCode: "" },
+    };
 
 export type InitialValues = typeof initialValues;
 

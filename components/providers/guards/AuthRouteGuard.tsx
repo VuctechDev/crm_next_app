@@ -50,13 +50,12 @@ const RouteGuard: FC<RouteGuardProps> = ({ children }): ReactElement => {
       return;
     }
 
-    const handleRedirect = (path: string, delay: number = 500) => {
+    const handleRedirect = (path: string) => {
       replace(path);
-      // setTimeout(() => {
-      setChecking(false);
-      // }, delay);
+      setTimeout(() => {
+        setChecking(false);
+      }, 500);
     };
-
 
     if (user) {
       if (!user.firstName) {

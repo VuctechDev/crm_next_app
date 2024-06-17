@@ -12,10 +12,17 @@ import SubmitButton from "@/components/forms/fields/SubmitButton";
 import PublicPageWrapper from "@/components/page-layout/PublicPageWrapper";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 
-export const initialValues = {
-  email: "stefan8vucic@gmail.com",
-  password: "Aa123123@",
-};
+const dev = process.env.NODE_ENV === "development";
+
+export const initialValues = dev
+  ? {
+      email: "stefan8vucic@gmail.com",
+      password: "Aa123123@",
+    }
+  : {
+      email: "",
+      password: "",
+    };
 
 export type InitialValues = typeof initialValues;
 
