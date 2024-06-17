@@ -8,13 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Theme, CSSObject } from "@mui/material/styles";
-import TagIcon from "@mui/icons-material/Tag";
-import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import DrawerItem from "./DrawerItem";
 import { useGetUser } from "@/lib/client/api/user/queries";
@@ -22,8 +16,8 @@ import Button from "@mui/material/Button";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import { Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
-import { useQueryClient } from "@tanstack/react-query";
 import { ROUTES } from "../providers/guards/AuthRouteGuard";
+import { useLogout } from "@/lib/client/api/auth/queries";
 
 export interface DrawerItemType {
   label: string;
@@ -49,40 +43,40 @@ const drawerItems = [
       },
     ],
   },
-  {
-    label: "tags",
-    icon: <TagIcon />,
-    href: "/tags",
-    nestedLinks: [],
-  },
-  {
-    label: "email",
-    icon: <EmailOutlinedIcon />,
-    href: "/mailing",
-    nestedLinks: [
-      {
-        label: "new",
-        icon: <ForwardToInboxOutlinedIcon />,
-        href: "/mailing/new",
-      },
-      {
-        label: "templates",
-        icon: <DescriptionOutlinedIcon />,
-        href: "/mailing/templates",
-      },
-      {
-        label: "mailingLists",
-        icon: <FormatListBulletedOutlinedIcon />,
-        href: "/mailing/lists",
-      },
-    ],
-  },
-  {
-    label: "usage",
-    icon: <BarChartOutlinedIcon />,
-    href: "/usage",
-    nestedLinks: [],
-  },
+  // {
+  //   label: "tags",
+  //   icon: <TagIcon />,
+  //   href: "/tags",
+  //   nestedLinks: [],
+  // },
+  // {
+  //   label: "email",
+  //   icon: <EmailOutlinedIcon />,
+  //   href: "/mailing",
+  //   nestedLinks: [
+  //     {
+  //       label: "new",
+  //       icon: <ForwardToInboxOutlinedIcon />,
+  //       href: "/mailing/new",
+  //     },
+  //     {
+  //       label: "templates",
+  //       icon: <DescriptionOutlinedIcon />,
+  //       href: "/mailing/templates",
+  //     },
+  //     {
+  //       label: "mailingLists",
+  //       icon: <FormatListBulletedOutlinedIcon />,
+  //       href: "/mailing/lists",
+  //     },
+  //   ],
+  // },
+  // {
+  //   label: "usage",
+  //   icon: <BarChartOutlinedIcon />,
+  //   href: "/usage",
+  //   nestedLinks: [],
+  // },
 ];
 
 const drawerWidth = 240;
@@ -114,14 +108,12 @@ const PageLayout: FC<PageLayoutProps> = ({
 }): ReactElement => {
   const { t } = useTranslation();
   const { data: user } = useGetUser();
+  const { mutate } = useLogout();
   const [open, setOpen] = React.useState(true);
-  const queryClient = useQueryClient();
 
   const handleLogout = async () => {
     try {
-      queryClient.resetQueries({ queryKey: ["user"] });
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+      mutate();
     } catch (error) {
       console.log(error);
     }

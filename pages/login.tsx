@@ -1,5 +1,4 @@
 import React, { FC, ReactElement } from "react";
-import { useLogin } from "@/lib/client/api/auth/actions";
 import { Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -11,6 +10,7 @@ import FormFields from "@/components/forms/login/FormFields";
 import SubmitButton from "@/components/forms/fields/SubmitButton";
 import PublicPageWrapper from "@/components/page-layout/PublicPageWrapper";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
+import { useLogin } from "@/lib/client/api/auth/queries";
 
 const dev = process.env.NODE_ENV === "development";
 

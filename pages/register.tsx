@@ -1,5 +1,4 @@
 import React, { FC, ReactElement } from "react";
-import { useRegister } from "@/lib/client/api/auth/actions";
 import { useRouter } from "next/router";
 import { Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
@@ -11,6 +10,7 @@ import FormFields from "@/components/forms/register/FormFields";
 import SubmitButton from "@/components/forms/fields/SubmitButton";
 import PublicPageWrapper from "@/components/page-layout/PublicPageWrapper";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
+import { useRegister } from "@/lib/client/api/auth/queries";
 
 export const initialValues = {
   email: "",
