@@ -38,18 +38,23 @@ const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
       <PageContentWrapper title="addNewLeads">
         <Box
           width={1}
-          sx={{
+          sx={(t) => ({
             display: "flex",
-            minHeight: "800px",
+            minHeight: "600px",
             justifyContent: "center",
             alignItems: "center",
-          }}
+            [t.breakpoints.down("sm")]: {
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              rowGap: "24px",
+            },
+          })}
         >
           {options.map((item) => (
             <Link href={item.href} key={item.label}>
               <Card
                 elevation={3}
-                sx={{
+                sx={(t) => ({
                   mx: "30px",
                   width: "260px",
                   height: "180px",
@@ -63,7 +68,12 @@ const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
                   "&:hover": {
                     transform: "scale(1.05)",
                   },
-                }}
+                  [t.breakpoints.down("sm")]: {
+                    mx: "0px",
+                    width: "220px",
+                    height: "120px",
+                  },
+                })}
               >
                 <Typography variant="h6">{t(item.label)}</Typography>
                 <Box sx={{ mt: "16px" }}>{item.icon}</Box>

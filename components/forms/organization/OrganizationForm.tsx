@@ -58,7 +58,7 @@ const validationSchema = Yup.object().shape({
 interface OrganizationFormProps {}
 
 const OrganizationForm: FC<OrganizationFormProps> = (): ReactElement => {
-  const { asPath, push } = useRouter();
+  const { asPath } = useRouter();
   const { mutateAsync: createOrganization } = useCreateOrganization();
   const { mutateAsync: updateOrganization } = useUpdateOrganization();
   const { t } = useTranslation();
@@ -78,7 +78,6 @@ const OrganizationForm: FC<OrganizationFormProps> = (): ReactElement => {
           role: values?.yourRole,
         });
       }
-      push(ROUTES.HOME);
     } catch (error) {
       console.error(error);
     }

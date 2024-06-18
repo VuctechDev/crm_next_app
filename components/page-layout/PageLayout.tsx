@@ -7,14 +7,14 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Theme, CSSObject } from "@mui/material/styles";
+import { Theme, CSSObject, useTheme } from "@mui/material/styles";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import DrawerItem from "./DrawerItem";
 import { useGetUser } from "@/lib/client/api/user/queries";
 import Button from "@mui/material/Button";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { ROUTES } from "../providers/guards/AuthRouteGuard";
 import { useLogout } from "@/lib/client/api/auth/queries";
@@ -109,7 +109,10 @@ const PageLayout: FC<PageLayoutProps> = ({
   const { t } = useTranslation();
   const { data: user } = useGetUser();
   const { mutate } = useLogout();
-  const [open, setOpen] = React.useState(true);
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [open, setOpen] = React.useState(!smDown);
 
   const handleLogout = async () => {
     try {
@@ -169,20 +172,21 @@ const PageLayout: FC<PageLayoutProps> = ({
               </React.Fragment>
             ))}
           </List>
-          <Box
-            width={1}
-            sx={{
-              height: "100%",
-              flexGrow: 1,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              pb: "20px",
-              rowGap: "16px",
-            }}
-          >
-            {/* <Card
+          {open && (
+            <Box
+              width={1}
+              sx={{
+                height: "100%",
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                pb: "20px",
+                rowGap: "16px",
+              }}
+            >
+              {/* <Card
               sx={{
                 // height: "100%",
                 // flexGrow: 1,
@@ -194,18 +198,22 @@ const PageLayout: FC<PageLayoutProps> = ({
                 rowGap: "16px",
               }}
             > */}
-            <Button
-              // size="small"
-              variant="outlined"
-              onClick={handleLogout}
-            >
-              {t("logout")}
-            </Button>
-            <Typography variant="body2">
-              {t("lastLogin")}: {getDisplayDateTime(user?.lastLogin)}
-            </Typography>
-            {/* </Card> */}
-          </Box>
+              <Typography>
+                {t("Hi")}, {user?.firstName}
+              </Typography>
+              <Button
+                // size="small"
+                variant="outlined"
+                onClick={handleLogout}
+              >
+                {t("logout")}
+              </Button>
+              <Typography variant="body2">
+                {t("lastLogin")}: {getDisplayDateTime(user?.lastLogin)}
+              </Typography>
+              {/* </Card> */}
+            </Box>
+          )}
         </Drawer>
       )}
       <>{children}</>

@@ -24,14 +24,17 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
   return (
     <Box
       component="main"
-      sx={{
+      sx={(t) => ({
         flexGrow: 1,
         p: "48px 32px",
         minHeight: "98vh",
         height: "fit-content",
         display: "flex",
         flexDirection: "column",
-      }}
+        [t.breakpoints.down("sm")]: {
+          p: "20px"
+        },
+      })}
     >
       <Box
         sx={{
