@@ -18,7 +18,7 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
   center,
   lastBreadcrumb,
   children,
-  actions
+  actions,
 }): ReactElement => {
   const { t } = useTranslation();
   return (
@@ -31,8 +31,9 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
         height: "fit-content",
         display: "flex",
         flexDirection: "column",
+        overflowX: "auto",
         [t.breakpoints.down("sm")]: {
-          p: "20px"
+          p: "20px",
         },
       })}
     >
@@ -52,7 +53,15 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
           )}
           <Breadcrumbs aria-label="breadcrumb" lastValue={lastBreadcrumb} />
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", flexGrow: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            flexGrow: 1,
+            columnGap: "28px",
+            pl: "36px",
+          }}
+        >
           {actions}
         </Box>
       </Box>
@@ -62,11 +71,11 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
         sx={{
           flexGrow: 1,
           pt: "50px",
-
           display: "flex",
           justifyContent: center ? "center" : "unset",
           flexDirection: "column",
           alignItems: center ? "center" : "unset",
+          // overflowX: "auto",
         }}
       >
         {children}

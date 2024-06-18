@@ -15,7 +15,6 @@ router
   .get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     const { userId } = req.headers;
     let user = await getUser(userId);
-    console.log("USER: ", user);
     if (!user) {
       return res.status(401).json({ message: "notAuthorizedException" });
     }

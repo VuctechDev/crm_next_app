@@ -2,9 +2,10 @@ import React, { FC, ReactElement } from "react";
 import { useFormikContext } from "formik";
 import { InitialValues } from "@/pages/login";
 import { useTranslation } from "next-i18next";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import TextField from "../fields/TextField";
 import PasswordField from "../fields/PasswordField";
+import FieldLabel from "../fields/FieldLabel";
 
 type Keys = "email" | "password";
 
@@ -24,9 +25,7 @@ const FormFields: FC<FormFieldsProps> = (): ReactElement => {
   return (
     <Grid container rowGap={1}>
       <Grid xs={12} item>
-        <Typography variant="body2" mb="6px">
-          {t("email")}
-        </Typography>
+        <FieldLabel label="email" />
         <TextField
           elementProps={{ ...getFieldProps("email") }}
           error={getErrorMessage("email")}

@@ -199,7 +199,7 @@ const PageLayout: FC<PageLayoutProps> = ({
               }}
             > */}
               <Typography>
-                {t("Hi")}, {user?.firstName}
+                {t("hi")}, {user?.firstName}
               </Typography>
               <Button
                 // size="small"

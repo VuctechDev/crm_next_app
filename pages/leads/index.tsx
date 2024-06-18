@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useState } from "react";
+import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 import Card from "@mui/material/Card";
 import { useRouter } from "next/navigation";
@@ -6,14 +6,20 @@ import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useSnackbar } from "@/components/providers/SnackbarContext";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useGetLeads } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
-import { getCountry, getCountryName } from "@/lib/client/getCountry";
+import { getCountryName } from "@/lib/shared/getCountry";
+import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import { handleFileDownload } from "@/lib/client/api/utils/downloadFile";
+import FieldLabel from "@/components/forms/fields/FieldLabel";
+import ConfirmationModal from "@/components/ConfirmationModal";
+import { getCSVFileName } from "@/lib/client/getCSVFileName";
+import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 
 interface LeadsPageProps {
   params: { locale: string };
@@ -30,12 +36,14 @@ const headers = [
 ];
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
-  const { openSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const router = useRouter();
 
   const [query, setQuery] = useState("page=0&limit=10");
-  const { data, isLoading, error } = useGetLeads(query);
+  const { data, isLoading } = useGetLeads(query);
+
+  const [csvModalOpen, setCSVModalOpen] = useState(false);
+  const inputRef = useRef("");
 
   const keys = [
     {
@@ -69,31 +77,56 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     },
   ];
 
+  const handleCSVModal = () => setCSVModalOpen((prev) => !prev);
+
+  const handleExport = async () => {
+    await handleFileDownload({ fileName: inputRef.current, query });
+  };
+
   const handleQueryChange = (query: string) => {
     setQuery(query);
   };
 
   useEffect(() => {
-    if (error) {
-      openSnackbar(error?.message ?? "", "error");
-    }
-  }, [error]);
-
+    inputRef.current = `${t("leads")} ${getCSVFileName(
+      query
+    )} - ${getDisplayDateTime()}`;
+  }, [query]);
   return (
     <PageLayout>
       <PageContentWrapper
         title="leads"
         actions={
-          <Link href={ROUTES.LEADS.ADD.ROOT}>
-            <Button variant="outlined" color="primary">
-              {t("add")}
+          <>
+            <Link href={ROUTES.LEADS.ADD.ROOT}>
+              <Button
+                variant="outlined"
+                color="info"
+                startIcon={<GroupAddOutlinedIcon />}
+              >
+                {t("add")}
+              </Button>
+            </Link>
+            <Button
+              variant="outlined"
+              color="info"
+              startIcon={<FileDownloadIcon />}
+              onClick={handleCSVModal}
+            >
+              {t("exportCSV")}
             </Button>
-          </Link>
+          </>
         }
       >
         <Card
           elevation={1}
-          sx={{ p: "0px", height: "1", borderRadius: "20px", width: "100%" }}
+          sx={{
+            p: "0px",
+            height: "1",
+            borderRadius: "20px",
+            width: "100%",
+            minWidth: "600px",
+          }}
         >
           <TableWrapper
             data={data?.data ?? []}
@@ -110,6 +143,22 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
             filterKeys={["role", "industry", "country"]}
           />
         </Card>
+        {csvModalOpen && (
+          <ConfirmationModal
+            title="exportCSV"
+            onCancel={handleCSVModal}
+            onConfirm={handleExport}
+          >
+            <>
+              <FieldLabel label="fileName" />
+              <TextField
+                onChange={(e) => (inputRef.current = e.target.value)}
+                fullWidth
+                defaultValue={inputRef.current}
+              />
+            </>
+          </ConfirmationModal>
+        )}
       </PageContentWrapper>
     </PageLayout>
   );

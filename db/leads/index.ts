@@ -3,6 +3,7 @@ import { query } from "..";
 import { parseHTTPS } from "../helpers";
 import { handleRequestQuery } from "../helpers/handleRequestQuery";
 import { getChangedValuesQuery } from "@/lib/shared/getChangedValues";
+import { getCountryName } from "@/lib/shared/getCountry";
 
 export interface LeadType {
   _id: number;
@@ -81,7 +82,7 @@ export const insertNewLead = async (data: LeadType, payload: Payload) => {
   }
 };
 
-export const getLeads = async (
+export const getPaginatedLeads = async (
   filters: Record<string, string>,
   owner: string
 ): Promise<{
@@ -93,12 +94,43 @@ export const getLeads = async (
     const total = (await query(
       `SELECT COUNT(*) AS total FROM ${tableName} ${filtersQuery}`
     )) as [{ total: number }];
-    console.log("TOT: ", total);
     const offset = +filters?.page * +filters.limit;
     const data = await query(
       `SELECT * from ${tableName} ${filtersQuery} ORDER BY _id DESC LIMIT ${filters?.limit} OFFSET ${offset} `
     );
     return { data, total: total?.[0]?.total ?? 0 };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getCSVExportLeads = async (
+  filters: Record<string, string>,
+  owner: string
+): Promise<LeadType[]> => {
+  const filtersQuery = handleRequestQuery({ ...filters, owner });
+  try {
+    const data = await query<LeadType[]>(
+      `SELECT  
+        firstName,
+        lastName, 
+        email, 
+        phone, 
+        mobile, 
+        role, 
+        company, 
+        website,
+        industry, 
+        employees, 
+        address, 
+        zip, 
+        city,
+        country, 
+        description, 
+        created
+        FROM ${tableName} ${filtersQuery} ORDER BY _id DESC`
+    );
+    return data.map((x) => ({ ...x, country: getCountryName(x.country) }));
   } catch (error) {
     throw error;
   }

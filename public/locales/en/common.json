@@ -79,5 +79,9 @@
   "description": "Description",
   "editLead": "Edit lead",
   "edit": "Edit",
-  "update": "Update"
+  "update": "Update",
+  "exportCSV": "Export CSV",
+  "confirm": "Confirm",
+  "fileName": "File Name", 
+  "hi": "Hi"
 }

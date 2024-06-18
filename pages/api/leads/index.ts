@@ -1,6 +1,6 @@
 import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import { getLeads, insertNewLead, updateLead } from "@/db/leads";
+import { getPaginatedLeads, insertNewLead, updateLead } from "@/db/leads";
 import { authGuard } from "../auth/authMid";
 import { NextApiRequestExtended } from "@/types/reaquest";
 
@@ -11,7 +11,7 @@ router
   .get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     const filters = req.query as Record<string, string>;
     const { organizationId } = req.headers;
-    const data = await getLeads(filters, organizationId);
+    const data = await getPaginatedLeads(filters, organizationId);
     res.status(200).json(data);
   })
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {

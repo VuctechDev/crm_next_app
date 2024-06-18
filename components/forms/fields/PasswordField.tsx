@@ -4,9 +4,8 @@ import { useFormikContext } from "formik";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { useTranslation } from "next-i18next";
 import PasswordStrength from "./PasswordStrength";
+import FieldLabel from "./FieldLabel";
 
 interface PasswordFieldProps {
   withConfirmation?: boolean;
@@ -19,7 +18,6 @@ const PasswordField: FC<PasswordFieldProps> = ({
   error,
   confirmError,
 }): ReactElement => {
-  const { t } = useTranslation();
   const [type, setType] = useState("password");
   const { getFieldProps } = useFormikContext<any>();
 
@@ -27,14 +25,7 @@ const PasswordField: FC<PasswordFieldProps> = ({
   return (
     <>
       <Grid item xs={12} sx={{ position: "relative" }}>
-        <Typography
-          variant="body2"
-          sx={{
-            mb: "6px",
-          }}
-        >
-          {t("password")}
-        </Typography>
+        <FieldLabel label="password" />
         <TextField
           elementProps={{ ...getFieldProps("password") }}
           error={error}
@@ -68,14 +59,7 @@ const PasswordField: FC<PasswordFieldProps> = ({
       </Grid>
       {withConfirmation && (
         <Grid width={1} item xs={12}>
-          <Typography
-            variant="body2"
-            sx={{
-              mb: "6px",
-            }}
-          >
-            {t("confirmPassword")}
-          </Typography>
+          <FieldLabel label="confirmPassword" />
           <TextField
             elementProps={{ ...getFieldProps("confirmPassword") }}
             error={confirmError as string}

@@ -1,4 +1,4 @@
-import { countries } from "../shared/consts/countries";
+import { countries } from "./consts/countries";
 
 export const getCountry = (iso3: string) => {
   if (!iso3) {
