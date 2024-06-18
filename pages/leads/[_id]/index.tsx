@@ -16,7 +16,7 @@ import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import { useGetLeadById } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
-import { getCountryName } from "@/lib/client/getCountry";
+import { getCountryName } from "@/lib/shared/getCountry";
 
 interface LeadPageProps {}
 

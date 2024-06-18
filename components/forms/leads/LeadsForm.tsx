@@ -10,7 +10,7 @@ import { useCreateLead, useUpdateLead } from "@/lib/client/api/leads/queries";
 import FormFields from "./FormFields";
 import { LeadType } from "@/db/leads";
 import { getChangedValues } from "@/lib/shared/getChangedValues";
-import { getCountry } from "@/lib/client/getCountry";
+import { getCountry } from "@/lib/shared/getCountry";
 
 interface LeadsFormProps {
   data?: LeadType;
