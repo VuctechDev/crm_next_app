@@ -78,7 +78,7 @@ const Register: FC = (): ReactElement => {
         {({ isSubmitting }) => (
           <Form>
             <FormFields />
-            <SubmitButton loading={isSubmitting} label={t("signin")} />
+            <SubmitButton loading={isSubmitting} label={t("register")} />
           </Form>
         )}
       </Formik>

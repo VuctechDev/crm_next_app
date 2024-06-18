@@ -38,7 +38,7 @@ const Login: FC = (): ReactElement => {
   const { t } = useTranslation();
   const { mutateAsync } = useLogin();
 
-  const email = getSearchQuery("email") || "stefan8vucic@gmail.com";
+  const email = getSearchQuery("email");
 
   const handleSubmit = async (values: InitialValues) => {
     try {

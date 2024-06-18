@@ -7,12 +7,9 @@ import { countries } from "@/lib/shared/consts/countries";
 import { NextApiRequestExtended } from "@/types/reaquest";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
-// email
-// :
-// "nemanja.elas@gmail.com"
-// password
-// :
-// "Lesinari1987@"
+// nemanja.elas@gmail.com
+// Lesinari1987@
+
 router
   .use(authGuard)
   .get(async (req: NextApiRequestExtended, res: NextApiResponse) => {

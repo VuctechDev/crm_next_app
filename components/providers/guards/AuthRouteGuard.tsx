@@ -52,15 +52,18 @@ const RouteGuard: FC<RouteGuardProps> = ({ children }): ReactElement => {
 
     const handleRedirect = (path: string) => {
       replace(path);
-      setTimeout(() => {
-        setChecking(false);
-      }, 500);
     };
 
+    console.log(asPath, user, isLoading);
+
     if (user) {
-      if (!user.firstName) {
+      if (!user.firstName && asPath !== ROUTES.ONBOARDING.USER) {
         handleRedirect(ROUTES.ONBOARDING.USER);
-      } else if (!user.organization) {
+      } else if (
+        !user.organization &&
+        !!user.firstName &&
+        asPath !== ROUTES.ONBOARDING.ORGANIZATION
+      ) {
         handleRedirect(ROUTES.ONBOARDING.ORGANIZATION);
       } else if (publicPages.includes(path)) {
         handleRedirect(ROUTES.HOME);
