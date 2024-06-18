@@ -112,6 +112,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
               color="info"
               startIcon={<FileDownloadIcon />}
               onClick={handleCSVModal}
+              disabled={!data?.data?.length}
             >
               {t("exportCSV")}
             </Button>

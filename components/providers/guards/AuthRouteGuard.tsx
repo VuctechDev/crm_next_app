@@ -65,10 +65,13 @@ const RouteGuard: FC<RouteGuardProps> = ({ children }): ReactElement => {
         asPath !== ROUTES.ONBOARDING.ORGANIZATION
       ) {
         handleRedirect(ROUTES.ONBOARDING.ORGANIZATION);
-      } else if (asPath === ROUTES.ONBOARDING.ORGANIZATION && !!user.organization) {
-        handleRedirect(ROUTES.HOME);
+      } else if (
+        asPath === ROUTES.ONBOARDING.ORGANIZATION &&
+        !!user.organization
+      ) {
+        handleRedirect(ROUTES.LEADS.ROOT);
       } else if (publicPages.includes(path)) {
-        handleRedirect(ROUTES.HOME);
+        handleRedirect(ROUTES.LEADS.ROOT);
       } else {
         setChecking(false);
       }
