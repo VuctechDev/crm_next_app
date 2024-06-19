@@ -10,8 +10,8 @@ export const getLeads = async (
   return response.data;
 };
 
-export const getLeadById = async (id: string): Promise<LeadType> => {
-  const response = await apiClient.get(`${path}/${id}`);
+export const getLeadById = async (_id: string): Promise<LeadType> => {
+  const response = await apiClient.get(`${path}/${_id}`);
   return response.data.data;
 };
 
@@ -33,7 +33,7 @@ export const updateLead = async ({
   return response.data;
 };
 
-export const deleteLead = async (id: string) => {
-  const response = await apiClient.delete(`${path}/${id}`);
+export const deleteLead = async (_id: string) => {
+  const response = await apiClient.delete(`${path}?_id=${_id}`);
   return response.data;
 };

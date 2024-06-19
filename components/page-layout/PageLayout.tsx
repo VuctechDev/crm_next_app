@@ -18,6 +18,7 @@ import { Typography, useMediaQuery } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { ROUTES } from "../providers/guards/AuthRouteGuard";
 import { useLogout } from "@/lib/client/api/auth/queries";
+import ThemeToggle from "../ThemeToggle";
 
 export interface DrawerItemType {
   label: string;
@@ -198,6 +199,7 @@ const PageLayout: FC<PageLayoutProps> = ({
                 rowGap: "16px",
               }}
             > */}
+              <ThemeToggle />
               <Typography>
                 {t("hi")}, {user?.firstName}
               </Typography>

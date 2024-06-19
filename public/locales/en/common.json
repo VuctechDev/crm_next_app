@@ -75,6 +75,7 @@
   "newLead": "Create new lead",
   "leadCreatedSuccess": "New lead created successfully",
   "leadUpdatedSuccess": "Lead data updated successfully",
+  "leadDeletedSuccess": "Lead data deleted successfully",
   "employees": "Employees",
   "description": "Description",
   "editLead": "Edit lead",
@@ -82,6 +83,10 @@
   "update": "Update",
   "exportCSV": "Export CSV",
   "confirm": "Confirm",
-  "fileName": "File Name", 
-  "hi": "Hi"
+  "fileName": "File Name",
+  "hi": "Hi",
+  "all": "All",
+  "delete": "Delete",
+  "deleteLeadConfirmation": "A deleted data cannot be restored. All data will be permanently removed. Remove?",
+  "deleteLead": "Delete Lead"
 }

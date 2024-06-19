@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement, useState } from "react";
 import Box from "@mui/material/Box";
 import { useParams } from "next/navigation";
 import { Button, Card, Typography } from "@mui/material";
@@ -13,10 +13,17 @@ import GroupIcon from "@mui/icons-material/Group";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Link from "next/link";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
-import { useGetLeadById } from "@/lib/client/api/leads/queries";
+import {
+  useDeleteCustomer,
+  useGetLeadById,
+} from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 import { getCountryName } from "@/lib/shared/getCountry";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import LoadingOverlayer from "@/components/LoadingOverlayer";
+import ConfirmationModal from "@/components/ConfirmationModal";
+import { useRouter } from "next/router";
 
 interface LeadPageProps {}
 
@@ -24,10 +31,25 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
   const { t } = useTranslation();
 
   const params = useParams() as { _id: string };
+  const { push } = useRouter();
   const { data, isLoading } = useGetLeadById(params?._id);
+  const { mutateAsync } = useDeleteCustomer(params?._id);
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const handleDeleteModal = () => setDeleteModalOpen((prev) => !prev);
+
+  const handleDelete = async () => {
+    try {
+      await mutateAsync(params?._id);
+      push(`${ROUTES.LEADS.ROOT}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <LoadingOverlayer />;
   }
 
   const name = data?.firstName + " " + data?.lastName;
@@ -38,11 +60,24 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
         title={name}
         lastBreadcrumb={data?.firstName}
         actions={
-          <Link href={`${ROUTES.LEADS.EDIT.ROOT}/${params?._id}`}>
-            <Button variant="contained" color="primary">
-              {t("edit")}
+          <>
+            <Link href={`${ROUTES.LEADS.EDIT.ROOT}/${params?._id}`}>
+              <Button
+                variant="outlined"
+                color="info"
+                startIcon={<BorderColorIcon />}
+              >
+                {t("edit")}
+              </Button>
+            </Link>
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={handleDeleteModal}
+            >
+              {t("delete")}
             </Button>
-          </Link>
+          </>
         }
       >
         <Box
@@ -190,6 +225,14 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
           sx={{ maxWidth: "800px", mt: "50px" }}
         />
       </Card> */}
+        {deleteModalOpen && (
+          <ConfirmationModal
+            title="deleteLead"
+            message="deleteLeadConfirmation"
+            onCancel={handleDeleteModal}
+            onConfirm={handleDelete}
+          />
+        )}
       </PageContentWrapper>
     </PageLayout>
   );

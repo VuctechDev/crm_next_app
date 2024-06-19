@@ -1,6 +1,11 @@
 import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import { getPaginatedLeads, insertNewLead, updateLead } from "@/db/leads";
+import {
+  archiveLead,
+  getPaginatedLeads,
+  insertNewLead,
+  updateLead,
+} from "@/db/leads";
 import { authGuard } from "../auth/authMid";
 import { NextApiRequestExtended } from "@/types/reaquest";
 
@@ -30,6 +35,16 @@ router
     }
 
     await updateLead(req.body, _id);
+
+    res.status(200).json({ success: true });
+  })
+  .delete(async (req: NextApiRequestExtended, res: NextApiResponse) => {
+    const _id = req.query._id as string;
+    if (!_id) {
+      return res.status(404).json({ success: false, message: "notFound" });
+    }
+
+    await archiveLead(_id);
 
     res.status(200).json({ success: true });
   });

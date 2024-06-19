@@ -1,7 +1,20 @@
 "use client";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import {
+  createTheme,
+  CssBaseline,
+  Theme,
+  ThemeOptions,
+  ThemeProvider,
+} from "@mui/material";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { FC } from "react";
+import {
+  createContext,
+  FC,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -9,20 +22,7 @@ interface ProviderProps {
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
-const theme = createTheme({
-  palette: {
-    // mode: "light",
-    mode: "dark",
-    background: {
-      // default: "#E5E4E2",
-    },
-    primary: {
-      main: "#e07a5f",
-    },
-    secondary: {
-      main: "#e07a5f",
-    },
-  },
+const sharedTheme: ThemeOptions = {
   components: {
     MuiTooltip: {
       styleOverrides: {
@@ -86,7 +86,6 @@ const theme = createTheme({
       },
     },
   },
-
   typography: {
     fontFamily: jakarta.style.fontFamily,
     h2: {
@@ -105,7 +104,6 @@ const theme = createTheme({
       fontSize: "1rem",
     },
     body1: {
-      // color: "#c9c8c7",
       fontSize: "14px",
     },
     body2: {
@@ -113,15 +111,85 @@ const theme = createTheme({
       fontSize: "0.75rem",
     },
   },
+};
+
+const lightTheme = createTheme({
+  ...sharedTheme,
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#e07a5f",
+    },
+    secondary: {
+      main: "#e07a5f",
+    },
+  },
 });
 
+const darkTheme = createTheme({
+  ...sharedTheme,
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#e07a5f",
+    },
+    secondary: {
+      main: "#e07a5f",
+    },
+  },
+});
+
+type ThemeContextType = {
+  toggleTheme: () => void;
+  theme: Theme;
+  isDarkTheme: boolean;
+};
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
 const Provider: FC<ProviderProps> = ({ children }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
+
+  const theme = useMemo(
+    () => (isDarkTheme ? darkTheme : lightTheme),
+    [isDarkTheme]
   );
+  const toggleTheme = () => {
+    if (!isDarkTheme) {
+      window && window.localStorage.setItem("darkTheme", "true");
+    } else {
+      window && window.localStorage.removeItem("darkTheme");
+    }
+    setIsDarkTheme(!isDarkTheme);
+  };
+
+  const contextValue = useMemo(
+    () => ({ toggleTheme, theme, isDarkTheme }),
+    [theme]
+  );
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsDarkTheme(!!window.localStorage.getItem("darkTheme"));
+    }
+  }, []);
+
+  return (
+    <ThemeContext.Provider value={contextValue}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </ThemeContext.Provider>
+  );
+};
+
+export const useThemeContext = () => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error("useThemeContext must be used within a ThemeProvider");
+  }
+  return context;
 };
 
 export default Provider;

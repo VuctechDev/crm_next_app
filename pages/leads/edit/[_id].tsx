@@ -7,6 +7,7 @@ import LeadsForm from "@/components/forms/leads/LeadsForm";
 import Card from "@mui/material/Card";
 import { useParams } from "next/navigation";
 import { useGetLeadById } from "@/lib/client/api/leads/queries";
+import LoadingOverlayer from "@/components/LoadingOverlayer";
 
 interface EditLeadPageProps {}
 
@@ -15,7 +16,7 @@ const EditLeadPage: FC<EditLeadPageProps> = (): ReactElement => {
   const { data, isLoading } = useGetLeadById(params?._id);
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <LoadingOverlayer />;
   }
   const name = data?.firstName + " " + data?.lastName;
   return (

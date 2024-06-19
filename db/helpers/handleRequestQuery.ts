@@ -17,5 +17,5 @@ export const handleRequestQuery = (query: Record<string, string>): string => {
     }
   });
 
-  return result ? `WHERE ${result}` : "";
+  return result ? `WHERE ${result} AND archived = 0` : "";
 };

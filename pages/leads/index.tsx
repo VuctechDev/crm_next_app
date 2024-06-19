@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FC, ReactElement, useRef, useState } from "react";
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 import Card from "@mui/material/Card";
 import { useRouter } from "next/navigation";
@@ -79,19 +79,22 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
 
   const handleCSVModal = () => setCSVModalOpen((prev) => !prev);
 
-  const handleExport = async () => {
-    await handleFileDownload({ fileName: inputRef.current, query });
-  };
-
   const handleQueryChange = (query: string) => {
     setQuery(query);
   };
 
-  useEffect(() => {
-    inputRef.current = `${t("leads")} ${getCSVFileName(
-      query
-    )} - ${getDisplayDateTime()}`;
-  }, [query]);
+  const noFiltersLabel = `(${t("all")})`;
+  const defaultFileName = `${t("leads")} ${
+    getCSVFileName(query) ?? noFiltersLabel
+  } - ${getDisplayDateTime()}`;
+
+  const handleExport = async () => {
+    await handleFileDownload({
+      fileName: inputRef.current ?? defaultFileName,
+      query,
+    });
+  };
+
   return (
     <PageLayout>
       <PageContentWrapper
@@ -155,7 +158,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
               <TextField
                 onChange={(e) => (inputRef.current = e.target.value)}
                 fullWidth
-                defaultValue={inputRef.current}
+                defaultValue={defaultFileName}
               />
             </>
           </ConfirmationModal>

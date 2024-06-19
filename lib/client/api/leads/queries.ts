@@ -48,12 +48,16 @@ export const useUpdateLead = (_id: string) => {
   });
 };
 
-// // Hook to delete a customer
-// export const useDeleteCustomer = () => {
-//   const queryClient = useQueryClient();
-//   return useMutation(deleteCustomer, {
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(["customers"]);
-//     },
-//   });
-// };
+export const useDeleteCustomer = (_id: string) => {
+  const queryClient = useQueryClient();
+  const { openSnackbar } = useSnackbar();
+  return useMutation({
+    mutationFn: deleteLead,
+    onSuccess: () => {
+      openSnackbar("leadDeletedSuccess");
+      queryClient.invalidateQueries({ queryKey: ["leads"] });
+      queryClient.resetQueries({ queryKey: ["lead", _id] });
+    },
+    onError: (error) => openSnackbar(error.message, "error"),
+  });
+};

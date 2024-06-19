@@ -138,9 +138,10 @@ export const getCSVExportLeads = async (
 
 export const getLead = async (_id: string): Promise<LeadType | null> => {
   try {
-    const data = (await query(`SELECT * from ${tableName} WHERE _id = ? `, [
-      [_id],
-    ])) as LeadType[];
+    const data = (await query(
+      `SELECT * from ${tableName} WHERE _id = ? AND archived = 0`,
+      [[_id]]
+    )) as LeadType[];
     return data?.length ? data[0] : null;
   } catch (error) {
     throw error;
@@ -155,6 +156,19 @@ export const updateLead = async (
   try {
     const data = (await query(
       `UPDATE ${tableName} SET ${parsedQuery} WHERE _id = ${_id}`
+    )) as LeadType[];
+    return data?.length ? data[0] : {};
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const archiveLead = async (
+  _id: string
+): Promise<any> => {
+  try {
+    const data = (await query(
+      `UPDATE ${tableName} SET archived = 1 WHERE _id = ${_id}`
     )) as LeadType[];
     return data?.length ? data[0] : {};
   } catch (error) {

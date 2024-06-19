@@ -10,13 +10,13 @@ import AuthRouteGuard from "@/components/providers/guards/AuthRouteGuard";
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryProvider>
-      <AuthRouteGuard>
-        <ThemeProvider>
+      <ThemeProvider>
+        <AuthRouteGuard>
           <SnackbarProvider>
             <Component {...pageProps} />
           </SnackbarProvider>
-        </ThemeProvider>
-      </AuthRouteGuard>
+        </AuthRouteGuard>
+      </ThemeProvider>
     </QueryProvider>
   );
 };

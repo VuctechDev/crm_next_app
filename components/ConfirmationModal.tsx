@@ -34,21 +34,35 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
   };
   return (
     <Dialog open>
-      <Box sx={{ p: "30px" }}>
+      <Box
+        width={1}
+        sx={(t) => ({
+          p: "30px",
+          maxWidth: "400px",
+          [t.breakpoints.down("sm")]: {
+            p: "20px",
+          },
+        })}
+      >
         <Typography variant="h6">{t(title ?? "")}</Typography>
         {!!children && (
           <Box width={1} mt="32px">
             {children}
           </Box>
         )}
+        {!!message && <Typography sx={{ mt: "24px" }}>{t(message)}</Typography>}
 
         <Box
-          sx={{
+          sx={(t) => ({
             mt: "40px",
             minWidth: "320px",
             display: "flex",
             columnGap: "48px",
-          }}
+            [t.breakpoints.down("sm")]: {
+              minWidth: "260px",
+              columnGap: "32px",
+            },
+          })}
         >
           <Button onClick={onCancel} fullWidth disabled={loading}>
             {t("cancel")}
