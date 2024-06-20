@@ -50,8 +50,8 @@ const create_table_leads = `CREATE TABLE leads (
     owner INT,
     website VARCHAR(60), 
     archived TINYINT,
-    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) 
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) 
     ENGINE=InnoDB AUTO_INCREMENT=1000`;
 
 const create_table_auth = `CREATE TABLE auth (
@@ -65,7 +65,7 @@ const create_table_auth = `CREATE TABLE auth (
 const create_table_verification_sessions = `CREATE TABLE verification_sessions (
       _id INT PRIMARY KEY,
       code VARCHAR(20) NOT NULL,
-      created TIMESTAMP)`;
+      createdAt TIMESTAMP)`;
 
 const users = `CREATE TABLE users (
     _id INT PRIMARY KEY,
@@ -101,15 +101,26 @@ const organizations = `CREATE TABLE organizations (
   status VARCHAR(20) DEFAULT 'active'
 );`;
 
-const createTableQuery = organizations;
+const comments = `CREATE TABLE comments (
+  _id SERIAL PRIMARY KEY,
+  comment VARCHAR(255),
+  createdBy INT,
+  parent INT,
+  edited TINYINT DEFAULT 0,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`;
+
+const createTableQuery = comments;
 
 const createTable = async () => {
   try {
     await query(createTableQuery);
-    console.log("TABLE CREATED");
+    console.log(`TABLE CREATED`);
   } catch (error) {
     console.log(error);
   }
+  return true;
 };
 
 createTable();

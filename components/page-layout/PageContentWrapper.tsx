@@ -26,7 +26,7 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
       component="main"
       sx={(t) => ({
         flexGrow: 1,
-        p: "48px 32px",
+        p: "32px",
         minHeight: "98vh",
         height: "fit-content",
         display: "flex",
@@ -40,7 +40,7 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           flexGrow: 1,
           maxHeight: "80px",
         }}

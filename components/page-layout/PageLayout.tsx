@@ -173,6 +173,7 @@ const PageLayout: FC<PageLayoutProps> = ({
               </React.Fragment>
             ))}
           </List>
+          
           {open && (
             <Box
               width={1}

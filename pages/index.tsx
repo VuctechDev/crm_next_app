@@ -2,10 +2,13 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import PageLayout from "@/components/page-layout/PageLayout";
+import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
+import { useGetUser } from "@/lib/client/api/user/queries";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const { data: user } = useGetUser();
   return (
     <>
       <Head>
@@ -15,18 +18,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <PageLayout>
-        home
-        {/* <CountrySelect /> */}
-        {/* <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {a.map((item) => (
-            <div style={{ margin: "8px" }}>
-              <img
-                alt="imga"
-                src={`https://flagsapi.com/${item.iso}/shiny/32.png`}
-              />{" "}
-            </div>
-          ))}
-        </div> */}
+        <PageContentWrapper title={user?.organization?.name}><></></PageContentWrapper>
       </PageLayout>
     </>
   );

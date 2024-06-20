@@ -28,7 +28,7 @@ const query = (query, values) => {
   });
 };
 
-const dropTableQuery = "DROP TABLE verification_sessions2";
+const dropTableQuery = "DROP TABLE comments";
 
 const dropTable = async () => {
   try {

@@ -75,7 +75,7 @@
   "newLead": "Create new lead",
   "leadCreatedSuccess": "New lead created successfully",
   "leadUpdatedSuccess": "Lead data updated successfully",
-  "leadDeletedSuccess": "Lead data deleted successfully",
+  "leadDeletedSuccess": "Lead deleted successfully",
   "employees": "Employees",
   "description": "Description",
   "editLead": "Edit lead",
@@ -87,6 +87,11 @@
   "hi": "Hi",
   "all": "All",
   "delete": "Delete",
-  "deleteLeadConfirmation": "A deleted data cannot be restored. All data will be permanently removed. Remove?",
-  "deleteLead": "Delete Lead"
+  "deleteLeadConfirmation": "A deleted data cannot be restored. Delete?",
+  "deleteLead": "Delete Lead",
+  "newComment": "New Comment",
+  "loadMore": "Load More",
+  "deleteComment": "Delete Comment",
+  "commentCreatedSuccess": "New comment created successfully",
+  "commentDeletedSuccess": "Comment deleted successfully"
 }

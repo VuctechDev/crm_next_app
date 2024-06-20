@@ -18,7 +18,6 @@ function generateBreadcrumbs(url: string): { label: string; href: string }[] {
     const href = "/" + segments.slice(0, index + 1).join("/");
     return { label: segment, href };
   });
-
   return [{ label: "home", href: "/" }, ...breadcrumbs];
 }
 
@@ -28,6 +27,10 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ lastValue }): ReactElement => {
   const breadcrumbItems = path?.split("/");
 
   const data = generateBreadcrumbs(path);
+
+  if (data.length === 1) {
+    return <></>;
+  }
 
   return (
     <MuiBreadcrumbs aria-label="breadcrumb">

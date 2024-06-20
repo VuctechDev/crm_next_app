@@ -2,7 +2,7 @@
 import React, { FC, ReactElement, useState } from "react";
 import Box from "@mui/material/Box";
 import { useParams } from "next/navigation";
-import { Button, Card, Typography } from "@mui/material";
+import { Button, Card, Divider, Typography } from "@mui/material";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
@@ -24,6 +24,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import LoadingOverlayer from "@/components/LoadingOverlayer";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useRouter } from "next/router";
+import Comments from "@/components/comments/Comments";
 
 interface LeadPageProps {}
 
@@ -37,7 +38,7 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  const handleDeleteModal = () => setDeleteModalOpen((prev) => !prev);
+  const handleModal = () => setDeleteModalOpen((prev) => !prev);
 
   const handleDelete = async () => {
     try {
@@ -70,11 +71,7 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
                 {t("edit")}
               </Button>
             </Link>
-            <Button
-              color="error"
-              variant="outlined"
-              onClick={handleDeleteModal}
-            >
+            <Button color="error" variant="outlined" onClick={handleModal}>
               {t("delete")}
             </Button>
           </>
@@ -154,82 +151,26 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
           </Box>
 
           {data?.employees && (
-            <Box sx={{ display: "flex", alignItems: "center", mb: "20px" }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <GroupIcon sx={{ mr: "10px" }} />
               <Typography> {data.employees}</Typography>
             </Box>
           )}
           {data?.website && (
             <a href={data?.website} target="_blak">
-              <Button variant="outlined" color="info">
+              <Button variant="outlined" color="info" sx={{ mt: "20px" }}>
                 {t("website")}
               </Button>
             </a>
           )}
         </Card>
-
-        {/* <Card
-        sx={{
-          display: "inline-flex",
-          flexDirection: "column",
-          rowGap: "8px",
-          mt: "44px",
-          p: "32px",
-          borderRadius: "8px",
-          width: "fit-content",
-        }}
-      >
-        <Typography variant="h5">{t("tags")}</Typography>
-      </Card>
-      <Card
-        sx={{
-          display: "inline-flex",
-          flexDirection: "column",
-          rowGap: "8px",
-          mt: "44px",
-          p: "32px",
-          borderRadius: "8px",
-          width: "fit-content",
-        }}
-      >
-        <Typography variant="h5">{t("email")}</Typography>
-      </Card> */}
-        {/* <Card
-        sx={{
-          display: "inline-flex",
-          flexDirection: "column",
-          rowGap: "8px",
-          mt: "44px",
-          p: "32px",
-          borderRadius: "8px",
-          width: "fit-content",
-        }}
-      >
-        <Button variant="contained" color="error">
-          {t("delete")}
-        </Button>
-      </Card> */}
-
-        {/* {Object.entries(data).map(([key, value]) => (
-        <Typography>
-          {t(key)}: {value}
-        </Typography>
-      ))}  */}
-        {/* <Divider sx={{ width: "100%", mt: "50px" }} />
-      <Card sx={{ width: "900px" }}>
-        <TextField
-          fullWidth
-          multiline
-          rows={8}
-          label={t("newComment")}
-          sx={{ maxWidth: "800px", mt: "50px" }}
-        />
-      </Card> */}
+        <Divider sx={{ width: "100%", my: "60px" }} />
+        <Comments parentId={params?._id} />
         {deleteModalOpen && (
           <ConfirmationModal
             title="deleteLead"
             message="deleteLeadConfirmation"
-            onCancel={handleDeleteModal}
+            onCancel={handleModal}
             onConfirm={handleDelete}
           />
         )}
@@ -252,7 +193,6 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
 // };
 
 export const getStaticPaths = async () => {
-  // Provide an empty array for paths and fallback blocking
   return {
     paths: [],
     fallback: "blocking",

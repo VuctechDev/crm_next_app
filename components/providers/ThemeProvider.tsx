@@ -19,7 +19,7 @@ import {
 interface ProviderProps {
   children: React.ReactNode;
 }
-
+const md = 780;
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 const sharedTheme: ThemeOptions = {
@@ -44,12 +44,15 @@ const sharedTheme: ThemeOptions = {
           borderRadius: "10px",
           textTransform: "capitalize",
           fontSize: "16px",
+          [`@media (max-width:${md}px)`]: {
+            fontSize: "12px",
+          },
         },
       },
     },
     MuiCard: {
       defaultProps: {
-        elevation: 1,
+        elevation: 2,
       },
       styleOverrides: {
         root: {
@@ -91,24 +94,42 @@ const sharedTheme: ThemeOptions = {
     h2: {
       fontSize: "28px",
       fontWeight: 500,
+      [`@media (max-width:${md}px)`]: {
+        fontSize: "22px",
+      },
     },
     h4: {
       fontSize: "1.5rem",
       fontWeight: 600,
+      [`@media (max-width:${md}px)`]: {
+        fontSize: "1.2rem",
+      },
     },
     h5: {
       fontSize: "1.15rem",
       fontWeight: 600,
+      [`@media (max-width:${md}px)`]: {
+        fontSize: "1rem",
+      },
     },
     h6: {
       fontSize: "1rem",
+      [`@media (max-width:${md}px)`]: {
+        fontSize: "0.8rem",
+      },
     },
     body1: {
       fontSize: "14px",
+      [`@media (max-width:${md}px)`]: {
+        fontSize: "12px",
+      },
     },
     body2: {
       color: "#787b80",
       fontSize: "0.75rem",
+      [`@media (max-width:${md}px)`]: {
+        fontSize: "0.65rem",
+      },
     },
   },
 };

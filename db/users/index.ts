@@ -1,4 +1,5 @@
 import { query } from "..";
+import { OrganizationType } from "../organizations";
 
 const tableName = "users";
 
@@ -15,12 +16,16 @@ export interface UserType {
   zip: string;
   country: string;
   avatar: string;
-  organization: string;
+  organization: OrganizationType;
   createdAt: string;
   updatedAt: string;
   status: string;
   lastLogin: string;
   username?: string;
+}
+
+export interface DBUserType extends Omit<UserType, "organization"> {
+  organization: string;
 }
 
 export const createNewUser = async (data: UserType, userId: string) => {
@@ -64,9 +69,9 @@ export const createNewUser = async (data: UserType, userId: string) => {
 
 export const getUser = async (
   _id: string | number
-): Promise<UserType | null> => {
+): Promise<DBUserType | null> => {
   try {
-    const data = await query<UserType[]>(
+    const data = await query<DBUserType[]>(
       `SELECT a.username, a.lastLogin, u.* 
       FROM ${tableName} u
       LEFT JOIN auth a 
@@ -75,7 +80,7 @@ export const getUser = async (
       [[_id]]
     );
     if (!data.length) {
-      const authData = await query<UserType[]>(
+      const authData = await query<DBUserType[]>(
         `SELECT username, lastLogin, _id 
         FROM auth 
         WHERE _id = ?`,
