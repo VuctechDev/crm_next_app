@@ -19,6 +19,7 @@ import {
 import LoadingSkeleton from "./LoadingSkeleton";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useGetUser } from "@/lib/client/api/user/queries";
+import SubmitButton from "../forms/fields/SubmitButton";
 
 interface CommentsProps {
   parentId: string;
@@ -31,7 +32,7 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
   const [comment, setComment] = useState("");
   const [deleteModalID, setDeleteModalID] = useState("");
 
-  const { mutateAsync: createComment } = useCreateComment();
+  const { mutateAsync: createComment, isPending } = useCreateComment();
   const { data, isLoading } = useGetComments(parentId, count);
   const { mutateAsync: deleteComment } = useDeleteComment();
   const { data: user } = useGetUser();
@@ -39,6 +40,7 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
   const handleModal = (_id?: number) => setDeleteModalID(_id ? `${_id}` : "");
 
   const handleCreate = async () => {
+    console.log("OPAA")
     try {
       await createComment({
         comment,
@@ -87,14 +89,22 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
           onChange={(e) => setComment(e.target.value)}
         />
         <Box width={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button
+          {/* <Button
             onClick={handleCreate}
             variant="contained"
             sx={{ minWidth: "100px", mb: "32px" }}
             disabled={!comment}
           >
             {t("save")}
-          </Button>
+          </Button> */}
+          <SubmitButton
+            onClick={handleCreate}
+            label={t("save")}
+            disabled={!comment}
+            loading={isPending}
+            type="button"
+            sx={{ mb: "32px", mt: "0px", maxWidth: "100px" }}
+          />
         </Box>
         {isLoading ? (
           <LoadingSkeleton />
