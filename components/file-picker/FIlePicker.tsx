@@ -7,7 +7,7 @@ import React, {
   ChangeEvent,
 } from "react";
 import Box from "@mui/material/Box";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Hidden, Typography } from "@mui/material";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import { useTranslation } from "next-i18next";
@@ -189,32 +189,33 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
               {label}
             </Typography>
           )}
-          {!myFile.length && type === "img" && (
-            <label htmlFor={`contained-button-file-${type}-camera`}>
-              <Typography
-                // variant="h5"
-                sx={(t) => ({
-                  mt: "12px",
-                  "& span": {
-                    color: t.palette.primary.main,
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  },
-                })}
-              >
-                <span>{t("orTakeAPhoto")}</span>
-              </Typography>
-              <input
-                accept="image/*"
-                id={`contained-button-file-${type}-camera`}
-                // multiple={multiple}
-                type="file"
-                onChange={handleFileUpload}
-                style={{ display: "none" }}
-                capture="environment"
-              />
-            </label>
-          )}
+          <Hidden mdUp>
+            {!myFile.length && type === "img" && (
+              <label htmlFor={`contained-button-file-${type}-camera`}>
+                <Typography
+                  // variant="h5"
+                  sx={(t) => ({
+                    mt: "12px",
+                    "& span": {
+                      color: t.palette.primary.main,
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    },
+                  })}
+                >
+                  <span>{t("orTakeAPhoto")}</span>
+                </Typography>
+                <input
+                  accept="image/*"
+                  id={`contained-button-file-${type}-camera`}
+                  type="file"
+                  onChange={handleFileUpload}
+                  style={{ display: "none" }}
+                  capture="environment"
+                />
+              </label>
+            )}
+          </Hidden>
         </Box>
         <Box
           sx={{

@@ -7,8 +7,8 @@ export const sendVerificationEmail = async (
 ) => {
   try {
     await sendEmail({
-      from: `CRM APP <stefan@stefan.pikado.net>`, // sender address
-      to,
+      from: `CRM APP <neotech@pikado.net>`, // sender address
+      to: "vuctechdev@gmail.com",
       subject: `Email verification - CRM APP`, // Subject line
       html: `<span style="
             display: inline; 
@@ -27,7 +27,9 @@ export const sendVerificationEmail = async (
             color: #2a2a2a;
             ">Confirm your Email by clicking on the link 
             <a href="${process.env.API_BASE_URL}/api/auth/verification?code=${authCode}&_id=${userId}&email=${to}">Verify</a>
-            </span>           
+           
+            </span>     
+             <img src="${process.env.API_BASE_URL}/api/email/read?_id=123456789" width="1" height="1" style="display:none;">      
             `,
     });
   } catch (error) {}
