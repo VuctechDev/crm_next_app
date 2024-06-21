@@ -93,5 +93,6 @@
   "loadMore": "Load More",
   "deleteComment": "Delete Comment",
   "commentCreatedSuccess": "New comment created successfully",
-  "commentDeletedSuccess": "Comment deleted successfully"
+  "commentDeletedSuccess": "Comment deleted successfully", 
+  "orTakeAPhoto": "Or take a photo"
 }

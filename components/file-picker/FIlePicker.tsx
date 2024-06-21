@@ -103,7 +103,14 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
     >
       <Box
         width="350px"
-        sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+        sx={(t) => ({
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          [t.breakpoints.down("sm")]: {
+            width: "100%",
+          },
+        })}
       >
         <Box
           onDragEnter={handleDrag}
@@ -147,28 +154,31 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
             )}
           </Box>
           {!myFile.length ? (
-            <label htmlFor={`contained-button-file-${type}`}>
-              <Typography
-                // variant="h5"
-                sx={(t) => ({
-                  "& span": {
-                    color: t.palette.primary.main,
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  },
-                })}
-              >
-                <span>{t("clickToUpload")}</span> {t("orDragAndDrop")}
-              </Typography>
-              <input
-                accept={accept}
-                id={`contained-button-file-${type}`}
-                multiple={multiple}
-                type="file"
-                onChange={handleFileUpload}
-                style={{ display: "none" }}
-              />
-            </label>
+            <>
+              <label htmlFor={`contained-button-file-${type}`}>
+                <Typography
+                  // variant="h5"
+                  sx={(t) => ({
+                    "& span": {
+                      color: t.palette.primary.main,
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    },
+                  })}
+                >
+                  <span>{t("clickToUpload")}</span> {t("orDragAndDrop")}
+                </Typography>
+                <input
+                  accept={accept}
+                  id={`contained-button-file-${type}`}
+                  multiple={multiple}
+                  type="file"
+                  onChange={handleFileUpload}
+                  style={{ display: "none" }}
+                />
+              </label>
+              {}
+            </>
           ) : (
             myFile.map((file) => (
               <Typography key={file?.name}>{file?.name}</Typography>
@@ -178,6 +188,32 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
             <Typography fontWeight={600} fontSize={14}>
               {label}
             </Typography>
+          )}
+          {!myFile.length && type === "img" && (
+            <label htmlFor={`contained-button-file-${type}-camera`}>
+              <Typography
+                // variant="h5"
+                sx={(t) => ({
+                  mt: "12px",
+                  "& span": {
+                    color: t.palette.primary.main,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  },
+                })}
+              >
+                <span>{t("orTakeAPhoto")}</span>
+              </Typography>
+              <input
+                accept="image/*"
+                id={`contained-button-file-${type}-camera`}
+                // multiple={multiple}
+                type="file"
+                onChange={handleFileUpload}
+                style={{ display: "none" }}
+                capture="environment"
+              />
+            </label>
           )}
         </Box>
         <Box
