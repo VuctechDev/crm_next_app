@@ -8,7 +8,7 @@ import useDebounce from "@/hooks/useDebounce";
 import { useTranslation } from "next-i18next";
 
 interface QueryPanelProps {
-  keys: string[];
+  keys: { label: string; options?: { label: string; value: string }[] }[];
   handleQueriesChange: (query: string) => void;
 }
 
@@ -23,7 +23,6 @@ const handleTableQuery = (filters: Record<string, string>): string => {
   return query;
 };
 
-
 const QueryPanel: FC<QueryPanelProps> = ({
   keys,
   handleQueriesChange,
@@ -31,10 +30,13 @@ const QueryPanel: FC<QueryPanelProps> = ({
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>(
-    [...keys, "search"].reduce((acc: Record<string, string>, key) => {
-      acc[key] = "";
-      return acc;
-    }, {})
+    [...keys, { label: "search" }].reduce(
+      (acc: Record<string, string>, key) => {
+        acc[key.label] = "";
+        return acc;
+      },
+      {}
+    )
   );
 
   const handleFilters = (key: string, value: string) => {
@@ -64,9 +66,9 @@ const QueryPanel: FC<QueryPanelProps> = ({
     >
       {keys.map((key) => (
         <FilterButton
-          key={key}
-          label={key}
-          value={filters[key]}
+          key={key.label}
+          data={key}
+          value={filters[key.label]}
           handleFilterSelect={handleFilters}
         />
       ))}

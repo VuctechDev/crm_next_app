@@ -1,7 +1,7 @@
 import { Payload } from "@/lib/server/routeHandlers/handleCardsUpload";
 import { query } from "..";
 import { parseHTTPS } from "../helpers";
-import { handleRequestQuery } from "../helpers/handleRequestQuery";
+import { handleFilterQuery } from "./handleFilterQuery";
 import { getChangedValuesQuery } from "@/lib/shared/getChangedValues";
 import { getCountryName } from "@/lib/shared/getCountry";
 
@@ -89,7 +89,7 @@ export const getPaginatedLeads = async (
   data: any;
   total: number;
 }> => {
-  const filtersQuery = handleRequestQuery({ ...filters, owner });
+  const filtersQuery = handleFilterQuery({ ...filters, owner });
   try {
     const total = (await query(
       `SELECT COUNT(*) AS total FROM ${tableName} ${filtersQuery}`
@@ -108,7 +108,7 @@ export const getCSVExportLeads = async (
   filters: Record<string, string>,
   owner: string
 ): Promise<LeadType[]> => {
-  const filtersQuery = handleRequestQuery({ ...filters, owner });
+  const filtersQuery = handleFilterQuery({ ...filters, owner });
   try {
     const data = await query<LeadType[]>(
       `SELECT  
@@ -163,9 +163,7 @@ export const updateLead = async (
   }
 };
 
-export const archiveLead = async (
-  _id: string
-): Promise<any> => {
+export const archiveLead = async (_id: string): Promise<any> => {
   try {
     const data = (await query(
       `UPDATE ${tableName} SET archived = 1 WHERE _id = ${_id}`

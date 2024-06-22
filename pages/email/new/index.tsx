@@ -12,7 +12,6 @@ import { useGetUser } from "@/lib/client/api/user/queries";
 interface AddLeadsProps {}
 
 const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
-  const { t } = useTranslation();
   const { data: user } = useGetUser();
 
   let from = `${user?.firstName} ${user?.lastName}`;

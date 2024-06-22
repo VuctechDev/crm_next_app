@@ -6,7 +6,7 @@ import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Button, IconButton, TextField } from "@mui/material";
+import { Box, Button, IconButton, TextField, Tooltip } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useGetLeads } from "@/lib/client/api/leads/queries";
@@ -21,6 +21,8 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 import { getCSVFileName } from "@/lib/client/getCSVFileName";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined";
+import TooltipIconButton from "@/components/TooltipIconButton";
+import CreateIcon from "@mui/icons-material/Create";
 
 interface LeadsPageProps {
   params: { locale: string };
@@ -71,20 +73,36 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     {
       key: "website",
       render: (value: string) => (
-        <a href={value} target="_blak">
-          <ScreenSearchDesktopOutlinedIcon />
+        <a
+          href={value}
+          target="_blak"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <IconButton>
+            <ScreenSearchDesktopOutlinedIcon />
+          </IconButton>
         </a>
       ),
       preventClick: true,
     },
     {
-      key: "website",
+      key: "",
       render: (value: string, data: LeadType) => (
-        <Link href={`${ROUTES.EMAIL.NEW}/${data._id}`}>
-          <IconButton>
-            <ForwardToInboxOutlinedIcon />
-          </IconButton>
-        </Link>
+        <Box display="flex">
+          <Link href={`${ROUTES.EMAIL.NEW}/${data._id}`}>
+            <TooltipIconButton
+              title="sendEmail"
+              icon={<ForwardToInboxOutlinedIcon />}
+            />
+          </Link>
+          <Link href={`${ROUTES.LEADS.EDIT.ROOT}/${data._id}`}>
+            <TooltipIconButton title="edit" icon={<CreateIcon />} />
+          </Link>
+        </Box>
       ),
       preventClick: true,
     },
@@ -157,7 +175,17 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
               router.push(ROUTES.LEADS.ROOT + `/${_id}`, {})
             }
             hover={true}
-            filterKeys={["role", "industry", "country"]}
+            filterKeys={[
+              {
+                label: "role",
+              },
+              {
+                label: "industry",
+              },
+              {
+                label: "country",
+              },
+            ]}
           />
         </Card>
         {csvModalOpen && (

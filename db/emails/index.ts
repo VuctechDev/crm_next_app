@@ -1,12 +1,8 @@
-import { Payload } from "@/lib/server/routeHandlers/handleCardsUpload";
 import { query } from "..";
-import { parseHTTPS } from "../helpers";
-import { handleRequestQuery } from "../helpers/handleRequestQuery";
-import { getChangedValuesQuery } from "@/lib/shared/getChangedValues";
-import { getCountryName } from "@/lib/shared/getCountry";
 import { UserType } from "../users";
 import { OrganizationType } from "../organizations";
 import { LeadType } from "../leads";
+import { handleFilterQuery } from "./handleFilterQuery";
 
 export interface EmailType {
   _id: number;
@@ -15,6 +11,7 @@ export interface EmailType {
   sentBy: UserType;
   organization: OrganizationType;
   recipient: LeadType;
+  recipientEmail: string;
   open: boolean;
   createdAt: string;
   updatedAt: string;
@@ -26,6 +23,7 @@ export interface EmailCreateType {
   sentBy: string;
   organization: string;
   recipient: string;
+  to: string;
 }
 
 export interface DBCommentType
@@ -45,7 +43,8 @@ export const createNewEmail = async (data: EmailCreateType) => {
         subject,
         sentBy,
         organization,
-        recipient
+        recipient,
+        recipientEmail
         ) VALUES?`,
       [
         [
@@ -54,6 +53,7 @@ export const createNewEmail = async (data: EmailCreateType) => {
           data.sentBy,
           data.organization,
           data.recipient,
+          data.to,
         ],
       ]
     )) as { insertId: number };
@@ -71,6 +71,7 @@ export const getPaginatedEmails = async (
   data: EmailType[];
   total: number;
 }> => {
+  const filtersQuery = handleFilterQuery({ ...filters, organization });
   try {
     const total = await query<[{ total: number }]>(
       `SELECT COUNT(*) AS total FROM ${tableName} WHERE organization = ?`,
@@ -86,23 +87,26 @@ export const getPaginatedEmails = async (
           'firstName', users.firstName,
           'lastName', users.lastName
         ) AS sentBy,
-         JSON_OBJECT(
-          '_id', leads._id,
-          'firstName', leads.firstName,
-          'lastName', leads.lastName,
-          'email', leads.email
-        ) AS recipient,
+        CASE 
+            WHEN emails.recipient != 0 THEN JSON_OBJECT(
+              '_id', leads._id,
+              'firstName', leads.firstName,
+              'lastName', leads.lastName,
+              'email', leads.email
+            )
+            ELSE NULL
+        END AS recipient,
         emails.createdAt,
         emails.updatedAt,
-        emails.subject
-        FROM ${tableName}
-        JOIN users ON emails.sentBy = users._id
-        JOIN leads ON emails.recipient = leads._id
-        WHERE emails.organization = ${organization} 
-        ORDER BY emails._id DESC 
-        LIMIT ${filters?.limit}
-        OFFSET ${offset} ;
-        `);
+        emails.subject, 
+        emails.recipientEmail
+      FROM ${tableName} AS emails
+      JOIN users ON emails.sentBy = users._id
+      LEFT JOIN leads ON emails.recipient = leads._id AND emails.recipient != 0
+      ${filtersQuery}
+      ORDER BY emails._id DESC 
+      LIMIT ${filters?.limit}
+      OFFSET ${offset};`);
     const formattedResults = data.map((row) => ({
       _id: row._id,
       sentBy: JSON.parse(row.sentBy),
@@ -111,6 +115,7 @@ export const getPaginatedEmails = async (
       subject: row.subject,
       updatedAt: row.updatedAt,
       open: row.open,
+      recipientEmail: row.recipientEmail,
     })) as EmailType[];
     return { data: formattedResults, total: total?.[0]?.total ?? 0 };
   } catch (error) {
@@ -118,9 +123,7 @@ export const getPaginatedEmails = async (
   }
 };
 
-export const markAsRead = async (
-  _id: string
-): Promise<any> => {
+export const markAsRead = async (_id: string): Promise<any> => {
   try {
     const data = (await query(
       `UPDATE ${tableName} SET open = 1 WHERE _id = ${_id}`
@@ -185,15 +188,6 @@ export const markAsRead = async (
 //       `UPDATE ${tableName} SET ${parsedQuery} WHERE _id = ${_id}`
 //     )) as LeadType[];
 //     return data?.length ? data[0] : {};
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-// export const removeComment = async (_id: string): Promise<any> => {
-//   try {
-//     await query(`DELETE FROM ${tableName} WHERE _id = ${_id}`);
-//     return true;
 //   } catch (error) {
 //     throw error;
 //   }

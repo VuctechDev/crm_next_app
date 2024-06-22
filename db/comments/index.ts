@@ -1,9 +1,4 @@
-import { Payload } from "@/lib/server/routeHandlers/handleCardsUpload";
 import { query } from "..";
-import { parseHTTPS } from "../helpers";
-import { handleRequestQuery } from "../helpers/handleRequestQuery";
-import { getChangedValuesQuery } from "@/lib/shared/getChangedValues";
-import { getCountryName } from "@/lib/shared/getCountry";
 import { UserType } from "../users";
 
 export interface CommentType {

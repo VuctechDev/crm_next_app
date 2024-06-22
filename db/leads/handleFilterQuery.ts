@@ -1,4 +1,4 @@
-export const handleRequestQuery = (query: Record<string, string>): string => {
+export const handleFilterQuery = (query: Record<string, string>): string => {
   let result = "";
 
   const addCondition = (condition: string) => {

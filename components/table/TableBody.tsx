@@ -62,11 +62,10 @@ const Content: FC<ContentProps> = ({
           hover={hover}
           key={item._id}
           sx={{
-            // backgroundColor: i % 2 === 0 ? "transparent" : "rgba(0,0,0,0.04)",
             p: "14px",
             marginBottom: "8px",
             "& :hover": {
-              cursor: "pointer",
+              cursor: hover ? "pointer" : "unset",
             },
           }}
         >

@@ -28,17 +28,18 @@ const query = (query, values) => {
   });
 };
 
+const table = "emails";
 
-const table = "leads";
+// const renameQuery = `ALTER TABLE ${table} RENAME COLUMN postCode TO zip;`;
+// const dropQuery1 = `ALTER TABLE ${table} DROP COLUMN column_name`;
+const addQuery = `ALTER TABLE ${table} ADD recipientEmail VARCHAR(50);`;
 
-const query1 = `ALTER TABLE ${table} RENAME COLUMN postCode TO zip;`;
-
-const query2 = `UPDATE ${table} SET owner = '5'`;
+const updateQuery = `UPDATE ${table} SET to = ''`;
 
 const migrate = async () => {
   try {
-    await query(query1);
-    // await query(query2);
+    await query(addQuery);
+    // await query(updateQuery);
     console.log("TABLE UPDATED");
   } catch (error) {
     console.log(error);

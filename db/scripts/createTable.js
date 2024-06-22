@@ -118,6 +118,7 @@ const emails = `CREATE TABLE emails (
   sentBy INT,
   organization INT,
   recipient INT,
+  recipientEmail VARCHAR(50),
   open TINYINT DEFAULT 0,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

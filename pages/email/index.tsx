@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useRef, useState } from "react";
-import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
+
 import Card from "@mui/material/Card";
 import { useRouter } from "next/navigation";
 import { LeadType } from "@/db/leads";
@@ -41,7 +41,7 @@ const headers = [
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const { t } = useTranslation();
-  const router = useRouter();
+  const { push } = useRouter();
 
   const [query, setQuery] = useState("page=0&limit=10");
   const { data, isLoading } = useGetEmails(query);
@@ -62,14 +62,17 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     },
     {
       key: "recipient",
-      render: (value: {
-        firstName: string;
-        lastName: string;
-        email: string;
-      }) => (
+      render: (
+        value: {
+          firstName: string;
+          lastName: string;
+          email: string;
+        },
+        data: EmailType
+      ) => (
         <Typography>
-          {`${value?.firstName} ${value?.lastName}`} <br />
-          {`${value?.email}`}
+          {value && `${value?.firstName} ${value?.lastName}`} {value && <br />}
+          {`${data?.recipientEmail}`}
         </Typography>
       ),
     },
@@ -131,12 +134,10 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
       key: "updatedAt",
       render: (value: string, data: EmailType) => {
         if (!data.open) {
-          return <Typography>/</Typography>;
+          return <Typography variant="body2">/</Typography>;
         } else {
           return (
-            <Typography variant="body2">
-              {getDisplayDateTime(data.updatedAt)}
-            </Typography>
+            <Typography variant="body2">{getDisplayDateTime(value)}</Typography>
           );
         }
       },
@@ -171,28 +172,17 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     <PageLayout>
       <PageContentWrapper
         title="emails"
-        // actions={
-        //   <>
-        //     <Link href={ROUTES.LEADS.ADD.ROOT}>
-        //       <Button
-        //         variant="outlined"
-        //         color="info"
-        //         startIcon={<GroupAddOutlinedIcon />}
-        //       >
-        //         {t("add")}
-        //       </Button>
-        //     </Link>
-        //     <Button
-        //       variant="outlined"
-        //       color="info"
-        //       startIcon={<FileDownloadIcon />}
-        //       onClick={handleCSVModal}
-        //       disabled={!data?.data?.length}
-        //     >
-        //       {t("exportCSV")}
-        //     </Button>
-        //   </>
-        // }
+        actions={
+          <Link href={ROUTES.EMAIL.NEW}>
+            <Button
+              variant="outlined"
+              color="info"
+              startIcon={<ForwardToInboxOutlinedIcon />}
+            >
+              {t("new")}
+            </Button>
+          </Link>
+        }
       >
         <Card
           elevation={1}
@@ -212,11 +202,17 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
             totalCount={data?.total ?? 0}
             skeletonCount={8}
             handleQueryChange={handleQueryChange}
-            handleRowSelect={(_id: string) =>
-              router.push(ROUTES.LEADS.ROOT + `/${_id}`, {})
-            }
+            handleRowSelect={(_id: string) => null}
             hover={false}
-            // filterKeys={["role", "industry", "country"]}
+            filterKeys={[
+              {
+                label: "status",
+                options: [
+                  { label: "sent", value: "sent" },
+                  { label: "read", value: "read" },
+                ],
+              },
+            ]}
           />
         </Card>
         {/* {csvModalOpen && (

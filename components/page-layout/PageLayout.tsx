@@ -21,6 +21,7 @@ import { useTranslation } from "next-i18next";
 import { ROUTES } from "../providers/guards/AuthRouteGuard";
 import { useLogout } from "@/lib/client/api/auth/queries";
 import ThemeToggle from "../ThemeToggle";
+import DrawIcon from "@mui/icons-material/Draw";
 
 export interface DrawerItemType {
   label: string;
@@ -72,6 +73,11 @@ const drawerItems = [
       //       icon: <FormatListBulletedOutlinedIcon />,
       //       href: "/mailing/lists",
       //     },
+      {
+        label: "signature",
+        icon: <DrawIcon />,
+        href: ROUTES.EMAIL.SIGNATURE,
+      },
     ],
   },
   // {
