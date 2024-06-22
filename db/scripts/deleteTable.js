@@ -28,7 +28,7 @@ const query = (query, values) => {
   });
 };
 
-const dropTableQuery = "DROP TABLE comments";
+const dropTableQuery = "DROP TABLE emails";
 
 const dropTable = async () => {
   try {

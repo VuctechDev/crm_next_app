@@ -21,6 +21,6 @@
     "**/*.ts",
     "**/*.tsx",
     "lib/server/routeHandlers"
-  ],
+, "pages/email/[_id]"  ],
   "exclude": ["node_modules"]
 }

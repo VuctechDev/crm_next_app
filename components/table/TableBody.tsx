@@ -83,11 +83,17 @@ const Content: FC<ContentProps> = ({
                 sx={{
                   fontSize: 14,
                   py: "10px",
+                  // display: "flex",
+                  // justifyContent: "flex-end"
                 }}
               >
-                <Typography variant="body1">
-                  {render ? render(item[key], item, i) : item[key]}
-                </Typography>{" "}
+                {/* <Typography variant="body1"> */}
+                {render ? (
+                  render(item[key], item, i)
+                ) : (
+                  <Typography variant="body1">{item[key]}</Typography>
+                )}
+                {/* </Typography>{" "} */}
               </TableCell>
             );
           })}

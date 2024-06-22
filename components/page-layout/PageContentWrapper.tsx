@@ -27,7 +27,7 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
       sx={(t) => ({
         flexGrow: 1,
         p: "32px",
-        minHeight: "98vh",
+        minHeight: "92vh",
         height: "fit-content",
         display: "flex",
         flexDirection: "column",

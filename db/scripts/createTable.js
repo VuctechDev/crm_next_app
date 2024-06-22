@@ -111,7 +111,19 @@ const comments = `CREATE TABLE comments (
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );`;
 
-const createTableQuery = comments;
+const emails = `CREATE TABLE emails (
+  _id SERIAL PRIMARY KEY,
+  html VARCHAR(2000),
+  subject VARCHAR(60),
+  sentBy INT,
+  organization INT,
+  recipient INT,
+  open TINYINT DEFAULT 0,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`;
+
+const createTableQuery = emails;
 
 const createTable = async () => {
   try {

@@ -6,7 +6,7 @@ import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Button, IconButton, TextField } from "@mui/material";
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useGetLeads } from "@/lib/client/api/leads/queries";
@@ -21,20 +21,22 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 import { getCSVFileName } from "@/lib/client/getCSVFileName";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined";
+import { useGetEmails } from "@/lib/client/api/email/queries";
+import { EmailType } from "@/db/emails";
 
 interface LeadsPageProps {
   params: { locale: string };
 }
 
 const headers = [
-  { key: "name" },
-  { key: "role" },
-  { key: "email" },
-  { key: "company" },
-  { key: "industry" },
-  { key: "country" },
-  { key: "website" },
-  { key: "" },
+  { key: "sentBy" },
+  { key: "subject" },
+  { key: "recipient" },
+  { key: "status" },
+  { key: "readAt" },
+  { key: "sentAt" },
+  // { key: "website" },
+  // { key: "" },
 ];
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
@@ -42,51 +44,108 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const router = useRouter();
 
   const [query, setQuery] = useState("page=0&limit=10");
-  const { data, isLoading } = useGetLeads(query);
+  const { data, isLoading } = useGetEmails(query);
 
   const [csvModalOpen, setCSVModalOpen] = useState(false);
   const inputRef = useRef("");
 
   const keys = [
     {
-      key: "firstName",
-      render: (value: string, data: LeadType) => `${value} ${data?.lastName}`,
+      key: "sentBy",
+      render: (
+        value: { firstName: string; lastName: string },
+        data: LeadType
+      ) => <Typography>{`${value.firstName} ${value?.lastName}`}</Typography>,
     },
     {
-      key: "role",
+      key: "subject",
     },
     {
-      key: "email",
+      key: "recipient",
+      render: (value: {
+        firstName: string;
+        lastName: string;
+        email: string;
+      }) => (
+        <Typography>
+          {`${value?.firstName} ${value?.lastName}`} <br />
+          {`${value?.email}`}
+        </Typography>
+      ),
     },
     {
-      key: "company",
+      key: "open",
+      render: (value: string, data: EmailType) => {
+        if (!value) {
+          return (
+            <Box
+              sx={(t) => ({
+                display: "flex",
+                justifyContent: "flex-end",
+                width: "100%",
+              })}
+            >
+              <Typography
+                variant="body2"
+                textAlign="center"
+                color="#fff"
+                sx={(t) => ({
+                  p: "6px",
+                  backgroundColor: t.palette.info.main,
+                  borderRadius: "12px",
+                  width: "70px",
+                })}
+              >
+                {t("sent")}
+              </Typography>
+            </Box>
+          );
+        } else {
+          return (
+            <Box
+              sx={(t) => ({
+                display: "flex",
+                justifyContent: "flex-end",
+                width: "100%",
+              })}
+            >
+              <Typography
+                sx={(t) => ({
+                  p: "6px",
+                  backgroundColor: t.palette.success.main,
+                  borderRadius: "12px",
+                  width: "70px",
+                })}
+                variant="body2"
+                textAlign="center"
+                color="#fff"
+              >
+                {t("read")}
+              </Typography>
+            </Box>
+          );
+        }
+      },
     },
     {
-      key: "industry",
+      key: "updatedAt",
+      render: (value: string, data: EmailType) => {
+        if (!data.open) {
+          return <Typography>/</Typography>;
+        } else {
+          return (
+            <Typography variant="body2">
+              {getDisplayDateTime(data.updatedAt)}
+            </Typography>
+          );
+        }
+      },
     },
     {
-      key: "country",
-      render: (value: string) => getCountryName(value),
-    },
-    {
-      key: "website",
+      key: "createdAt",
       render: (value: string) => (
-        <a href={value} target="_blak">
-          <ScreenSearchDesktopOutlinedIcon />
-        </a>
+        <Typography variant="body2">{getDisplayDateTime(value)}</Typography>
       ),
-      preventClick: true,
-    },
-    {
-      key: "website",
-      render: (value: string, data: LeadType) => (
-        <Link href={`${ROUTES.EMAIL.NEW}/${data._id}`}>
-          <IconButton>
-            <ForwardToInboxOutlinedIcon />
-          </IconButton>
-        </Link>
-      ),
-      preventClick: true,
     },
   ];
 
@@ -111,29 +170,29 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   return (
     <PageLayout>
       <PageContentWrapper
-        title="leads"
-        actions={
-          <>
-            <Link href={ROUTES.LEADS.ADD.ROOT}>
-              <Button
-                variant="outlined"
-                color="info"
-                startIcon={<GroupAddOutlinedIcon />}
-              >
-                {t("add")}
-              </Button>
-            </Link>
-            <Button
-              variant="outlined"
-              color="info"
-              startIcon={<FileDownloadIcon />}
-              onClick={handleCSVModal}
-              disabled={!data?.data?.length}
-            >
-              {t("exportCSV")}
-            </Button>
-          </>
-        }
+        title="emails"
+        // actions={
+        //   <>
+        //     <Link href={ROUTES.LEADS.ADD.ROOT}>
+        //       <Button
+        //         variant="outlined"
+        //         color="info"
+        //         startIcon={<GroupAddOutlinedIcon />}
+        //       >
+        //         {t("add")}
+        //       </Button>
+        //     </Link>
+        //     <Button
+        //       variant="outlined"
+        //       color="info"
+        //       startIcon={<FileDownloadIcon />}
+        //       onClick={handleCSVModal}
+        //       disabled={!data?.data?.length}
+        //     >
+        //       {t("exportCSV")}
+        //     </Button>
+        //   </>
+        // }
       >
         <Card
           elevation={1}
@@ -156,11 +215,11 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
             handleRowSelect={(_id: string) =>
               router.push(ROUTES.LEADS.ROOT + `/${_id}`, {})
             }
-            hover={true}
-            filterKeys={["role", "industry", "country"]}
+            hover={false}
+            // filterKeys={["role", "industry", "country"]}
           />
         </Card>
-        {csvModalOpen && (
+        {/* {csvModalOpen && (
           <ConfirmationModal
             title="exportCSV"
             onCancel={handleCSVModal}
@@ -175,7 +234,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
               />
             </>
           </ConfirmationModal>
-        )}
+        )} */}
       </PageContentWrapper>
     </PageLayout>
   );

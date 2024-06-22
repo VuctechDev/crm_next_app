@@ -10,6 +10,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Theme, CSSObject, useTheme } from "@mui/material/styles";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined";
 import DrawerItem from "./DrawerItem";
 import { useGetUser } from "@/lib/client/api/user/queries";
 import Button from "@mui/material/Button";
@@ -50,28 +52,28 @@ const drawerItems = [
   //   href: "/tags",
   //   nestedLinks: [],
   // },
-  // {
-  //   label: "email",
-  //   icon: <EmailOutlinedIcon />,
-  //   href: "/mailing",
-  //   nestedLinks: [
-  //     {
-  //       label: "new",
-  //       icon: <ForwardToInboxOutlinedIcon />,
-  //       href: "/mailing/new",
-  //     },
-  //     {
-  //       label: "templates",
-  //       icon: <DescriptionOutlinedIcon />,
-  //       href: "/mailing/templates",
-  //     },
-  //     {
-  //       label: "mailingLists",
-  //       icon: <FormatListBulletedOutlinedIcon />,
-  //       href: "/mailing/lists",
-  //     },
-  //   ],
-  // },
+  {
+    label: "email",
+    icon: <EmailOutlinedIcon />,
+    href: ROUTES.EMAIL.ROOT,
+    nestedLinks: [
+      {
+        label: "new",
+        icon: <ForwardToInboxOutlinedIcon />,
+        href: ROUTES.EMAIL.NEW,
+      },
+      //     {
+      //       label: "templates",
+      //       icon: <DescriptionOutlinedIcon />,
+      //       href: "/mailing/templates",
+      //     },
+      //     {
+      //       label: "mailingLists",
+      //       icon: <FormatListBulletedOutlinedIcon />,
+      //       href: "/mailing/lists",
+      //     },
+    ],
+  },
   // {
   //   label: "usage",
   //   icon: <BarChartOutlinedIcon />,
@@ -173,7 +175,7 @@ const PageLayout: FC<PageLayoutProps> = ({
               </React.Fragment>
             ))}
           </List>
-          
+
           {open && (
             <Box
               width={1}

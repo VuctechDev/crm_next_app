@@ -24,7 +24,7 @@
   "create": "Create",
   "orDragAndDrop": "or drag and drop",
   "clickToUpload": "Click to upload",
-  "addNewLeads": "Add New Leads",
+  "addNewLeads": "Add New Lead",
   "save": "Save",
   "add": "Add",
   "downloadCSVTemplate": "Download CSV template",
@@ -93,6 +93,17 @@
   "loadMore": "Load More",
   "deleteComment": "Delete Comment",
   "commentCreatedSuccess": "New comment created successfully",
-  "commentDeletedSuccess": "Comment deleted successfully", 
-  "orTakeAPhoto": "Or take a photo"
+  "commentDeletedSuccess": "Comment deleted successfully",
+  "orTakeAPhoto": "Or take a photo",
+  "to": "To:",
+  "subject": "Subject",
+  "sendNewEmail": "Send New Email",
+  "recipient": "Recipient",
+  "status": "Status",
+  "readAt": "Read at",
+  "sentAt": "Sent at",
+  "sentBy": "Sent by",
+  "read": "Read",
+  "sent": "Sent",
+  "emails": "Emails"
 }

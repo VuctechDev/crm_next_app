@@ -28,6 +28,10 @@ export const ROUTES = {
       ROOT: "/leads/edit",
     },
   },
+  EMAIL: {
+    ROOT: "/email",
+    NEW: "/email/new",
+  },
 };
 
 const publicPages = [
