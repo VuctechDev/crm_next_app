@@ -74,8 +74,7 @@ export const getPaginatedEmails = async (
   const filtersQuery = handleFilterQuery({ ...filters, organization });
   try {
     const total = await query<[{ total: number }]>(
-      `SELECT COUNT(*) AS total FROM ${tableName} WHERE organization = ?`,
-      [[organization]]
+      `SELECT COUNT(*) AS total FROM ${tableName} ${filtersQuery}`
     );
     const offset = +filters?.page * +filters.limit;
     const data = await query<DBCommentType[]>(`
@@ -133,62 +132,3 @@ export const markAsRead = async (_id: string): Promise<any> => {
     throw error;
   }
 };
-
-// export const getCSVExportLeads = async (
-//   filters: Record<string, string>,
-//   owner: string
-// ): Promise<LeadType[]> => {
-//   const filtersQuery = handleRequestQuery({ ...filters, owner });
-//   try {
-//     const data = await query<LeadType[]>(
-//       `SELECT
-//         firstName,
-//         lastName,
-//         email,
-//         phone,
-//         mobile,
-//         role,
-//         company,
-//         website,
-//         industry,
-//         employees,
-//         address,
-//         zip,
-//         city,
-//         country,
-//         description,
-//         created
-//         FROM ${tableName} ${filtersQuery} ORDER BY _id DESC`
-//     );
-//     return data.map((x) => ({ ...x, country: getCountryName(x.country) }));
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-// export const getLead = async (_id: string): Promise<LeadType | null> => {
-//   try {
-//     const data = (await query(
-//       `SELECT * from ${tableName} WHERE _id = ? AND archived = 0`,
-//       [[_id]]
-//     )) as LeadType[];
-//     return data?.length ? data[0] : null;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-// export const updateLead = async (
-//   values: LeadType,
-//   _id: string
-// ): Promise<any> => {
-//   const parsedQuery = getChangedValuesQuery(values);
-//   try {
-//     const data = (await query(
-//       `UPDATE ${tableName} SET ${parsedQuery} WHERE _id = ${_id}`
-//     )) as LeadType[];
-//     return data?.length ? data[0] : {};
-//   } catch (error) {
-//     throw error;
-//   }
-// };

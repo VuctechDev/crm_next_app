@@ -5,9 +5,9 @@ import { useGetLeadById } from "@/lib/client/api/leads/queries";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import PageLayout from "@/components/page-layout/PageLayout";
 import LoadingOverlayer from "@/components/LoadingOverlayer";
-import EmailEditor from "@/components/email/Editor";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useGetUser } from "@/lib/client/api/user/queries";
+import NewEmail from "@/components/email/NewEmail";
 
 interface NewLeadEmailPageProps {}
 
@@ -20,7 +20,6 @@ const NewLeadEmailPage: FC<NewLeadEmailPageProps> = (): ReactElement => {
     return <LoadingOverlayer />;
   }
 
-  const name = user?.firstName + " " + user?.lastName;
   let from = user?.firstName + " " + user?.lastName;
   if (user?.organization?.name) {
     from += ` / ${user?.organization?.name}`;
@@ -42,7 +41,7 @@ const NewLeadEmailPage: FC<NewLeadEmailPageProps> = (): ReactElement => {
             p: "20px",
           }}
         >
-          <EmailEditor to={data?.email} from={from} recipient={params?._id} />
+          <NewEmail to={data?.email} from={from} recipient={params?._id} />
         </Box>
       </PageContentWrapper>
     </PageLayout>

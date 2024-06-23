@@ -2,7 +2,6 @@ import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { authGuard } from "../auth/authMid";
 import { NextApiRequestExtended } from "@/types/reaquest";
-import { removeComment } from "@/db/comments";
 import { createNewEmail, getPaginatedEmails } from "@/db/emails";
 import { sendEmail } from "@/lib/server/services/nodemailer";
 
@@ -30,6 +29,7 @@ router
         organization: organizationId,
         sentBy: userId,
       });
+
       const config = {
         from: `${from} <neotech@pikado.net>`,
         to,

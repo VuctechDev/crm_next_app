@@ -22,7 +22,7 @@ import { ROUTES } from "../providers/guards/AuthRouteGuard";
 import { useLogout } from "@/lib/client/api/auth/queries";
 import ThemeToggle from "../ThemeToggle";
 import DrawIcon from "@mui/icons-material/Draw";
-
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 export interface DrawerItemType {
   label: string;
   icon: React.ReactNode;
@@ -78,6 +78,11 @@ const drawerItems = [
         icon: <DrawIcon />,
         href: ROUTES.EMAIL.SIGNATURE,
       },
+      {
+        label: "config",
+        icon: <SettingsOutlinedIcon />,
+        href: ROUTES.EMAIL.CONFIG,
+      },
     ],
   },
   // {
@@ -88,7 +93,7 @@ const drawerItems = [
   // },
 ];
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,

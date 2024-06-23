@@ -1,24 +1,13 @@
-import React, { FC, ReactElement, useRef, useState } from "react";
-
+import React, { FC, ReactElement, useState } from "react";
 import Card from "@mui/material/Card";
-import { useRouter } from "next/navigation";
-import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import { useGetLeads } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
-import { getCountryName } from "@/lib/shared/getCountry";
-import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { handleFileDownload } from "@/lib/client/api/utils/downloadFile";
-import FieldLabel from "@/components/forms/fields/FieldLabel";
-import ConfirmationModal from "@/components/ConfirmationModal";
-import { getCSVFileName } from "@/lib/client/getCSVFileName";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined";
 import { useGetEmails } from "@/lib/client/api/email/queries";
@@ -35,27 +24,20 @@ const headers = [
   { key: "status" },
   { key: "readAt" },
   { key: "sentAt" },
-  // { key: "website" },
-  // { key: "" },
 ];
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const { t } = useTranslation();
-  const { push } = useRouter();
 
   const [query, setQuery] = useState("page=0&limit=10");
   const { data, isLoading } = useGetEmails(query);
 
-  const [csvModalOpen, setCSVModalOpen] = useState(false);
-  const inputRef = useRef("");
-
   const keys = [
     {
       key: "sentBy",
-      render: (
-        value: { firstName: string; lastName: string },
-        data: LeadType
-      ) => <Typography>{`${value.firstName} ${value?.lastName}`}</Typography>,
+      render: (value: { firstName: string; lastName: string }) => (
+        <Typography>{`${value.firstName} ${value?.lastName}`}</Typography>
+      ),
     },
     {
       key: "subject",
@@ -150,22 +132,8 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     },
   ];
 
-  const handleCSVModal = () => setCSVModalOpen((prev) => !prev);
-
   const handleQueryChange = (query: string) => {
     setQuery(query);
-  };
-
-  const noFiltersLabel = `(${t("all")})`;
-  const defaultFileName = `${t("leads")} ${
-    getCSVFileName(query) ?? noFiltersLabel
-  } - ${getDisplayDateTime()}`;
-
-  const handleExport = async () => {
-    await handleFileDownload({
-      fileName: inputRef.current ?? defaultFileName,
-      query,
-    });
   };
 
   return (
@@ -215,22 +183,6 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
             ]}
           />
         </Card>
-        {/* {csvModalOpen && (
-          <ConfirmationModal
-            title="exportCSV"
-            onCancel={handleCSVModal}
-            onConfirm={handleExport}
-          >
-            <>
-              <FieldLabel label="fileName" />
-              <TextField
-                onChange={(e) => (inputRef.current = e.target.value)}
-                fullWidth
-                defaultValue={defaultFileName}
-              />
-            </>
-          </ConfirmationModal>
-        )} */}
       </PageContentWrapper>
     </PageLayout>
   );

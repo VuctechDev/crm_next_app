@@ -107,6 +107,10 @@
   "sent": "Sent",
   "emails": "Emails",
   "emailSentSuccess": "Email has been successfully sent",
-  "sgnature": "Signature",
-  "sendEmail": "Send Email"
+  "signature": "Signature",
+  "sendEmail": "Send Email",
+  "config": "Config",
+  "emailSignature": "Email Signature",
+  "signatureUpdatedSuccess": "Signature updated successfully",
+  "defaultSignatureLabel": "Below is a suggested signature, format it and save to be applied to your emails."
 }

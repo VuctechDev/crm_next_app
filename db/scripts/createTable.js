@@ -124,7 +124,16 @@ const emails = `CREATE TABLE emails (
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );`;
 
-const createTableQuery = emails;
+const email_signatures = `CREATE TABLE email_signatures (
+  _id SERIAL PRIMARY KEY,
+  html VARCHAR(1000),
+  user INT,
+  archived TINYINT DEFAULT 0,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`;
+
+const createTableQuery = email_signatures;
 
 const createTable = async () => {
   try {

@@ -8,6 +8,8 @@ import PageLayout from "@/components/page-layout/PageLayout";
 import "react-quill/dist/quill.snow.css";
 import EmailEditor from "@/components/email/Editor";
 import { useGetUser } from "@/lib/client/api/user/queries";
+import { Autocomplete } from "@mui/material";
+import NewEmail from "@/components/email/NewEmail";
 
 interface AddLeadsProps {}
 
@@ -35,7 +37,24 @@ const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
             },
           })}
         >
-          <EmailEditor from={from} />
+          {/* <Autocomplete
+          options={[]}
+            renderInput={(params: any) => (
+              <input />
+              // <TextField
+              //   // {...elementProps}
+              //   {...params}
+              //   error={!!error}
+              //   helperText={
+              //     <Typography color="error" textAlign="right" variant="body2">
+              //       {error ?? ""}
+              //     </Typography>
+              //   }
+              // />
+            )}
+          /> */}
+          {/* <EmailEditor from={from} /> */}
+          <NewEmail from={from} />
         </Box>
       </PageContentWrapper>
     </PageLayout>
