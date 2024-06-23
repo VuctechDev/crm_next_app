@@ -128,12 +128,24 @@ const email_signatures = `CREATE TABLE email_signatures (
   _id SERIAL PRIMARY KEY,
   html VARCHAR(1000),
   user INT,
-  archived TINYINT DEFAULT 0,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );`;
 
-const createTableQuery = email_signatures;
+const email_configs = `CREATE TABLE email_configs (
+  _id SERIAL PRIMARY KEY,
+  host VARCHAR(100),
+  email VARCHAR(100),
+  password TEXT,
+  port VARCHAR(6),
+  iv VARCHAR(32),
+  user INT,
+  organization INT,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`;
+
+const createTableQuery = email_configs;
 
 const createTable = async () => {
   try {

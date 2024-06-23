@@ -8,29 +8,30 @@ import LoadingOverlayer from "@/components/LoadingOverlayer";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useGetUser } from "@/lib/client/api/user/queries";
 import NewEmail from "@/components/email/NewEmail";
+import { useGetEmailConfig } from "@/lib/client/api/email/configs/queries";
 
 interface NewLeadEmailPageProps {}
 
 const NewLeadEmailPage: FC<NewLeadEmailPageProps> = (): ReactElement => {
   const params = useParams() as { _id: string };
   const { data, isLoading } = useGetLeadById(params?._id);
+  const { data: emailConfig, isLoading: configLoading } = useGetEmailConfig();
   const { data: user } = useGetUser();
 
-  if (isLoading) {
+  if (isLoading || configLoading) {
     return <LoadingOverlayer />;
   }
 
-  let from = user?.firstName + " " + user?.lastName;
-  if (user?.organization?.name) {
-    from += ` / ${user?.organization?.name}`;
+  let from = `${user?.firstName} ${user?.lastName}`;
+  if (emailConfig) {
+    from += ` <${emailConfig?.email}>`;
+  } else {
+    from += ` <${process.env.NEXT_PUBLIC_EMAIL_USER}>`;
   }
+  const name = `${data?.firstName} ${data?.lastName}`;
   return (
     <PageLayout>
-      <PageContentWrapper
-        title={"name"}
-        lastBreadcrumb={data?.firstName}
-        center
-      >
+      <PageContentWrapper title={name} lastBreadcrumb={data?.firstName} center>
         <Box
           width={1}
           sx={{

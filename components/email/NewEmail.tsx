@@ -1,9 +1,10 @@
-import React, { FC, ReactElement, useState } from "react";
+import React, { FC, ReactElement, useEffect, useState } from "react";
 import { Box, TextField, Card } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { useSendEmail } from "@/lib/client/api/email/queries";
 import EmailEditor from "./Editor";
 import { useGetEmailSignature } from "@/lib/client/api/email/signature/queries";
+import { useSnackbar } from "@/components/providers/SnackbarContext";
 
 interface NewEmailProps {
   to?: string;
@@ -13,8 +14,9 @@ interface NewEmailProps {
 
 const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
   const { t } = useTranslation();
+  const { openSnackbar } = useSnackbar();
   const { mutateAsync, isPending } = useSendEmail();
-  const { data: signature } = useGetEmailSignature();
+  const { data: emailSignature, isLoading } = useGetEmailSignature();
 
   const [fromValue, setFromValue] = useState(from ?? "");
   const [toValue, setToValue] = useState(to ?? "");
@@ -34,8 +36,19 @@ const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
     }
   };
 
-  const initialValue = signature
-    ? `<p><br/></p> <p><br/></p> ${signature.html}`
+  useEffect(() => {
+    if (!emailSignature && !isLoading) {
+      openSnackbar(
+        `${t("noEmailConfigurationWarning")} ${
+          process.env.NEXT_PUBLIC_EMAIL_USER
+        }`,
+        "warning"
+      );
+    }
+  }, [isLoading, emailSignature]);
+
+  const initialValue = emailSignature
+    ? `<p><br/></p> <p><br/></p> ${emailSignature.html}`
     : "";
 
   return (
@@ -52,6 +65,7 @@ const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
             "& div:before": { borderColor: t.palette.text.disabled },
             "& div": { pl: "12px", pb: "12px" },
           })}
+          inputProps={{ readOnly: true, sx: { cursor: "not-allowed" } }}
         />
         <TextField
           fullWidth
@@ -64,7 +78,10 @@ const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
             "& div:before": { borderColor: t.palette.text.disabled },
             "& div": { pl: "12px", pb: "12px" },
           })}
-          InputProps={{ readOnly: !!to }}
+          inputProps={{
+            readOnly: !!to,
+            sx: { cursor: !to ? "unset" : "not-allowed" },
+          }}
         />
         <TextField
           fullWidth

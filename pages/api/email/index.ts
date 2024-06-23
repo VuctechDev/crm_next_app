@@ -4,6 +4,8 @@ import { authGuard } from "../auth/authMid";
 import { NextApiRequestExtended } from "@/types/reaquest";
 import { createNewEmail, getPaginatedEmails } from "@/db/emails";
 import { sendEmail } from "@/lib/server/services/nodemailer";
+import { getConfig } from "@/db/emails/configs";
+import { decrypt } from "@/lib/server/services/crypto";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
@@ -24,6 +26,7 @@ router
       if (!html || !from || !to || !subject) {
         return res.status(400).json({ message: "badRequest" });
       }
+
       const emailID = await createNewEmail({
         ...req.body,
         organization: organizationId,
@@ -31,7 +34,7 @@ router
       });
 
       const config = {
-        from: `${from} <neotech@pikado.net>`,
+        from,
         to,
         subject,
         html: `<div style="color: #2a2a2a !important;">
@@ -39,16 +42,28 @@ router
           <p><img src="${process.env.API_BASE_URL}/api/email/read?_id=${emailID}" width="1" height="1" style="display:none;"></p>
         </div>`,
       };
-      await sendEmail(config);
+
+      const emailConfig = await getConfig(userId);
+      if (emailConfig) {
+        const password = decrypt({
+          iv: emailConfig?.iv ?? "",
+          encryptedData: emailConfig?.password ?? "",
+        });
+        await sendEmail(config, { ...emailConfig, password });
+      } else {
+        await sendEmail(config);
+      }
 
       res.status(200).json({ success: true });
     } catch (error) {
+      console.log("ERROR: ", error);
       res.status(400).json({ message: "somethingWentWrong" });
     }
   });
 
 export default router.handler({
   onError(error: any, req, res) {
+    console.log("CONFIG API ERROR: ", error);
     res.status(501).json({ error: `Something went wrong! ${error.message}` });
   },
   onNoMatch(req, res) {

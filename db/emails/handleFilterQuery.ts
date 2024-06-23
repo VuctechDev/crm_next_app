@@ -9,9 +9,7 @@ export const handleFilterQuery = (query: Record<string, string>): string => {
     if (key === "search") {
       addCondition(
         `(emails.recipientEmail LIKE '%${value}%' OR 
-          emails.subject LIKE '%${value}%' OR 
-          leads.firstName LIKE '%${value}%' OR 
-          leads.lastName LIKE '%${value}%'
+          emails.subject LIKE '%${value}%'
         )`
       );
     } else if (["status"].includes(key)) {

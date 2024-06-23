@@ -40,7 +40,7 @@ export const initialValues = dev
 export type InitialValues = typeof initialValues;
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required("requiredField"),
+  email: Yup.string().required("requiredField").email("invalidEmail"),
   firstName: Yup.string().required("requiredField").max(40, "max40char"),
   lastName: Yup.string().required("requiredField").max(40, "max40char"),
   address: Yup.string().required("requiredField").max(50, "max50char"),

@@ -21,6 +21,7 @@ const LeadsForm: FC<LeadsFormProps> = ({ data }): ReactElement => {
   const { push, replace } = useRouter();
   const { mutateAsync: createLead } = useCreateLead();
   const { mutateAsync: updateLead } = useUpdateLead(`${data?._id}`);
+
   const handleSubmit = async (values: any) => {
     try {
       if (!data) {

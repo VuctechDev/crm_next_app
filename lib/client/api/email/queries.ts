@@ -16,6 +16,8 @@ export const useSendEmail = () => {
     onSuccess: () => {
       openSnackbar("emailSentSuccess");
     },
-    onError: (error) => openSnackbar(error.message, "error"),
+    onError: (error: { response: { data: { message: string } } }) => {
+      openSnackbar(error?.response?.data?.message, "error");
+    },
   });
 };

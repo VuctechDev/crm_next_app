@@ -6,7 +6,7 @@ import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Box, Button, IconButton, TextField, Tooltip } from "@mui/material";
+import { Box, Button, IconButton, TextField } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useGetLeads } from "@/lib/client/api/leads/queries";
@@ -92,7 +92,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     {
       key: "",
       render: (value: string, data: LeadType) => (
-        <Box display="flex">
+        <Box display="flex" justifyContent="center">
           <Link href={`${ROUTES.EMAIL.NEW}/${data._id}`}>
             <TooltipIconButton
               title="sendEmail"

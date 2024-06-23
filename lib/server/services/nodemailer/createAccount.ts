@@ -18,17 +18,9 @@ export const createEmailAccount = async (
   params.append("password", password);
   params.append("quota", quota); // Quota in MB, use 0 for unlimited
 
-  //   const params = new URLSearchParams();
-  //   params.append('username', cpanelUser);
-  //   params.append('domain', domain);
-  //   params.append('email', email);
-  //   params.append('password', password);
-  //   params.append('quota', quota);
-
   try {
     const response = await fetch(`${cpanelUrl}/json-api/cpanel`, {
       method: "POST",
-      // params, config
       body: params,
       headers: {
         Authorization: `Basic ${Buffer.from(

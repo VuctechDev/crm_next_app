@@ -97,7 +97,7 @@
   "orTakeAPhoto": "Or take a photo",
   "to": "To:",
   "subject": "Subject",
-  "sendNewEmail": "Send New Email",
+  "newEmail": "New Email",
   "recipient": "Recipient",
   "status": "Status",
   "readAt": "Read at",
@@ -112,5 +112,11 @@
   "config": "Config",
   "emailSignature": "Email Signature",
   "signatureUpdatedSuccess": "Signature updated successfully",
-  "defaultSignatureLabel": "Below is a suggested signature, format it and save to be applied to your emails."
+  "defaultSignatureLabel": "Below is a suggested signature, format it and save to be applied to your emails.",
+  "host": "Email host",
+  "port": "Port",
+  "user": "Config",
+  "emailConfig": "Email config",
+  "emailConfigured": "Your email account is successfully configured, all emails will be sent from: ",
+  "noEmailConfigurationWarning": "You haven't configured your Email account, all your emails will be sent from the system default email account: "
 }
