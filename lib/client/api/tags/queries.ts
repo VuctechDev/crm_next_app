@@ -1,24 +1,25 @@
 import { useSnackbar } from "@/components/providers/SnackbarContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getEmailConfig, createEmailConfig } from "./actions";
+import { getTags, createTag } from "./actions";
 
-export const useGetEmailConfig = () => {
+export const useGetTags = () => {
   return useQuery({
-    queryKey: ["emailConfig"],
-    queryFn: getEmailConfig,
+    queryKey: ["tags"],
+    queryFn: getTags,
   });
 };
 
-export const useCreateEmailConfig = () => {
+export const useCreateTag = () => {
   const queryClient = useQueryClient();
   const { openSnackbar } = useSnackbar();
   return useMutation({
-    mutationFn: createEmailConfig,
+    mutationFn: createTag,
     onSuccess: () => {
-      openSnackbar("emailConfigUpdatedSuccess");
-      queryClient.invalidateQueries({ queryKey: ["emailConfig"] });
+      openSnackbar("tagUpdatedSuccess");
+      queryClient.invalidateQueries({ queryKey: ["tags"] });
     },
     onError: (error: { response: { data: { message: string } } }) => {
+      console.log("AXIOS ERROR: ", error);
       openSnackbar(error?.response?.data?.message, "error");
     },
   });

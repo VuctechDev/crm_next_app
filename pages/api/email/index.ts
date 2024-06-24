@@ -37,7 +37,7 @@ router
         from,
         to,
         subject,
-        html: `<div style="color: #2a2a2a !important;">
+        html: `<div style="color: #2a2a2a !important; ">
           ${html} 
           <p><img src="${process.env.API_BASE_URL}/api/email/read?_id=${emailID}" width="1" height="1" style="display:none;"></p>
         </div>`,

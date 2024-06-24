@@ -34,6 +34,9 @@ export const ROUTES = {
     SIGNATURE: "/email/signature",
     CONFIG: "/email/config",
   },
+  USAGE: {
+    ROOT: "/usage",
+  },
 };
 
 const publicPages = [

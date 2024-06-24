@@ -5,6 +5,7 @@ import { useSendEmail } from "@/lib/client/api/email/queries";
 import EmailEditor from "./Editor";
 import { useGetEmailSignature } from "@/lib/client/api/email/signature/queries";
 import { useSnackbar } from "@/components/providers/SnackbarContext";
+import { useGetEmailConfig } from "@/lib/client/api/email/configs/queries";
 
 interface NewEmailProps {
   to?: string;
@@ -16,11 +17,14 @@ const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
   const { t } = useTranslation();
   const { openSnackbar } = useSnackbar();
   const { mutateAsync, isPending } = useSendEmail();
-  const { data: emailSignature, isLoading } = useGetEmailSignature();
+  const { data: emailSignature } = useGetEmailSignature();
+  const { data: emailConfig, isLoading: isConfigLoading } = useGetEmailConfig();
 
   const [fromValue, setFromValue] = useState(from ?? "");
   const [toValue, setToValue] = useState(to ?? "");
   const [subject, setSubject] = useState("");
+
+
 
   const handleSubmit = async (html: string) => {
     try {
@@ -37,7 +41,7 @@ const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
   };
 
   useEffect(() => {
-    if (!emailSignature && !isLoading) {
+    if (!emailConfig && !isConfigLoading) {
       openSnackbar(
         `${t("noEmailConfigurationWarning")} ${
           process.env.NEXT_PUBLIC_EMAIL_USER
@@ -45,7 +49,7 @@ const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
         "warning"
       );
     }
-  }, [isLoading, emailSignature]);
+  }, [isConfigLoading, emailConfig]);
 
   const initialValue = emailSignature
     ? `<p><br/></p> <p><br/></p> ${emailSignature.html}`

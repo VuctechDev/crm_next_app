@@ -7,6 +7,7 @@ const placeholders: Record<string, string> = {
   phone: "+...",
   mobile: "+...",
   website: "https://",
+  tag: "#",
 };
 
 interface TextFieldProps {

@@ -9,6 +9,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useGetUser } from "@/lib/client/api/user/queries";
 import NewEmail from "@/components/email/NewEmail";
 import { useGetEmailConfig } from "@/lib/client/api/email/configs/queries";
+import { useGetEmailSignature } from "@/lib/client/api/email/signature/queries";
 
 interface NewLeadEmailPageProps {}
 
@@ -16,9 +17,10 @@ const NewLeadEmailPage: FC<NewLeadEmailPageProps> = (): ReactElement => {
   const params = useParams() as { _id: string };
   const { data, isLoading } = useGetLeadById(params?._id);
   const { data: emailConfig, isLoading: configLoading } = useGetEmailConfig();
+  const { isLoading: isSignatureLoading } = useGetEmailSignature();
   const { data: user } = useGetUser();
 
-  if (isLoading || configLoading) {
+  if (isLoading || configLoading || isSignatureLoading) {
     return <LoadingOverlayer />;
   }
 

@@ -13,7 +13,6 @@ interface EmailConfigPageProps {}
 
 const EmailConfigPage: FC<EmailConfigPageProps> = (): ReactElement => {
   const { t } = useTranslation();
-
   const { data: config, isLoading } = useGetEmailConfig();
 
   if (isLoading) {

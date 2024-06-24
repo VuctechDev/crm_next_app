@@ -2,19 +2,12 @@ import React, { FC, ReactElement, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { Grid } from "@mui/material";
 import { useFormikContext } from "formik";
-import CountrySelect from "@/components/forms/fields/CountrySelect";
 import TextField from "../fields/TextField";
-import { InitialValues, initialValues } from "./OrganizationForm";
+import { InitialValues, initialValues } from "./config";
 import FieldLabel from "../fields/FieldLabel";
+import ColorPicker from "../fields/ColorPicker";
 
-type Keys =
-  | "name"
-  | "industry"
-  | "website"
-  | "address"
-  | "city"
-  | "zip"
-  | "country";
+type Keys = "tag" | "description" | "color";
 
 interface FormFieldsProps {}
 
@@ -30,20 +23,15 @@ const FormFields: FC<FormFieldsProps> = (): ReactElement => {
   };
 
   const fields = useMemo(() => Object.keys(initialValues) as Keys[], []);
+  
   return (
     <Grid container columnSpacing={4} rowGap={2}>
       {fields.map((name) => (
-        <Grid
-          xs={12}
-          sm={6}
-          // sm={name === "name" ? 12 : 6}
-          item
-          key={name}
-        >
+        <Grid xs={12} item key={name}>
           <FieldLabel label={name} />
 
-          {name === "country" ? (
-            <CountrySelect
+          {name === "color" ? (
+            <ColorPicker
               elementProps={{ ...getFieldProps(name) }}
               error={getErrorMessage(name)}
             />

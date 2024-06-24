@@ -145,7 +145,17 @@ const email_configs = `CREATE TABLE email_configs (
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );`;
 
-const createTableQuery = email_configs;
+const tags = `CREATE TABLE tags (
+  _id SERIAL PRIMARY KEY,
+  tag VARCHAR(16),
+  description VARCHAR(100),
+  color VARCHAR(12),
+  organization INT,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`;
+
+const createTableQuery = tags;
 
 const createTable = async () => {
   try {

@@ -1,4 +1,3 @@
-"use client";
 import React, { FC, ReactElement } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -22,7 +21,11 @@ import { ROUTES } from "../providers/guards/AuthRouteGuard";
 import { useLogout } from "@/lib/client/api/auth/queries";
 import ThemeToggle from "../ThemeToggle";
 import DrawIcon from "@mui/icons-material/Draw";
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import TagIcon from "@mui/icons-material/Tag";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+
 export interface DrawerItemType {
   label: string;
   icon: React.ReactNode;
@@ -47,12 +50,7 @@ const drawerItems = [
       },
     ],
   },
-  // {
-  //   label: "tags",
-  //   icon: <TagIcon />,
-  //   href: "/tags",
-  //   nestedLinks: [],
-  // },
+
   {
     label: "email",
     icon: <EmailOutlinedIcon />,
@@ -63,11 +61,11 @@ const drawerItems = [
         icon: <ForwardToInboxOutlinedIcon />,
         href: ROUTES.EMAIL.NEW,
       },
-      //     {
-      //       label: "templates",
-      //       icon: <DescriptionOutlinedIcon />,
-      //       href: "/mailing/templates",
-      //     },
+      // {
+      //   label: "templates",
+      //   icon: <DescriptionOutlinedIcon />,
+      //   href: "/mailing/templates",
+      // },
       //     {
       //       label: "mailingLists",
       //       icon: <FormatListBulletedOutlinedIcon />,
@@ -85,10 +83,16 @@ const drawerItems = [
       },
     ],
   },
+  {
+    label: "tags",
+    icon: <TagIcon />,
+    href: "/tags",
+    nestedLinks: [],
+  },
   // {
   //   label: "usage",
   //   icon: <BarChartOutlinedIcon />,
-  //   href: "/usage",
+  //   href: ROUTES.USAGE.ROOT,
   //   nestedLinks: [],
   // },
 ];
@@ -148,7 +152,6 @@ const PageLayout: FC<PageLayoutProps> = ({
             flexShrink: 0,
             whiteSpace: "nowrap",
             boxSizing: "border-box",
-            // display: "flex",
             ...(open && {
               ...openedMixin(t),
               "& .MuiDrawer-paper": openedMixin(t),

@@ -118,5 +118,11 @@
   "user": "Config",
   "emailConfig": "Email config",
   "emailConfigured": "Your email account is successfully configured, all emails will be sent from: ",
-  "noEmailConfigurationWarning": "You haven't configured your Email account, all your emails will be sent from the system default email account: "
+  "noEmailConfigurationWarning": "You haven't configured your Email account, all your emails will be sent from the system default email account: ",
+  "tag": "Tag",
+  "color": "Color",
+  "newTag": "New Tag",
+  "mustStartWith#": "Must start with #",
+  "editTag": "Edit Tag",
+  "createdAt": "Created at"
 }

@@ -98,6 +98,13 @@ const sharedTheme: ThemeOptions = {
         fontSize: "22px",
       },
     },
+    h3: {
+      fontSize: "2rem",
+      fontWeight: 600,
+      [`@media (max-width:${md}px)`]: {
+        fontSize: "1.5rem",
+      },
+    },
     h4: {
       fontSize: "1.5rem",
       fontWeight: 600,

@@ -65,7 +65,7 @@ const Content: FC<ContentProps> = ({
             p: "14px",
             marginBottom: "8px",
             "& :hover": {
-              cursor: hover ? "pointer" : "unset",
+              cursor: hover ? "pointer" : "inherit",
             },
           }}
         >

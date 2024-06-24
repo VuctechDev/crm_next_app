@@ -12,8 +12,9 @@ import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined";
 import { useGetEmails } from "@/lib/client/api/email/queries";
 import { EmailType } from "@/db/emails";
+import StatsWrapper from "@/components/stats/StatsWrapper";
 
-interface LeadsPageProps {
+interface EmailPageProps {
   params: { locale: string };
 }
 
@@ -26,7 +27,7 @@ const headers = [
   { key: "sentAt" },
 ];
 
-const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
+const EmailPage: FC<EmailPageProps> = (): ReactElement => {
   const { t } = useTranslation();
 
   const [query, setQuery] = useState("page=0&limit=10");
@@ -152,8 +153,8 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
           </Link>
         }
       >
+        {/* <StatsWrapper /> */}
         <Card
-          elevation={1}
           sx={{
             p: "0px",
             height: "1",
@@ -197,4 +198,4 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export default LeadsPage;
+export default EmailPage;

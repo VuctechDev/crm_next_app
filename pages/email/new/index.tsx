@@ -8,12 +8,14 @@ import { useGetUser } from "@/lib/client/api/user/queries";
 import NewEmail from "@/components/email/NewEmail";
 import { useGetEmailConfig } from "@/lib/client/api/email/configs/queries";
 import LoadingOverlayer from "@/components/LoadingOverlayer";
+import { useGetEmailSignature } from "@/lib/client/api/email/signature/queries";
 
 interface AddLeadsProps {}
 
 const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
   const { data: user } = useGetUser();
-  const { data: emailConfig, isLoading } = useGetEmailConfig();
+  const { data: emailConfig, isLoading: isConfigLoading } = useGetEmailConfig();
+  const { isLoading: isSignatureLoading } = useGetEmailSignature();
 
   let from = `${user?.firstName} ${user?.lastName}`;
   if (emailConfig) {
@@ -22,7 +24,7 @@ const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
     from += ` <${process.env.NEXT_PUBLIC_EMAIL_USER}>`;
   }
 
-  if (isLoading) {
+  if (isSignatureLoading || isConfigLoading) {
     return <LoadingOverlayer />;
   }
 
