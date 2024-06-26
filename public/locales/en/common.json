@@ -124,5 +124,7 @@
   "newTag": "New Tag",
   "mustStartWith#": "Must start with #",
   "editTag": "Edit Tag",
-  "createdAt": "Created at"
+  "createdAt": "Created at",
+  "tagUpdatedSuccess": "Tag updated successfully",
+  "tagAlreadyExists": "Tag already exists"
 }

@@ -1,5 +1,6 @@
 import { query } from "@/db";
 import { UserType } from "@/db/users";
+import { handleFilterQuery } from "./handleFilterQuery";
 
 export interface TagType {
   _id: number;
@@ -43,10 +44,13 @@ export const createNewTag = async (data: TagCreateType) => {
   }
 };
 
-export const getTag = async (tagName: string): Promise<TagType | null> => {
+export const getTag = async (
+  tagName: string,
+  organizationId: string
+): Promise<TagType | null> => {
   try {
     const data = await query<TagType[]>(
-      `SELECT * FROM ${tableName} WHERE tag = '${tagName}'`
+      `SELECT * FROM ${tableName} WHERE tag = '${tagName}' AND organization = '${organizationId}'`
     );
     return data?.length ? data[0] : null;
   } catch (error) {
@@ -54,10 +58,10 @@ export const getTag = async (tagName: string): Promise<TagType | null> => {
   }
 };
 
-export const getTags = async (organizationId: string): Promise<TagType[]> => {
+export const getTags = async (organization: string): Promise<TagType[]> => {
   try {
     const data = await query<TagType[]>(
-      `SELECT * FROM ${tableName} WHERE organization = '${organizationId}'`
+      `SELECT * FROM ${tableName} WHERE organization = '${organization}'`
     );
     return data;
   } catch (error) {
@@ -65,12 +69,61 @@ export const getTags = async (organizationId: string): Promise<TagType[]> => {
   }
 };
 
-export const getConfigPublic = async (userId: string) => {
+export const getPaginatedTags = async (
+  filters: Record<string, string>,
+  organizationId: string
+): Promise<{
+  data: TagType[];
+  total: number;
+}> => {
   try {
-    const data = await query<DBTagType[]>(
-      `SELECT createdAt, email, updatedAt, user, _id FROM ${tableName} WHERE user = '${userId}'`
+    const filtersQuery = handleFilterQuery({
+      ...filters,
+      organization: organizationId,
+    });
+
+    console.log("filtersQuery", filtersQuery);
+
+    const total = (await query(
+      `SELECT COUNT(*) AS total FROM ${tableName} ${filtersQuery}`
+    )) as [{ total: number }];
+    const offset = +filters?.page * +filters.limit;
+    const data = await query<TagType[]>(
+      `SELECT * FROM ${tableName} 
+      ${filtersQuery} 
+      ORDER BY _id DESC 
+      LIMIT ${filters?.limit} 
+      OFFSET ${offset}`
     );
-    return data?.length ? data[0] : null;
+    return { data, total: total?.[0]?.total ?? 0 };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateTag = async (
+  tagId: string,
+  data: Partial<TagCreateType>
+) => {
+  try {
+    await query(
+      `UPDATE ${tableName} 
+        SET tag = '${data?.tag}', 
+        description = '${data?.description}',
+        color = '${data?.color}'
+      WHERE _id = ?`,
+      [[tagId]]
+    );
+    return { success: true };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const removeTag = async (tagId: string) => {
+  try {
+    await query(`DELETE FROM ${tableName} WHERE _id = ?`, [[tagId]]);
+    return { success: true };
   } catch (error) {
     throw error;
   }

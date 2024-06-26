@@ -2,16 +2,10 @@ import React, { FC, ReactElement } from "react";
 import { Form, Formik } from "formik";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 import SubmitButton from "../fields/SubmitButton";
-import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 import { initialValues, validationSchema } from "./config";
-import { useCreateLead, useUpdateLead } from "@/lib/client/api/leads/queries";
 import FormFields from "./FormFields";
-import { LeadType } from "@/db/leads";
-import { getChangedValues } from "@/lib/shared/getChangedValues";
-import { getCountry } from "@/lib/shared/getCountry";
-import { useCreateTag } from "@/lib/client/api/tags/queries";
+import { useCreateTag, useUpdateTag } from "@/lib/client/api/tags/queries";
 import { TagType } from "@/db/tags";
 import Box from "@mui/material/Box";
 import { IconButton } from "@mui/material";
@@ -24,28 +18,17 @@ interface TagsFormProps {
 
 const TagsForm: FC<TagsFormProps> = ({ data, handleClear }): ReactElement => {
   const { t } = useTranslation();
-  const { push, replace } = useRouter();
   const { mutateAsync: createTag } = useCreateTag();
-  const { mutateAsync: updateLead } = useUpdateLead(`${data?._id}`);
+  const { mutateAsync: updateTag } = useUpdateTag();
 
   const handleSubmit = async (values: any) => {
     try {
-      console.log(values);
-      await createTag(values);
-      // if (!data) {
-      //   await createLead({
-      //     ...values,
-      //     country: values?.country?.iso3,
-      //   });
-      //   push(`${ROUTES.LEADS.ROOT}`);
-      // } else {
-      //   const changedValues = getChangedValues<LeadType>(
-      //     { ...values, country: values?.country?.iso3 },
-      //     data
-      //   );
-      //   await updateLead({ data: changedValues, _id: data._id });
-      //   replace(`${ROUTES.LEADS.ROOT}/${data._id}`);
-      // }
+      if (data) {
+        await updateTag(values);
+      } else {
+        await createTag(values);
+      }
+      handleClear();
     } catch (error) {
       console.error(error);
     }

@@ -17,9 +17,12 @@ router
         .json({ success: false, message: "missingFilesException" });
     }
     const { userId, organizationId } = req.headers;
+
+    const tags = req.body?.tags?.length ? req.body.tags[0] : "[]";
     await handleCardsUpload(req.files, {
       createdBy: userId,
       owner: organizationId,
+      tags,
     });
     return res.status(200).json({
       success: true,

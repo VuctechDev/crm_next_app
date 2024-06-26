@@ -6,6 +6,7 @@ import CountrySelect from "@/components/forms/fields/CountrySelect";
 import TextField from "../fields/TextField";
 import { InitialValues, initialValues } from "./config";
 import FieldLabel from "../fields/FieldLabel";
+import TagsSelect from "../fields/TagsSelect";
 
 type Keys =
   | "firstName"
@@ -19,6 +20,7 @@ type Keys =
   | "description"
   | "website"
   | "address"
+  | "tags"
   | "city"
   | "zip"
   | "country";
@@ -40,15 +42,26 @@ const FormFields: FC<FormFieldsProps> = (): ReactElement => {
   return (
     <Grid container columnSpacing={4} rowGap={2}>
       {fields.map((name) => (
-        <Grid xs={12} sm={name === "description" ? 12 : 6} item key={name}>
+        <Grid
+          xs={12}
+          sm={name === "description" || name == "tags" ? 12 : 6}
+          item
+          key={name}
+        >
           <FieldLabel label={name} />
-
-          {name === "country" ? (
+          {name === "country" && (
             <CountrySelect
               elementProps={{ ...getFieldProps(name) }}
               error={getErrorMessage(name)}
             />
-          ) : (
+          )}
+          {name === "tags" && (
+            <TagsSelect
+              elementProps={{ ...getFieldProps(name) }}
+              error={getErrorMessage(name)}
+            />
+          )}
+          {name !== "country" && name !== "tags" && (
             <TextField
               elementProps={{ ...getFieldProps(name) }}
               error={getErrorMessage(name)}

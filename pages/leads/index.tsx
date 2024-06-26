@@ -6,7 +6,7 @@ import { LeadType } from "@/db/leads";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Box, Button, IconButton, TextField } from "@mui/material";
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useGetLeads } from "@/lib/client/api/leads/queries";
@@ -23,6 +23,8 @@ import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined";
 import TooltipIconButton from "@/components/TooltipIconButton";
 import CreateIcon from "@mui/icons-material/Create";
+import { TagType } from "@/db/tags";
+import { useGetTags } from "@/lib/client/api/tags/queries";
 
 interface LeadsPageProps {
   params: { locale: string };
@@ -35,6 +37,7 @@ const headers = [
   { key: "company" },
   { key: "industry" },
   { key: "country" },
+  { key: "tags" },
   { key: "website" },
   { key: "" },
 ];
@@ -42,9 +45,9 @@ const headers = [
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
-
   const [query, setQuery] = useState("page=0&limit=10");
   const { data, isLoading } = useGetLeads(query);
+  const { data: tags } = useGetTags();
 
   const [csvModalOpen, setCSVModalOpen] = useState(false);
   const inputRef = useRef("");
@@ -69,6 +72,46 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
     {
       key: "country",
       render: (value: string) => getCountryName(value),
+    },
+    {
+      key: "tags",
+      render: (value: TagType[]) => {
+        if (value.length) {
+          return (
+            <Box
+              sx={{
+                display: "flex",
+                minWidth: "150px",
+                maxWidth: "250px",
+                flexWrap: "wrap",
+                columnGap: "6px",
+                rowGap: "4px",
+              }}
+            >
+              {value.map((tag) => (
+                <Box
+                  key={tag._id}
+                  sx={{
+                    height: "30px",
+                    borderRadius: "8px",
+                    backgroundColor: tag.color,
+                    width: "fit-content",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    p: "2px",
+                  }}
+                >
+                  <Typography color="#fff" fontSize="13px" fontWeight={600}>
+                    {tag.tag}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          );
+        }
+        return <Typography variant="body2">/</Typography>;
+      },
     },
     {
       key: "website",
@@ -116,7 +159,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
 
   const noFiltersLabel = `(${t("all")})`;
   const defaultFileName = `${t("leads")} ${
-    getCSVFileName(query) ?? noFiltersLabel
+    getCSVFileName(query, { tags: tags?.data ?? [] }) ?? noFiltersLabel
   } - ${getDisplayDateTime()}`;
 
   const handleExport = async () => {
@@ -184,6 +227,13 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
               },
               {
                 label: "country",
+              },
+              {
+                label: "tags",
+                options: tags?.data.map((tag) => ({
+                  value: `${tag._id}`,
+                  label: tag.tag,
+                })),
               },
             ]}
           />

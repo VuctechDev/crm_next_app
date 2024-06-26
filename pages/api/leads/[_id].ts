@@ -9,13 +9,14 @@ const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 router
   .use(authGuard)
   .get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
+    const { organizationId } = req.headers;
     const _id = req.query?._id;
     if (!_id) {
       return res
         .status(400)
         .json({ success: false, message: "missingIDException" });
     }
-    const data = await getLead(_id as string);
+    const data = await getLead(_id as string, organizationId);
     if (!data) {
       return res.status(404).json({ success: false, message: "notFound" });
     }

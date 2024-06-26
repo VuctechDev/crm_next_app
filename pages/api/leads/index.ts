@@ -21,9 +21,11 @@ router
   })
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     const { userId, organizationId } = req.headers;
+    
     await insertNewLead(req.body, {
       createdBy: userId,
       owner: organizationId,
+      tags: req.body.tags,
     });
 
     res.status(200).json({ success: true });

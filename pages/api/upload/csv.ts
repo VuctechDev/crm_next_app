@@ -20,10 +20,11 @@ router
 
       const { userId, organizationId } = req.headers;
       const file = req.files[0];
-      
+
       await handleCSVUpload(file?.key, {
         createdBy: userId,
         owner: organizationId,
+        tags: req.body?.tags ?? "[]",
       });
       return res
         .status(200)

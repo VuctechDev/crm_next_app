@@ -13,6 +13,7 @@ import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import { useTranslation } from "next-i18next";
 import { useSnackbar } from "../providers/SnackbarContext";
 import { apiClient } from "@/lib/client/api";
+import TagsSelect from "../forms/fields/TagsSelect";
 
 interface FilePickerProps {
   type: "img" | "csv";
@@ -41,6 +42,7 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
   const { t } = useTranslation();
   const { openSnackbar } = useSnackbar();
   const [dragActive, setDragActive] = useState(false);
+  const [tags, setTags] = useState<number[]>([]);
   const [myFile, setMyFile] = useState<File[]>([]);
 
   const { path, label, accept, multiple } = config[type];
@@ -50,6 +52,7 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
       const formData = new FormData();
       myFile.forEach((file) => {
         formData.append("files", file);
+        formData.append("tags", JSON.stringify(tags));
       });
       const response = await apiClient.post(`/upload${path}`, formData);
       const data = response.data;
@@ -94,6 +97,10 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
     }
   };
 
+  const handleTagSelect = (tags: number[]) => {
+    setTags(tags);
+  };
+
   return (
     <Box
       display="flex"
@@ -101,6 +108,7 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
       width={1}
       sx={{ alignItems: "center" }}
     >
+      <TagsSelect onChange={handleTagSelect} />
       <Box
         width="350px"
         sx={(t) => ({

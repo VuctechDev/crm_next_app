@@ -14,6 +14,8 @@ export const handleFilterQuery = (query: Record<string, string>): string => {
       addCondition(`${key} LIKE '%${value}%'`);
     } else if (["owner"].includes(key)) {
       addCondition(`${key} = '${value}'`);
+    } else if (["tags"].includes(key)) {
+      addCondition(`JSON_CONTAINS(${key}, '${value}', '$')`);
     }
   });
 

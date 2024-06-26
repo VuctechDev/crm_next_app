@@ -1,6 +1,7 @@
 export interface Payload {
   createdBy: string;
   owner: string;
+  tags: string;
 }
 
 export const forwardJobToFileService = async (

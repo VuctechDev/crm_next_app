@@ -4,6 +4,7 @@ import { parseHTTPS } from "../helpers";
 import { handleFilterQuery } from "./handleFilterQuery";
 import { getChangedValuesQuery } from "@/lib/shared/getChangedValues";
 import { getCountryName } from "@/lib/shared/getCountry";
+import { TagType, getTags } from "../tags";
 
 export interface LeadType {
   _id: number;
@@ -22,8 +23,13 @@ export interface LeadType {
   industry: string;
   employees: string;
   archived: boolean;
+  tags: TagType[];
   description: string;
   created: string;
+}
+
+export interface DBLeadType extends Omit<LeadType, "tags"> {
+  tags: string;
 }
 
 const tableName = "leads";
@@ -50,6 +56,7 @@ export const insertNewLead = async (data: LeadType, payload: Payload) => {
                 createdBy,
                 owner,
                 website,
+                tags,
                 archived
             ) VALUES?`,
       [
@@ -71,6 +78,7 @@ export const insertNewLead = async (data: LeadType, payload: Payload) => {
           payload.createdBy,
           payload.owner,
           webite,
+          payload.tags,
           0,
         ],
       ]
@@ -94,11 +102,23 @@ export const getPaginatedLeads = async (
     const total = (await query(
       `SELECT COUNT(*) AS total FROM ${tableName} ${filtersQuery}`
     )) as [{ total: number }];
+
     const offset = +filters?.page * +filters.limit;
-    const data = await query(
+    const data = await query<DBLeadType[]>(
       `SELECT * from ${tableName} ${filtersQuery} ORDER BY _id DESC LIMIT ${filters?.limit} OFFSET ${offset} `
     );
-    return { data, total: total?.[0]?.total ?? 0 };
+
+    const tags = await getTags(owner);
+
+    const formattedResults = data.map((row) => {
+      const parsedTags: number[] = JSON.parse(row.tags);
+      return {
+        ...row,
+        tags: tags.filter((tag) => parsedTags.includes(tag._id)),
+      };
+    });
+
+    return { data: formattedResults, total: total?.[0]?.total ?? 0 };
   } catch (error) {
     throw error;
   }
@@ -136,13 +156,25 @@ export const getCSVExportLeads = async (
   }
 };
 
-export const getLead = async (_id: string): Promise<LeadType | null> => {
+export const getLead = async (
+  _id: string,
+  organization: string
+): Promise<LeadType | null> => {
   try {
-    const data = (await query(
+    const data = await query<DBLeadType[]>(
       `SELECT * from ${tableName} WHERE _id = ? AND archived = 0`,
       [[_id]]
-    )) as LeadType[];
-    return data?.length ? data[0] : null;
+    );
+    const tags = await getTags(organization);
+
+    const formattedResults = data.map((row) => {
+      const parsedTags: number[] = JSON.parse(row.tags);
+      return {
+        ...row,
+        tags: tags.filter((tag) => parsedTags.includes(tag._id)),
+      };
+    }) as LeadType[];
+    return data?.length ? formattedResults[0] : null;
   } catch (error) {
     throw error;
   }

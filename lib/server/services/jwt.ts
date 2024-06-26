@@ -14,7 +14,7 @@ export const generateAccessToken = (user: any) => {
     },
     ACCESS_SECRET,
     {
-      expiresIn: "30s",
+      expiresIn: "30m",
     }
   );
 };

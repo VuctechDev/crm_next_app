@@ -5,11 +5,11 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Card from "@mui/material/Card";
 import PageLayout from "@/components/page-layout/PageLayout";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
-import Link from "next/link";
-import Button from "@mui/material/Button";
-import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 import TagsForm from "@/components/forms/tags/TagsForm";
-import { useGetTags } from "@/lib/client/api/tags/queries";
+import {
+  useDeleteTag,
+  useGetPaginatedTags,
+} from "@/lib/client/api/tags/queries";
 import { Grid, Tooltip, Typography } from "@mui/material";
 import TableWrapper from "@/components/table/TableWrapper";
 import { TagType } from "@/db/tags";
@@ -17,6 +17,8 @@ import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import TooltipIconButton from "@/components/TooltipIconButton";
 import CreateIcon from "@mui/icons-material/Create";
+import ConfirmationModal from "@/components/ConfirmationModal";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 const headers = [
   { key: "tag" },
@@ -28,10 +30,26 @@ const headers = [
 
 interface TagsPageProps {}
 
-const TagsPage: FC<TagsPageProps> = ({}): ReactElement => {
+const TagsPage: FC<TagsPageProps> = (): ReactElement => {
+  const [query, setQuery] = useState("page=0&limit=10");
+  const [deleteId, setDeleteId] = useState("");
+
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null);
-  const { t } = useTranslation();
-  const { data, isLoading } = useGetTags();
+  const { data, isLoading } = useGetPaginatedTags(query);
+  const { mutateAsync: deleteTag, isPending } = useDeleteTag();
+  const handleQueryChange = (query: string) => {
+    setQuery(query);
+  };
+
+  const handleModal = (_id?: number) => setDeleteId(_id ? `${_id}` : "");
+
+  const handleDelete = async () => {
+    try {
+      deleteTag(+deleteId);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const keys = [
     {
@@ -83,11 +101,18 @@ const TagsPage: FC<TagsPageProps> = ({}): ReactElement => {
     {
       key: "_id",
       render: (value: string, data: TagType) => (
-        <TooltipIconButton
-          title="edit"
-          icon={<CreateIcon />}
-          onClick={() => setSelectedTag(data)}
-        />
+        <>
+          <TooltipIconButton
+            title="edit"
+            icon={<CreateIcon />}
+            onClick={() => setSelectedTag(data)}
+          />
+          <TooltipIconButton
+            title="delete"
+            icon={<DeleteOutlineOutlinedIcon />}
+            onClick={() => setDeleteId(value)}
+          />
+        </>
       ),
       // preventClick: true,
     },
@@ -108,7 +133,7 @@ const TagsPage: FC<TagsPageProps> = ({}): ReactElement => {
                 width: "100%",
                 display: "flex",
                 flexDirection: "column",
-                rowGap: "24px",
+                // rowGap: "24px",
                 // maxWidth: "450px",
                 // p: "24px 24px 36px",
                 [t.breakpoints.down("sm")]: {
@@ -116,37 +141,14 @@ const TagsPage: FC<TagsPageProps> = ({}): ReactElement => {
                 },
               })}
             >
-              {/* <Box width={1} sx={{ display: "flex", columnGap: "20px" }}>
-            {data?.map((tag) => (
-              <Tooltip key={tag.tag} title={tag.description}>
-                <Box
-                  sx={{
-                    height: "30px",
-                    borderRadius: "4px",
-                    backgroundColor: tag.color,
-                    width: "fit-content",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    p: "6px 12px",
-                  }}
-                >
-                  <Typography color="#fff"> {tag.tag}</Typography>
-                </Box>
-              </Tooltip>
-            ))}
-          </Box> */}
-
               <TableWrapper
-                data={data ?? []}
+                data={data?.data ?? []}
                 headers={headers}
                 keys={keys}
                 loading={isLoading}
-                totalCount={10}
-                // totalCount={data?.total ?? 0}
+                totalCount={data?.total ?? 0}
                 skeletonCount={8}
-                handleQueryChange={() => null}
-                // handleQueryChange={handleQueryChange}
+                handleQueryChange={handleQueryChange}
                 handleRowSelect={(_id: string) => null}
                 hover={false}
                 filterKeys={[]}
@@ -175,6 +177,14 @@ const TagsPage: FC<TagsPageProps> = ({}): ReactElement => {
             </Card>
           </Grid>
         </Grid>
+        {!!deleteId && (
+          <ConfirmationModal
+            title="deleteTag"
+            message="deleteLeadConfirmation"
+            onCancel={() => handleModal()}
+            onConfirm={handleDelete}
+          />
+        )}
       </PageContentWrapper>
     </PageLayout>
   );

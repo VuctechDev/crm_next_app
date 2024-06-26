@@ -11,6 +11,7 @@ import FormFields from "./FormFields";
 import { LeadType } from "@/db/leads";
 import { getChangedValues } from "@/lib/shared/getChangedValues";
 import { getCountry } from "@/lib/shared/getCountry";
+import { TagType } from "@/db/tags";
 
 interface LeadsFormProps {
   data?: LeadType;
@@ -28,11 +29,16 @@ const LeadsForm: FC<LeadsFormProps> = ({ data }): ReactElement => {
         await createLead({
           ...values,
           country: values?.country?.iso3,
+          tags: JSON.stringify(values?.tags.map((x: TagType) => x._id)),
         });
         push(`${ROUTES.LEADS.ROOT}`);
       } else {
         const changedValues = getChangedValues<LeadType>(
-          { ...values, country: values?.country?.iso3 },
+          {
+            ...values,
+            country: values?.country?.iso3,
+            tags: JSON.stringify(values?.tags.map((x: TagType) => x._id)),
+          },
           data
         );
         await updateLead({ data: changedValues, _id: data._id });

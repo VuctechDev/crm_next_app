@@ -47,6 +47,12 @@ const FilterButton: FC<FilterButtonProps> = ({
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
+  const selectValue = data.label === "tags" || data.label === "status";
+  const displayValue =
+    selectValue && data?.options
+      ? data?.options.find((x) => x.value === value)?.label
+      : value;
+
   return (
     <>
       <Button
@@ -91,8 +97,8 @@ const FilterButton: FC<FilterButtonProps> = ({
           })}
         >
           {t(label)}
-          {value ? ":" : ""}
-          <span>{value ? ` ${value}` : ""}</span>
+          {value ? ": " : ""}
+          <span>{displayValue}</span>
         </Typography>
       </Button>
       <Popover
@@ -129,7 +135,7 @@ const FilterButton: FC<FilterButtonProps> = ({
             }}
             fullWidth
             variant="outlined"
-            select={label === "status"}
+            select={label === "status" || label === "tags"}
             InputProps={{
               sx: { borderRadius: "8px", padding: "0px 14px" },
               inputProps: {

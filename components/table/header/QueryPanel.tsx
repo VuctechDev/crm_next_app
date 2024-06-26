@@ -72,7 +72,13 @@ const QueryPanel: FC<QueryPanelProps> = ({
           handleFilterSelect={handleFilters}
         />
       ))}
-      <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          justifyContent: keys.length ? "flex-end" : "flex-start",
+        }}
+      >
         <TextField
           sx={{ borderRadius: "20px", fontSize: "14px", maxWidth: "300px" }}
           onChange={(e) => setSearch(e.target.value)}
