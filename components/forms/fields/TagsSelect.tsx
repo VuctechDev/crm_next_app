@@ -1,6 +1,5 @@
-import React, { FC, ReactElement, useState } from "react";
+import React, { FC, ReactElement, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import { useTranslation } from "next-i18next";
 import { Autocomplete, TextField, Typography } from "@mui/material";
 import { FieldInputProps } from "formik";
 import { useGetTags, useGetPaginatedTags } from "@/lib/client/api/tags/queries";
@@ -21,8 +20,8 @@ const TagsSelect: FC<TagsSelectProps> = ({
   error,
   onChange,
 }): ReactElement => {
-  const { t } = useTranslation();
   const [search, setSearch] = useState("");
+  const [savedTags] = useState(storage.get<number[]>("savedTags"));
 
   // const debouncedValue = useDebounce(search, 500);
   const { data, isLoading } = useGetTags();
@@ -30,11 +29,19 @@ const TagsSelect: FC<TagsSelectProps> = ({
   //   `page=0&limit=6&search=${debouncedValue}`
   // );
 
+  useEffect(() => {
+    if (savedTags && onChange) {
+      onChange(
+        data?.data
+          .filter((tag) => savedTags?.includes(tag._id))
+          .map((x) => x._id)
+      );
+    }
+  }, [savedTags]);
+
   if (isLoading) {
     return <LoadingOverlayer />;
   }
-
-  const savedTags = storage.get<number[]>("savedTags");
 
   let options = data?.data ?? [];
   if (elementProps?.value?.length) {
@@ -45,8 +52,6 @@ const TagsSelect: FC<TagsSelectProps> = ({
             (initialTag: TagType) => initialTag._id === item._id
           )
       ) ?? [];
-  } else if (savedTags) {
-    options = data?.data.filter((tag) => !savedTags?.includes(tag._id)) ?? [];
   }
 
   const handleSelect = (value: TagType[]) => {
@@ -65,7 +70,6 @@ const TagsSelect: FC<TagsSelectProps> = ({
     defaultValue: data?.data.filter((tag) => savedTags?.includes(tag._id)),
   };
 
-  console.log(params);
   return (
     <Box width={1} sx={onChange ? { width: "520px", mb: "40px" } : {}}>
       {onChange && <FieldLabel label="tags" />}
