@@ -33,6 +33,7 @@ export const ROUTES = {
     NEW: "/email/new",
     SIGNATURE: "/email/signature",
     CONFIG: "/email/config",
+    TEMPLATES: "/email/templates",
   },
   USAGE: {
     ROOT: "/usage",

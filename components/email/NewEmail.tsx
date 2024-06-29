@@ -24,8 +24,6 @@ const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
   const [toValue, setToValue] = useState(to ?? "");
   const [subject, setSubject] = useState("");
 
-
-
   const handleSubmit = async (html: string) => {
     try {
       await mutateAsync({

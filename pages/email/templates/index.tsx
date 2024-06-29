@@ -18,24 +18,26 @@ import TooltipIconButton from "@/components/TooltipIconButton";
 import CreateIcon from "@mui/icons-material/Create";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import TagItem from "@/components/tags/TagItem";
+import TemplateForm from "@/components/forms/templates/TemplatesForm";
+import { useGetEmailTemplates } from "@/lib/client/api/email/templates/queries";
 
 const headers = [
-  { key: "tag" },
-  { key: "leads" },
+  { key: "template" },
   { key: "description" },
   { key: "createdAt" },
   { key: "" },
 ];
 
-interface TagsPageProps {}
+interface TemplatesPageProps {}
 
-const TagsPage: FC<TagsPageProps> = (): ReactElement => {
+const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
   const [query, setQuery] = useState("page=0&limit=10");
   const [deleteId, setDeleteId] = useState("");
 
-  const [selectedTag, setSelectedTag] = useState<TagType | null>(null);
-  const { data, isLoading } = useGetPaginatedTags(query);
+  const [selectedTemplate, setSelectedTemplate] = useState<TagType | null>(
+    null
+  );
+  const { data, isLoading } = useGetEmailTemplates(query);
   const { mutateAsync: deleteTag } = useDeleteTag();
   const handleQueryChange = (query: string) => {
     setQuery(query);
@@ -53,28 +55,12 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
 
   const keys = [
     {
-      key: "tag",
-      render: (value: string, data: TagType) => (
-        <Box
-          width={1}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <TagItem data={data} />
-        </Box>
-      ),
-    },
-    {
-      key: "leads",
-      render: (value: string, data: TagType) => <Typography> 56</Typography>,
+      key: "name",
     },
     {
       key: "description",
       render: (value: string) => (
-        <Tooltip title={value} sx={{ width: "60px" }}>
+        <Tooltip title={value} sx={{ width: "60px", cursor: "pointer" }}>
           <InfoOutlinedIcon sx={{ cursor: "pointer" }} />
         </Tooltip>
       ),
@@ -92,7 +78,7 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
           <TooltipIconButton
             title="edit"
             icon={<CreateIcon />}
-            onClick={() => setSelectedTag(data)}
+            onClick={() => setSelectedTemplate(data)}
           />
           <TooltipIconButton
             title="delete"
@@ -107,14 +93,14 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
 
   return (
     <PageLayout>
-      <PageContentWrapper title="tags">
+      <PageContentWrapper title="templates">
         <Grid
           container
-          // columnSpacing="50px"
-          rowSpacing="36px"
+          columnSpacing="80px"
+          // rowSpacing="36px"
           sx={{ px: "20px" }}
         >
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={6}>
             <Card
               sx={(t) => ({
                 width: "100%",
@@ -142,31 +128,30 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
               />
             </Card>
           </Grid>
-          <Grid item xs={1} />
-          <Grid item xs={12} md={3}>
+          {/* <Grid item xs={1} /> */}
+          <Grid item xs={12} md={6}>
             <Card
               sx={(t) => ({
                 width: "100%",
                 display: "flex",
                 flexDirection: "column",
                 rowGap: "24px",
-                maxWidth: "430px",
                 p: "24px 24px 36px",
                 [t.breakpoints.down("sm")]: {
                   rowGap: "20px",
                 },
               })}
             >
-              <TagsForm
-                data={selectedTag}
-                handleClear={() => setSelectedTag(null)}
+              <TemplateForm
+                data={selectedTemplate}
+                handleClear={() => setSelectedTemplate(null)}
               />
             </Card>
           </Grid>
         </Grid>
         {!!deleteId && (
           <ConfirmationModal
-            title="deleteTag"
+            title="deleteTemplate"
             message="deleteLeadConfirmation"
             onCancel={() => handleModal()}
             onConfirm={handleDelete}
@@ -186,4 +171,4 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export default TagsPage;
+export default TemplatesPage;

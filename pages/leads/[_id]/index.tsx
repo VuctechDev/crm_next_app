@@ -25,6 +25,7 @@ import LoadingOverlayer from "@/components/LoadingOverlayer";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useRouter } from "next/router";
 import Comments from "@/components/comments/Comments";
+import TagsWrapper from "@/components/tags/TagsWrapper";
 
 interface LeadPageProps {}
 
@@ -77,38 +78,57 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
           </>
         }
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            rowGap: "8px",
-            width: "fit-content",
-          }}
-        >
-          <Typography variant="body2">
-            {getDisplayDateTime(data?.created)}
-          </Typography>
-          <Typography variant="h5">{data?.role}</Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              rowGap: "8px",
+              width: "fit-content",
+            }}
+          >
+            <Typography variant="body2">
+              {getDisplayDateTime(data?.created)}
+            </Typography>
+            <Typography variant="h5">{data?.role}</Typography>
 
-          {data?.email && (
-            <Box sx={{ display: "flex", alignItems: "center", mt: "8px" }}>
-              <AlternateEmailIcon sx={{ mr: "10px" }} />
-              <Typography> {data?.email}</Typography>
-            </Box>
-          )}
-          {data?.mobile && (
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <SmartphoneIcon sx={{ mr: "10px" }} />
-              <Typography> {data?.mobile}</Typography>
-            </Box>
-          )}
-          {data?.phone && (
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <PhoneEnabledIcon sx={{ mr: "10px" }} />
-              <Typography> {data?.phone}</Typography>
-            </Box>
-          )}
+            {data?.email && (
+              <Box sx={{ display: "flex", alignItems: "center", mt: "8px" }}>
+                <AlternateEmailIcon sx={{ mr: "10px" }} />
+                <Typography> {data?.email}</Typography>
+              </Box>
+            )}
+            {data?.mobile && (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SmartphoneIcon sx={{ mr: "10px" }} />
+                <Typography> {data?.mobile}</Typography>
+              </Box>
+            )}
+            {data?.phone && (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <PhoneEnabledIcon sx={{ mr: "10px" }} />
+                <Typography> {data?.phone}</Typography>
+              </Box>
+            )}
+          </Box>
+          <Card
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              p: "28px",
+              borderRadius: "8px",
+              width: "fit-content",
+              minWidth: "300px",
+              height: "fit-content",
+            }}
+          >
+            <Typography sx={{ mr: "12px" }} variant="h4">
+              {t("tags")}:
+            </Typography>
+            <TagsWrapper data={data?.tags ?? []} />
+          </Card>
         </Box>
+
         <Card
           sx={{
             display: "inline-flex",

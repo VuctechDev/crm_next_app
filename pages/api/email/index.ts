@@ -3,9 +3,7 @@ import { createRouter } from "next-connect";
 import { authGuard } from "../auth/authMid";
 import { NextApiRequestExtended } from "@/types/reaquest";
 import { createNewEmail, getPaginatedEmails } from "@/db/emails";
-import { sendEmail } from "@/lib/server/services/nodemailer";
-import { getConfig } from "@/db/emails/configs";
-import { decrypt } from "@/lib/server/services/crypto";
+import { sendNewInAppEmail } from "@/lib/server/services/nodemailer/sendNewInAppEmail";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
@@ -27,32 +25,13 @@ router
         return res.status(400).json({ message: "badRequest" });
       }
 
-      const emailID = await createNewEmail({
-        ...req.body,
-        organization: organizationId,
-        sentBy: userId,
-      });
+      // const emailID = await createNewEmail({
+      //   ...req.body,
+      //   organization: organizationId,
+      //   sentBy: userId,
+      // });
 
-      const config = {
-        from,
-        to,
-        subject,
-        html: `<div style="color: #2a2a2a !important; ">
-          ${html} 
-          <p><img src="${process.env.API_BASE_URL}/api/email/read?_id=${emailID}" width="1" height="1" style="display:none;"></p>
-        </div>`,
-      };
-
-      const emailConfig = await getConfig(userId);
-      if (emailConfig) {
-        const password = decrypt({
-          iv: emailConfig?.iv ?? "",
-          encryptedData: emailConfig?.password ?? "",
-        });
-        await sendEmail(config, { ...emailConfig, password });
-      } else {
-        await sendEmail(config);
-      }
+      await sendNewInAppEmail(req.body, 2, userId);
 
       res.status(200).json({ success: true });
     } catch (error) {

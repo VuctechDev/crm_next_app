@@ -126,5 +126,9 @@
   "editTag": "Edit Tag",
   "createdAt": "Created at",
   "tagUpdatedSuccess": "Tag updated successfully",
-  "tagAlreadyExists": "Tag already exists"
+  "tagAlreadyExists": "Tag already exists",
+  "body": "Body",
+  "template": "Template",
+  "newTemplate": "New template",
+  "editTemplate": "Edit template"
 }
