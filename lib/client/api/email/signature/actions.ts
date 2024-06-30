@@ -9,15 +9,15 @@ export const getEmailSignature = async (): Promise<SignatureType> => {
 };
 
 export const createEmailSignature = async (
-  html: string
+  body: string
 ): Promise<{ success: boolean }> => {
-  const response = await apiClient.post(`${path}`, { html });
+  const response = await apiClient.post(`${path}`, { body });
   return response.data;
 };
 
 export const updateEmailSignature = async (
-  html: string
+  body: string
 ): Promise<{ success: boolean }> => {
-  const response = await apiClient.patch(`${path}`, { html });
+  const response = await apiClient.patch(`${path}`, { body });
   return response.data;
 };

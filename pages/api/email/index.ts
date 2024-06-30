@@ -4,6 +4,7 @@ import { authGuard } from "../auth/authMid";
 import { NextApiRequestExtended } from "@/types/reaquest";
 import { createNewEmail, getPaginatedEmails } from "@/db/emails";
 import { sendNewInAppEmail } from "@/lib/server/services/nodemailer/sendNewInAppEmail";
+import { getEmailLeadsData } from "@/db/leads";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
@@ -20,18 +21,33 @@ router
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     try {
       const { organizationId, userId } = req.headers;
-      const { html, from, to, subject } = req.body;
-      if (!html || !from || !to || !subject) {
+      const { body, from, to, subject, tags } = req.body;
+      if (!body || !from || !subject) {
         return res.status(400).json({ message: "badRequest" });
       }
-
-      // const emailID = await createNewEmail({
-      //   ...req.body,
-      //   organization: organizationId,
-      //   sentBy: userId,
-      // });
-
-      await sendNewInAppEmail(req.body, 2, userId);
+      if (tags?.length) {
+        const leads = await getEmailLeadsData({ tags });
+        const emailTemplates = leads.map((lead) => ({
+          ...req.body,
+          organization: organizationId,
+          user: userId,
+          lead: lead._id,
+          to: lead.email,
+        }));
+        const emails = await createNewEmail(emailTemplates);
+        await sendNewInAppEmail(emails, body, userId, leads);
+      } else if (to) {
+        const lead = await getEmailLeadsData({ _id: req.body.lead });
+        const emailTemplate = [
+          {
+            ...req.body,
+            organization: organizationId,
+            user: userId,
+          },
+        ];
+        const email = await createNewEmail(emailTemplate);
+        await sendNewInAppEmail(email, body, userId, lead);
+      }
 
       res.status(200).json({ success: true });
     } catch (error) {

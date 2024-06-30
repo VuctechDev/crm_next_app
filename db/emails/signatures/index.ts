@@ -3,7 +3,7 @@ import { UserType } from "@/db/users";
 
 export interface SignatureType {
   _id: number;
-  html: string;
+  body: string;
   user: UserType;
   archived: boolean;
   createdAt: string;
@@ -11,7 +11,7 @@ export interface SignatureType {
 }
 
 export interface SignatureCreateType {
-  html: string;
+  body: string;
   user: string;
 }
 
@@ -26,10 +26,10 @@ export const createNewSignature = async (data: SignatureCreateType) => {
   try {
     const { insertId } = (await query(
       `INSERT INTO ${tableName} (
-          html,
+          body,
           user
           ) VALUES?`,
-      [[data.html, data.user]]
+      [[data.body, data.user]]
     )) as { insertId: number };
     console.log("NEW EMAIL CREATED: " + insertId);
     return insertId;
@@ -49,10 +49,10 @@ export const getSignature = async (userId: string) => {
   }
 };
 
-export const updateSignature = async (userId: string, html: string) => {
+export const updateSignature = async (userId: string, body: string) => {
   try {
     await query<DBCommentType[]>(
-      `UPDATE ${tableName} SET html = '${html}' WHERE user = ${userId}`
+      `UPDATE ${tableName} SET body = '${body}' WHERE user = ${userId}`
     );
     return { success: true };
   } catch (error) {

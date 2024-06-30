@@ -1,25 +1,22 @@
 import React, { FC, ReactElement, useState } from "react";
-import Box from "@mui/material/Box";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Card from "@mui/material/Card";
 import PageLayout from "@/components/page-layout/PageLayout";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
-import TagsForm from "@/components/forms/tags/TagsForm";
-import {
-  useDeleteTag,
-  useGetPaginatedTags,
-} from "@/lib/client/api/tags/queries";
 import { Grid, Tooltip, Typography } from "@mui/material";
 import TableWrapper from "@/components/table/TableWrapper";
-import { TagType } from "@/db/tags";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import TooltipIconButton from "@/components/TooltipIconButton";
 import CreateIcon from "@mui/icons-material/Create";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import TemplateForm from "@/components/forms/templates/TemplatesForm";
-import { useGetEmailTemplates } from "@/lib/client/api/email/templates/queries";
+import {
+  useDeleteEmailTemplate,
+  useGetPaginatedTemplates,
+} from "@/lib/client/api/email/templates/queries";
+import { EmailTemplateType } from "@/db/emails/templates";
+import TemplateForm from "@/components/forms/email/templates/TemplatesForm";
 
 const headers = [
   { key: "template" },
@@ -34,11 +31,11 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
   const [query, setQuery] = useState("page=0&limit=10");
   const [deleteId, setDeleteId] = useState("");
 
-  const [selectedTemplate, setSelectedTemplate] = useState<TagType | null>(
-    null
-  );
-  const { data, isLoading } = useGetEmailTemplates(query);
-  const { mutateAsync: deleteTag } = useDeleteTag();
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<EmailTemplateType | null>(null);
+  const { data, isLoading } = useGetPaginatedTemplates(query);
+  const { mutateAsync: deleteTemplate } = useDeleteEmailTemplate();
+
   const handleQueryChange = (query: string) => {
     setQuery(query);
   };
@@ -47,7 +44,7 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
 
   const handleDelete = async () => {
     try {
-      deleteTag(+deleteId);
+      await deleteTemplate(+deleteId);
     } catch (error) {
       console.error(error);
     }
@@ -73,7 +70,7 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
     },
     {
       key: "_id",
-      render: (value: string, data: TagType) => (
+      render: (value: string, data: EmailTemplateType) => (
         <>
           <TooltipIconButton
             title="edit"

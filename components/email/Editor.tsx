@@ -10,7 +10,7 @@ interface EmailEditorProps {
   loading: boolean;
   initialValue?: string;
   label?: string;
-  handleSubmit: (html: string) => void;
+  handleSubmit: (body: string) => void;
 }
 
 const EmailEditor: FC<EmailEditorProps> = ({
@@ -24,8 +24,8 @@ const EmailEditor: FC<EmailEditorProps> = ({
   const { quill, quillRef } = useQuill();
 
   const onSubmit = () => {
-    const html = quill?.root.innerHTML ?? "";
-    handleSubmit(html);
+    const body = quill?.root.innerHTML ?? "";
+    handleSubmit(body);
   };
 
   useEffect(() => {

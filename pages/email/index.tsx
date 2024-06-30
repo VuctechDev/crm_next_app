@@ -13,15 +13,16 @@ import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlin
 import { useGetEmails } from "@/lib/client/api/email/queries";
 import { EmailType } from "@/db/emails";
 import StatsWrapper from "@/components/stats/StatsWrapper";
+import { LeadType } from "@/db/leads";
 
 interface EmailPageProps {
   params: { locale: string };
 }
 
 const headers = [
-  { key: "sentBy" },
+  { key: "from" },
+  { key: "to" },
   { key: "subject" },
-  { key: "recipient" },
   { key: "status" },
   { key: "readAt" },
   { key: "sentAt" },
@@ -35,16 +36,19 @@ const EmailPage: FC<EmailPageProps> = (): ReactElement => {
 
   const keys = [
     {
-      key: "sentBy",
-      render: (value: { firstName: string; lastName: string }) => (
-        <Typography>{`${value.firstName} ${value?.lastName}`}</Typography>
-      ),
+      key: "from",
+      render: (value: string, data: { lead: LeadType }) => {
+        if (!value) {
+          return (
+            <Typography>{`${data?.lead?.firstName} ${data?.lead?.lastName}`}</Typography>
+          );
+        }
+        return value;
+      },
     },
+
     {
-      key: "subject",
-    },
-    {
-      key: "recipient",
+      key: "lead",
       render: (
         value: {
           firstName: string;
@@ -55,9 +59,12 @@ const EmailPage: FC<EmailPageProps> = (): ReactElement => {
       ) => (
         <Typography>
           {value && `${value?.firstName} ${value?.lastName}`} {value && <br />}
-          {`${data?.recipientEmail}`}
+          {`${data?.to}`}
         </Typography>
       ),
+    },
+    {
+      key: "subject",
     },
     {
       key: "open",

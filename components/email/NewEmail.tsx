@@ -10,10 +10,10 @@ import { useGetEmailConfig } from "@/lib/client/api/email/configs/queries";
 interface NewEmailProps {
   to?: string;
   from?: string;
-  recipient?: string;
+  lead?: string;
 }
 
-const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
+const NewEmail: FC<NewEmailProps> = ({ to, from, lead }): ReactElement => {
   const { t } = useTranslation();
   const { openSnackbar } = useSnackbar();
   const { mutateAsync, isPending } = useSendEmail();
@@ -24,14 +24,14 @@ const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
   const [toValue, setToValue] = useState(to ?? "");
   const [subject, setSubject] = useState("");
 
-  const handleSubmit = async (html: string) => {
+  const handleSubmit = async (body: string) => {
     try {
       await mutateAsync({
-        html,
+        body,
         from: fromValue,
         to: toValue,
         subject,
-        recipient: recipient ?? "",
+        lead: lead ?? "",
       });
     } catch (error) {
       console.error(error);
@@ -50,7 +50,7 @@ const NewEmail: FC<NewEmailProps> = ({ to, from, recipient }): ReactElement => {
   }, [isConfigLoading, emailConfig]);
 
   const initialValue = emailSignature
-    ? `<p><br/></p> <p><br/></p> ${emailSignature.html}`
+    ? `<p><br/></p> <p><br/></p> ${emailSignature.body}`
     : "";
 
   return (

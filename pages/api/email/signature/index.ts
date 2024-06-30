@@ -22,13 +22,13 @@ router
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     try {
       const { userId } = req.headers;
-      const { html } = req.body;
-      if (!html) {
+      const { body } = req.body;
+      if (!body) {
         return res.status(400).json({ message: "badRequest" });
       }
 
       await createNewSignature({
-        html,
+        body,
         user: userId,
       });
 
@@ -40,12 +40,12 @@ router
   .patch(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     try {
       const { userId } = req.headers;
-      const { html } = req.body;
-      if (!html) {
+      const { body } = req.body;
+      if (!body) {
         return res.status(400).json({ message: "badRequest" });
       }
 
-      await updateSignature(userId, html);
+      await updateSignature(userId, body);
 
       res.status(200).json({ success: true });
     } catch (error) {

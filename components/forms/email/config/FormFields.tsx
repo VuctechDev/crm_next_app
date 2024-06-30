@@ -2,10 +2,10 @@ import React, { FC, ReactElement, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { Grid } from "@mui/material";
 import { useFormikContext } from "formik";
-import TextField from "../fields/TextField";
+import TextField from "../../fields/TextField";
 import { InitialValues, initialValues } from "./config";
-import FieldLabel from "../fields/FieldLabel";
-import PasswordField from "../fields/PasswordField";
+import FieldLabel from "../../fields/FieldLabel";
+import PasswordField from "../../fields/PasswordField";
 
 type Keys = "host" | "email" | "password" | "port";
 

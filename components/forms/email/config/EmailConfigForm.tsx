@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from "react";
 import { Form, Formik } from "formik";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "next-i18next";
-import SubmitButton from "../fields/SubmitButton";
+import SubmitButton from "../../fields/SubmitButton";
 import { initialValues, validationSchema } from "./config";
 import FormFields from "./FormFields";
 import { useCreateEmailConfig } from "@/lib/client/api/email/configs/queries";

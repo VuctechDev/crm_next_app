@@ -96,6 +96,7 @@
   "commentDeletedSuccess": "Comment deleted successfully",
   "orTakeAPhoto": "Or take a photo",
   "to": "To:",
+  "from": "From:",
   "subject": "Subject",
   "newEmail": "New Email",
   "recipient": "Recipient",
@@ -130,5 +131,9 @@
   "body": "Body",
   "template": "Template",
   "newTemplate": "New template",
-  "editTemplate": "Edit template"
+  "editTemplate": "Edit template",
+  "invalidDynamicKey": "Invalid dynamic key!",
+  "notSupportedDynamicKey": "is not supported as a dynamic body key.",
+  "learnAboutDynamicKeys": "Enhance your email campaigns with dynamic email body",
+  "learnMore": "Learn More"
 }

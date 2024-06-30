@@ -19,7 +19,7 @@ export interface TemplateCreateType {
   user: string;
 }
 
-export interface DBCommentType
+export interface DBTemplateType
   extends Omit<EmailTemplateType, "user" | "organization"> {
   user: string;
 }
@@ -44,6 +44,19 @@ export const createNewTemplate = async (data: TemplateCreateType) => {
   }
 };
 
+export const getTemplates = async (
+  userId: string
+): Promise<EmailTemplateType[]> => {
+  try {
+    const data = await query<EmailTemplateType[]>(
+      `SELECT * FROM ${tableName} WHERE user = '${userId}'`
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getPaginatedTemplates = async (
   filters: Record<string, string>,
   user: string
@@ -52,7 +65,6 @@ export const getPaginatedTemplates = async (
   total: number;
 }> => {
   const filtersQuery = handleFilterQuery({ ...filters, user });
-  console.log(filtersQuery)
   try {
     const total = await query<[{ total: number }]>(
       `SELECT COUNT(*) AS total FROM ${tableName} ${filtersQuery}`
@@ -72,10 +84,26 @@ export const getPaginatedTemplates = async (
   }
 };
 
-export const updateTemplate = async (userId: string, html: string) => {
+export const updateTemplate = async (
+  _id: string,
+  data: Partial<TemplateCreateType>
+) => {
   try {
-    await query<DBCommentType[]>(
-      `UPDATE ${tableName} SET html = '${html}' WHERE user = ${userId}`
+    await query<TemplateCreateType[]>(
+      `UPDATE ${tableName} 
+      SET body = '${data.body}', name = '${data.name}', description = '${data.description}' 
+      WHERE _id = ${_id}`
+    );
+    return { success: true };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteTemplate = async (_id: string) => {
+  try {
+    await query<DBTemplateType[]>(
+      `DELETE FROM ${tableName} WHERE _id = ${_id}`
     );
     return { success: true };
   } catch (error) {

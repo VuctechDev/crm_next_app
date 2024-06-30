@@ -2,11 +2,10 @@ import React, { FC, ReactElement, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { Grid } from "@mui/material";
 import { useFormikContext } from "formik";
-import TextField from "../fields/TextField";
 import { InitialValues, initialValues } from "./config";
-import FieldLabel from "../fields/FieldLabel";
-import ColorPicker from "../fields/ColorPicker";
 import EmailEditor from "@/components/email/EditorFormField";
+import FieldLabel from "../../fields/FieldLabel";
+import TextField from "../../fields/TextField";
 
 type Keys = "name" | "description" | "body";
 
@@ -24,7 +23,7 @@ const FormFields: FC<FormFieldsProps> = (): ReactElement => {
   };
 
   const fields = useMemo(() => Object.keys(initialValues) as Keys[], []);
-  
+
   return (
     <Grid container columnSpacing={4} rowGap={2}>
       {fields.map((name) => (

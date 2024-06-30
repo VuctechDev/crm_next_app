@@ -54,8 +54,8 @@ const TagsSelect: FC<TagsSelectProps> = ({
           )
       ) ?? [];
   }
-
   const handleSelect = (value: TagType[]) => {
+    console.log(onChange, value);
     if (onChange) {
       const ids = value.map((x) => x._id);
       onChange(ids);

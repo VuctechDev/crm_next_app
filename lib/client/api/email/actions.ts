@@ -11,11 +11,11 @@ export const getEmails = async (
 };
 
 export const sendEmail = async (data: {
-  html: string;
+  body: string;
   from: string;
   to: string;
   subject: string;
-  recipient: string;
+  lead: string;
 }): Promise<{ success: boolean }> => {
   const response = await apiClient.post(`${path}`, data);
   return response.data;

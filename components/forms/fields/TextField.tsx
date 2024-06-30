@@ -28,6 +28,7 @@ const TextField: FC<TextFieldProps> = ({
   return (
     <MuiTextField
       {...elementProps}
+      disabled={elementProps.name === "signature"}
       fullWidth
       error={!!error}
       multiline={elementProps.name === "description"}
@@ -40,8 +41,9 @@ const TextField: FC<TextFieldProps> = ({
           </Typography>
         )
       }
-      InputProps={{
+      inputProps={{
         readOnly: readOnly,
+        sx: { cursor: readOnly ? "not-allowed" : "inherit" },
       }}
       placeholder={(placeholders[elementProps.name] as string) ?? ""}
     />

@@ -95,7 +95,7 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
             disabled={!comment}
             loading={isPending}
             type="button"
-            sx={{ mb: "32px", mt: "0px", maxWidth: "100px" }}
+            sx={{ mb: "0px", mt: "0px", maxWidth: "100px" }}
           />
         </Box>
         {isLoading ? (
@@ -142,9 +142,11 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
             </Box>
           ))
         )}
-        <Typography variant="body2" textAlign="center">
-          {paginationLabel}
-        </Typography>
+        {!!data?.total && (
+          <Typography variant="body2" textAlign="center" mt="30px">
+            {paginationLabel}
+          </Typography>
+        )}
 
         {loadMore && (
           <Box
