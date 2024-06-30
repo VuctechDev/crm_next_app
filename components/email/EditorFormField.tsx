@@ -161,19 +161,19 @@ const EmailEditor: FC<EmailEditorProps> = ({
             </Typography>
             <Typography mb="4px">
               <strong style={{ display: "inline" }}>##firstName##</strong>:
-              Inserts the recipient's first name (e.g., John).
+              Inserts the recipient&apos;s first name (e.g., John).
             </Typography>
             <Typography mb="4px">
               <strong style={{ display: "inline" }}>##lastName##</strong>:
-              Inserts the recipient's last name (e.g., Doe).
+              Inserts the recipient&apos;s last name (e.g., Doe).
             </Typography>
             <Typography mb="4px">
               <strong style={{ display: "inline" }}>##name##</strong>: Inserts
-              the recipient's full name (e.g., John Doe).
+              the recipient&apos;s full name (e.g., John Doe).
             </Typography>
             <Typography mb="4px">
               <strong style={{ display: "inline" }}>##company##</strong>:
-              Inserts the recipient's company name.
+              Inserts the recipient&apos;s company name.
             </Typography>
           </Box>
         </Dialog>
