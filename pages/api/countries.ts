@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import { authGuard } from "./auth/authMid";
+import { authGuard } from "./auth/authGuard";
 import { getAuth } from "@/db/auth";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();

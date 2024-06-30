@@ -6,7 +6,7 @@ import {
   insertNewLead,
   updateLead,
 } from "@/db/leads";
-import { authGuard } from "../auth/authMid";
+import { authGuard } from "../auth/authGuard";
 import { NextApiRequestExtended } from "@/types/reaquest";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
@@ -21,7 +21,7 @@ router
   })
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     const { userId, organizationId } = req.headers;
-    
+
     await insertNewLead(req.body, {
       createdBy: userId,
       owner: organizationId,

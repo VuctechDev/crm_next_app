@@ -131,7 +131,6 @@ const FilterButton: FC<FilterButtonProps> = ({
               borderRadius: "20px",
               fontSize: "14px",
               my: "14px",
-              // width: "200px",
             }}
             fullWidth
             variant="outlined"
@@ -142,6 +141,7 @@ const FilterButton: FC<FilterButtonProps> = ({
                 style: { padding: "10px 0px" },
               },
             }}
+            SelectProps={{ sx: { px: "0px" } }}
           >
             {options?.map((x) => (
               <MenuItem key={x.label} value={x.value}>

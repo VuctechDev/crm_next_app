@@ -9,6 +9,10 @@ export const publicApiClient = axios.create({
   baseURL: "/api",
 });
 
+export const fileProcessorApiClient = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_FILE_PROCESSOR_URL,
+});
+
 export const isTokenExpired = (token: string): boolean => {
   const decoded = jwtDecode<JwtPayload>(token);
   const currentTime = Date.now() / 1000;
@@ -41,6 +45,19 @@ export const validateSession = async (): Promise<any> => {
 };
 
 apiClient.interceptors.request.use(
+  async (config) => {
+    const accessToken = await validateSession();
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  }
+);
+
+fileProcessorApiClient.interceptors.request.use(
   async (config) => {
     const accessToken = await validateSession();
     if (accessToken) {

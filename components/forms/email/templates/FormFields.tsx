@@ -3,9 +3,9 @@ import { useTranslation } from "next-i18next";
 import { Grid } from "@mui/material";
 import { useFormikContext } from "formik";
 import { InitialValues, initialValues } from "./config";
-import EmailEditor from "@/components/email/EditorFormField";
 import FieldLabel from "../../fields/FieldLabel";
 import TextField from "../../fields/TextField";
+import EmailBodyField from "../../fields/EmailBodyField";
 
 type Keys = "name" | "description" | "body";
 
@@ -31,7 +31,7 @@ const FormFields: FC<FormFieldsProps> = (): ReactElement => {
           <FieldLabel label={name} />
 
           {name === "body" ? (
-            <EmailEditor
+            <EmailBodyField
               elementProps={{ ...getFieldProps(name) }}
               error={getErrorMessage(name)}
             />

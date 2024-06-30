@@ -17,7 +17,7 @@ export const initialValues = dev
       to: "",
       tags: [],
       template: "",
-      signature: "",
+      signature: "Default",
       subject: "",
       body: "",
     };

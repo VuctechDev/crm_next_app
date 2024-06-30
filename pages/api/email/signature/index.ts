@@ -6,7 +6,7 @@ import {
   getSignature,
   updateSignature,
 } from "@/db/emails/signatures";
-import { authGuard } from "../../auth/authMid";
+import { authGuard } from "../../auth/authGuard";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 

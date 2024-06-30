@@ -6,8 +6,8 @@ import { InitialValues, initialValues } from "./config";
 import FieldLabel from "../fields/FieldLabel";
 import TextField from "../fields/TextField";
 import TagsSelect from "../fields/TagsSelect";
-import EmailEditor from "@/components/email/EditorFormField";
 import TemplateSelect from "../fields/TemplateSelect";
+import EmailBodyField from "../fields/EmailBodyField";
 
 type Keys =
   | "from"
@@ -57,7 +57,7 @@ const FormFields: FC<FormFieldsProps> = ({ lead }): ReactElement => {
                   />
                 )}
                 {name === "body" && (
-                  <EmailEditor
+                  <EmailBodyField
                     elementProps={{ ...getFieldProps(name) }}
                     error={getErrorMessage(name)}
                   />

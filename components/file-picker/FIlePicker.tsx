@@ -7,13 +7,14 @@ import React, {
   ChangeEvent,
 } from "react";
 import Box from "@mui/material/Box";
-import { Button, Grid, Hidden, Typography } from "@mui/material";
+import { Grid, Hidden, Typography } from "@mui/material";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import { useTranslation } from "next-i18next";
 import { useSnackbar } from "../providers/SnackbarContext";
-import { apiClient } from "@/lib/client/api";
+import { fileProcessorApiClient } from "@/lib/client/api";
 import TagsSelect from "../forms/fields/TagsSelect";
+import SubmitButton from "../forms/fields/SubmitButton";
 
 interface FilePickerProps {
   type: "img" | "csv";
@@ -42,28 +43,32 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
   const { t } = useTranslation();
   const { openSnackbar } = useSnackbar();
   const [dragActive, setDragActive] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [tags, setTags] = useState<number[]>([]);
   const [myFile, setMyFile] = useState<File[]>([]);
 
   const { path, label, accept, multiple } = config[type];
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const formData = new FormData();
       myFile.forEach((file) => {
         formData.append("files", file);
         formData.append("tags", JSON.stringify(tags));
       });
-      const response = await apiClient.post(`/upload${path}`, formData);
+      const response = await fileProcessorApiClient.post(`${path}`, formData);
       const data = response.data;
       if (!data.success) {
         return openSnackbar(data.message, "error");
       }
       setMyFile([]);
       return openSnackbar(data.message, "success");
-    } catch (err) {
-      console.log("ERROR: ", err);
-      alert(JSON.stringify(err));
+    } catch (err: any) {
+      const message = err.response.data.message;
+      openSnackbar(message, "error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -240,14 +245,13 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
         >
           {error && <Typography color="error">{error}</Typography>}
         </Box>
-        <Button
+        <SubmitButton
+          label={t("save")}
+          loading={loading}
           disabled={!myFile.length}
-          variant="contained"
-          sx={{ mt: "10px" }}
           onClick={handleSubmit}
-        >
-          {t("save")}
-        </Button>
+          sx={{ maxWidth: "120px", mt: "10px" }}
+        />
       </Box>
       {type === "img" && (
         <Grid container columnSpacing={2} rowGap={3} mt="30px">

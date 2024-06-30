@@ -1,3 +1,5 @@
+import { countries } from "@/lib/shared/consts/countries";
+
 export const handleFilterQuery = (query: Record<string, string>): string => {
   let result = "";
 
@@ -10,8 +12,20 @@ export const handleFilterQuery = (query: Record<string, string>): string => {
       addCondition(
         `(firstName LIKE '%${value}%' OR lastName LIKE '%${value}%' OR email LIKE '%${value}%')`
       );
-    } else if (["country", "role", "industry"].includes(key)) {
+    } else if (["role", "industry"].includes(key)) {
       addCondition(`${key} LIKE '%${value}%'`);
+    } else if (key === "country") {
+      const choices = countries.filter((country) =>
+        country.name.toLowerCase().includes(value.toLowerCase())
+      );
+      const query = choices.reduce((prev, choice) => {
+        if (prev) {
+          return `${prev} OR ${key} = '${choice.iso3}'`;
+        }
+        return `${key} = '${choice.iso3}'`;
+      }, "");
+
+      addCondition(`(${query})`);
     } else if (["owner"].includes(key)) {
       addCondition(`${key} = '${value}'`);
     } else if (["tags"].includes(key)) {

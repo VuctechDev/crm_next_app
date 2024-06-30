@@ -29,6 +29,7 @@
   "add": "Add",
   "downloadCSVTemplate": "Download CSV template",
   "csvUploadDescription": "All fields are not required, but file will not be processed if different keys are provided",
+  "invalidCSVFileException": "Invalid CSV file uploaded, please check your file and try again.",
   "csvKeysMismatchException": "Not valid CSV keys are provided, please download the provided template.",
   "missingFilesException": "No files were upload",
   "invalidCredentialsException": "Invalid credentials",

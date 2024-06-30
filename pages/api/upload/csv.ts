@@ -2,7 +2,7 @@ import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { multerUpload } from "@/lib/server/services/multer";
 import { handleCSVUpload } from "@/lib/server/routeHandlers/handleCSVUpload";
-import { authGuard } from "../auth/authMid";
+import { authGuard } from "../auth/authGuard";
 import { NextApiRequestExtended } from "@/types/reaquest";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();

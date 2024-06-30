@@ -1,6 +1,6 @@
 import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import { authGuard } from "../auth/authMid";
+import { authGuard } from "../auth/authGuard";
 import { NextApiRequestExtended } from "@/types/reaquest";
 import { createNewEmail, getPaginatedEmails } from "@/db/emails";
 import { sendNewInAppEmail } from "@/lib/server/services/nodemailer/sendNewInAppEmail";

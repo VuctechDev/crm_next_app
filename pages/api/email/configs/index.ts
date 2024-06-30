@@ -2,7 +2,7 @@ import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { NextApiRequestExtended } from "@/types/reaquest";
 import { updateSignature } from "@/db/emails/signatures";
-import { authGuard } from "../../auth/authMid";
+import { authGuard } from "../../auth/authGuard";
 import { createNewConfig, getConfigPublic } from "@/db/emails/configs";
 import { encrypt } from "@/lib/server/services/crypto";
 
@@ -57,7 +57,7 @@ router
     }
   });
 
-  export default router.handler({
+export default router.handler({
   onError(error: any, req, res) {
     res.status(501).json({ error: `Something went wrong! ${error.message}` });
   },

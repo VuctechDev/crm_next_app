@@ -1,6 +1,6 @@
 import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import { authGuard } from "./auth/authMid";
+import { authGuard } from "./auth/authGuard";
 import { updateUserFromOrganization } from "@/db/users";
 import { createNewOrganization } from "@/db/organizations";
 import { NextApiRequestExtended } from "@/types/reaquest";

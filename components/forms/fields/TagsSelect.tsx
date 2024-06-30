@@ -31,14 +31,14 @@ const TagsSelect: FC<TagsSelectProps> = ({
   // );
 
   useEffect(() => {
-    if (savedTags && onChange) {
+    if (savedTags && onChange && data?.data) {
       onChange(
         data?.data
           .filter((tag) => savedTags?.includes(tag._id))
           .map((x) => x._id)
       );
     }
-  }, [savedTags]);
+  }, [savedTags, data?.data]);
 
   if (isLoading) {
     return <LoadingOverlayer />;
@@ -55,7 +55,6 @@ const TagsSelect: FC<TagsSelectProps> = ({
       ) ?? [];
   }
   const handleSelect = (value: TagType[]) => {
-    console.log(onChange, value);
     if (onChange) {
       const ids = value.map((x) => x._id);
       onChange(ids);

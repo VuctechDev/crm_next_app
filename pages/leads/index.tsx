@@ -49,7 +49,6 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const [query, setQuery] = useState("page=0&limit=10");
   const { data, isLoading } = useGetLeads(query);
   const { data: tags } = useGetTags();
-
   const [csvModalOpen, setCSVModalOpen] = useState(false);
   const inputRef = useRef("");
 
@@ -131,7 +130,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
 
   const handleExport = async () => {
     await handleFileDownload({
-      fileName: inputRef.current ?? defaultFileName,
+      fileName: inputRef.current ? inputRef.current : defaultFileName,
       query,
     });
   };

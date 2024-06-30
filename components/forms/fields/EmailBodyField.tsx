@@ -5,12 +5,12 @@ import { useQuill } from "react-quilljs";
 import { FieldInputProps, useFormikContext } from "formik";
 import { useTranslation } from "next-i18next";
 
-interface EmailEditorProps {
+interface EmailBodyFieldProps {
   elementProps: FieldInputProps<any>;
   error: string;
 }
 
-const EmailEditor: FC<EmailEditorProps> = ({
+const EmailBodyField: FC<EmailBodyFieldProps> = ({
   elementProps,
   error,
 }): ReactElement => {
@@ -182,4 +182,4 @@ const EmailEditor: FC<EmailEditorProps> = ({
   );
 };
 
-export default EmailEditor;
+export default EmailBodyField;

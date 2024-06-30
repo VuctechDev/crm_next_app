@@ -1,6 +1,6 @@
 import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
-import { authGuard } from "./auth/authMid";
+import { authGuard } from "./auth/authGuard";
 import { createNewUser, getUser } from "@/db/users";
 import { getOrganization } from "@/db/organizations";
 import { countries } from "@/lib/shared/consts/countries";

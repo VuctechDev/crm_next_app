@@ -1,7 +1,7 @@
 import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { getCSVExportLeads } from "@/db/leads";
-import { authGuard } from "../auth/authMid";
+import { authGuard } from "../auth/authGuard";
 import { NextApiRequestExtended } from "@/types/reaquest";
 import xlsx from "xlsx";
 

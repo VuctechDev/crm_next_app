@@ -40,6 +40,7 @@ const QueryPanel: FC<QueryPanelProps> = ({
   );
 
   const handleFilters = (key: string, value: string) => {
+    
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
