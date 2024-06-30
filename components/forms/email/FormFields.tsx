@@ -53,7 +53,7 @@ const FormFields: FC<FormFieldsProps> = ({ lead }): ReactElement => {
                 {name === "tags" && (
                   <TagsSelect
                     elementProps={{ ...getFieldProps(name) }}
-                    error={getErrorMessage("tags")}
+                    error={getErrorMessage(name)}
                   />
                 )}
                 {name === "body" && (

@@ -15,11 +15,11 @@ export const initialValues = dev
   : {
       from: "",
       to: "",
-      tags: "",
+      tags: [],
       template: "",
       signature: "",
       subject: "",
-      body: [],
+      body: "",
     };
 
 export type InitialValues = typeof initialValues;
