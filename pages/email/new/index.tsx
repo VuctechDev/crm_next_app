@@ -9,6 +9,8 @@ import NewEmail from "@/components/email/NewEmail";
 import { useGetEmailConfig } from "@/lib/client/api/email/configs/queries";
 import LoadingOverlayer from "@/components/LoadingOverlayer";
 import { useGetEmailSignature } from "@/lib/client/api/email/signature/queries";
+import EmailForm from "@/components/forms/email/EmailForm";
+import Card from "@mui/material/Card";
 
 interface AddLeadsProps {}
 
@@ -30,23 +32,23 @@ const AddLeadsPage: FC<AddLeadsProps> = (): ReactElement => {
 
   return (
     <PageLayout>
-      <PageContentWrapper title="newEmail">
-        <Box
-          width={1}
+      <PageContentWrapper title="newEmail" center>
+        {/* <Card
           sx={(t) => ({
+            width: "100%",
             display: "flex",
-            minHeight: "600px",
-            justifyContent: "center",
-            alignItems: "center",
+            flexDirection: "column",
+            rowGap: "24px",
+            maxWidth: "900px",
+            p: "24px 24px 36px",
             [t.breakpoints.down("sm")]: {
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              rowGap: "24px",
+              rowGap: "20px",
             },
           })}
-        >
-          <NewEmail from={from} />
-        </Box>
+        > */}
+        {/* <NewEmail from={from} /> */}
+        <EmailForm from={from} />
+        {/* </Card> */}
       </PageContentWrapper>
     </PageLayout>
   );

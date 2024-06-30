@@ -6,7 +6,7 @@ import PageLayout from "@/components/page-layout/PageLayout";
 import { Card, Typography } from "@mui/material";
 import LoadingOverlayer from "@/components/LoadingOverlayer";
 import { useTranslation } from "next-i18next";
-import EmailConfigForm from "@/components/forms/email-config/EmailConfigForm";
+import EmailConfigForm from "@/components/forms/email/config/EmailConfigForm";
 import { useGetEmailConfig } from "@/lib/client/api/email/configs/queries";
 
 interface EmailConfigPageProps {}

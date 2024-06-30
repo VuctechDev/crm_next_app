@@ -10,7 +10,7 @@ interface EmailEditorProps {
   loading: boolean;
   initialValue?: string;
   label?: string;
-  handleSubmit: (html: string) => void;
+  handleSubmit: (body: string) => void;
 }
 
 const EmailEditor: FC<EmailEditorProps> = ({
@@ -24,8 +24,8 @@ const EmailEditor: FC<EmailEditorProps> = ({
   const { quill, quillRef } = useQuill();
 
   const onSubmit = () => {
-    const html = quill?.root.innerHTML ?? "";
-    handleSubmit(html);
+    const body = quill?.root.innerHTML ?? "";
+    handleSubmit(body);
   };
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const EmailEditor: FC<EmailEditorProps> = ({
   return (
     <Box>
       <Box
-        style={{ width: 1000, height: 200 }}
+        style={{ width: 1000, height: 420, overflow: "hidden" }}
         sx={(t) => ({
           "& > div": {
             border: "none !important",
@@ -56,11 +56,12 @@ const EmailEditor: FC<EmailEditorProps> = ({
       </Box>
       <Box
         sx={{
-          mt: "80px",
+          mt: "20px",
           display: "flex",
           justifyContent: "flex-end",
           alignItems: "center",
           p: "16px 24px",
+       
         }}
       >
         {/* <IconButton>

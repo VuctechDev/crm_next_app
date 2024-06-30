@@ -6,59 +6,63 @@ import { handleFilterQuery } from "./handleFilterQuery";
 
 export interface EmailType {
   _id: number;
-  html: string;
+  body: string;
+  from: string;
   subject: string;
-  sentBy: UserType;
+  user: UserType;
   organization: OrganizationType;
-  recipient: LeadType;
-  recipientEmail: string;
+  lead: LeadType;
+  tag: number;
+  to: string;
   open: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface EmailCreateType {
-  html: string;
+  from: string;
+  body: string;
   subject: string;
-  sentBy: string;
+  user: string;
   organization: string;
-  recipient: string;
+  lead: string;
   to: string;
 }
 
 export interface DBCommentType
-  extends Omit<EmailType, "sentBy" | "organization" | "recipient"> {
-  sentBy: string;
+  extends Omit<EmailType, "user" | "organization" | "lead"> {
+  user: string;
   organization: string;
-  recipient: string;
+  lead: string;
 }
 
 const tableName = "emails";
 
-export const createNewEmail = async (data: EmailCreateType) => {
+export const createNewEmail = async (
+  data: EmailCreateType[]
+): Promise<EmailType[]> => {
+  const values = data.map((item) => [
+    item.subject,
+    item.user,
+    item.organization,
+    item.lead,
+    item.to,
+    item.from,
+  ]);
   try {
-    const { insertId } = (await query(
+    const data = await query<Promise<EmailType[]>>(
       `INSERT INTO ${tableName} (
-        html,
         subject,
-        sentBy,
+        user,
         organization,
-        recipient,
-        recipientEmail
-        ) VALUES?`,
-      [
-        [
-          data.html,
-          data.subject,
-          data.sentBy,
-          data.organization,
-          data.recipient,
-          data.to,
-        ],
-      ]
-    )) as { insertId: number };
-    console.log("NEW EMAIL CREATED: " + insertId);
-    return insertId;
+        lead,
+        \`to\`, 
+        \`from\`
+        ) VALUES ? RETURNING _id, subject, user, organization, lead, \`to\`, \`from\``,
+      values
+    );
+    console.log("NEW EMAIL CREATED: ");
+    return data;
   } catch (error) {
     throw error;
   }
@@ -85,36 +89,38 @@ export const getPaginatedEmails = async (
           '_id', users._id,
           'firstName', users.firstName,
           'lastName', users.lastName
-        ) AS sentBy,
+        ) AS user,
         CASE 
-            WHEN emails.recipient != 0 THEN JSON_OBJECT(
+            WHEN emails.lead != 0 THEN JSON_OBJECT(
               '_id', leads._id,
               'firstName', leads.firstName,
               'lastName', leads.lastName,
               'email', leads.email
             )
             ELSE NULL
-        END AS recipient,
+        END AS lead,
         emails.createdAt,
         emails.updatedAt,
         emails.subject, 
-        emails.recipientEmail
+        emails.to,
+        emails.from
       FROM ${tableName} AS emails
-      JOIN users ON emails.sentBy = users._id
-      LEFT JOIN leads ON emails.recipient = leads._id AND emails.recipient != 0
+      JOIN users ON emails.user = users._id
+      LEFT JOIN leads ON emails.lead = leads._id AND emails.lead != 0
       ${filtersQuery}
       ORDER BY emails._id DESC 
       LIMIT ${filters?.limit}
       OFFSET ${offset};`);
     const formattedResults = data.map((row) => ({
       _id: row._id,
-      sentBy: JSON.parse(row.sentBy),
-      recipient: JSON.parse(row.recipient),
+      user: JSON.parse(row.user),
+      lead: JSON.parse(row.lead),
       createdAt: row.createdAt,
       subject: row.subject,
       updatedAt: row.updatedAt,
       open: row.open,
-      recipientEmail: row.recipientEmail,
+      to: row.to,
+      from: row.from,
     })) as EmailType[];
     return { data: formattedResults, total: total?.[0]?.total ?? 0 };
   } catch (error) {

@@ -3,9 +3,8 @@ import { createRouter } from "next-connect";
 import { authGuard } from "../auth/authMid";
 import { NextApiRequestExtended } from "@/types/reaquest";
 import { createNewEmail, getPaginatedEmails } from "@/db/emails";
-import { sendEmail } from "@/lib/server/services/nodemailer";
-import { getConfig } from "@/db/emails/configs";
-import { decrypt } from "@/lib/server/services/crypto";
+import { sendNewInAppEmail } from "@/lib/server/services/nodemailer/sendNewInAppEmail";
+import { getEmailLeadsData } from "@/db/leads";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
@@ -22,36 +21,32 @@ router
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     try {
       const { organizationId, userId } = req.headers;
-      const { html, from, to, subject } = req.body;
-      if (!html || !from || !to || !subject) {
+      const { body, from, to, subject, tags } = req.body;
+      if (!body || !from || !subject) {
         return res.status(400).json({ message: "badRequest" });
       }
-
-      const emailID = await createNewEmail({
-        ...req.body,
-        organization: organizationId,
-        sentBy: userId,
-      });
-
-      const config = {
-        from,
-        to,
-        subject,
-        html: `<div style="color: #2a2a2a !important; ">
-          ${html} 
-          <p><img src="${process.env.API_BASE_URL}/api/email/read?_id=${emailID}" width="1" height="1" style="display:none;"></p>
-        </div>`,
-      };
-
-      const emailConfig = await getConfig(userId);
-      if (emailConfig) {
-        const password = decrypt({
-          iv: emailConfig?.iv ?? "",
-          encryptedData: emailConfig?.password ?? "",
-        });
-        await sendEmail(config, { ...emailConfig, password });
-      } else {
-        await sendEmail(config);
+      if (tags?.length) {
+        const leads = await getEmailLeadsData({ tags });
+        const emailTemplates = leads.map((lead) => ({
+          ...req.body,
+          organization: organizationId,
+          user: userId,
+          lead: lead._id,
+          to: lead.email,
+        }));
+        const emails = await createNewEmail(emailTemplates);
+        await sendNewInAppEmail(emails, body, userId, leads);
+      } else if (to) {
+        const lead = await getEmailLeadsData({ _id: req.body.lead });
+        const emailTemplate = [
+          {
+            ...req.body,
+            organization: organizationId,
+            user: userId,
+          },
+        ];
+        const email = await createNewEmail(emailTemplate);
+        await sendNewInAppEmail(email, body, userId, lead);
       }
 
       res.status(200).json({ success: true });

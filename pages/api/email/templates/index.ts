@@ -1,55 +1,70 @@
 import type { NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { NextApiRequestExtended } from "@/types/reaquest";
-import { updateSignature } from "@/db/emails/signatures";
 import { authGuard } from "../../auth/authMid";
-import { createNewConfig, getConfigPublic } from "@/db/emails/configs";
-import { encrypt } from "@/lib/server/services/crypto";
+import {
+  createNewTemplate,
+  deleteTemplate,
+  getPaginatedTemplates,
+  getTemplates,
+  updateTemplate,
+} from "@/db/emails/templates";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
 router
   .use(authGuard)
   .get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
+    const filters = req.query as Record<string, string>;
     const { userId } = req.headers;
-    const data = await getConfigPublic(userId);
+    if (!filters.page || !filters.limit) {
+      const data = await getTemplates(userId);
+      return res.status(200).json({ data });
+    }
+    const data = await getPaginatedTemplates(filters, userId);
     res.status(200).json(data);
   })
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     try {
-      const { userId, organizationId } = req.headers;
-      const { host, email, password, port } = req.body;
-      if (!host || !email || !password || !port) {
+      const { userId } = req.headers;
+      const { body, name, description } = req.body;
+      if (!body) {
         return res.status(400).json({ message: "badRequest" });
       }
 
-      const encriptedPassword = encrypt(password);
-
-      await createNewConfig({
-        host,
-        email,
-        password: encriptedPassword.encryptedData,
-        iv: encriptedPassword.iv,
-        port,
+      await createNewTemplate({
+        name,
+        description,
+        body,
         user: userId,
-        organization: organizationId,
       });
 
       res.status(200).json({ success: true });
     } catch (error) {
-      console.log(error);
       res.status(400).json({ message: "somethingWentWrong" });
     }
   })
   .patch(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     try {
-      const { userId } = req.headers;
-      const { body } = req.body;
-      if (!body) {
+      const { body, name, description, _id } = req.body;
+      if (!body || !name || !description) {
         return res.status(400).json({ message: "badRequest" });
       }
+      console.log(req.body);
+      await updateTemplate(_id, req.body);
 
-      await updateSignature(userId, body);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(400).json({ message: "somethingWentWrong" });
+    }
+  })
+  .delete(async (req: NextApiRequestExtended, res: NextApiResponse) => {
+    try {
+      const _id = req.query._id as string;
+      if (!_id) {
+        return res.status(404).json({ success: false, message: "notFound" });
+      }
+      await deleteTemplate(_id);
 
       res.status(200).json({ success: true });
     } catch (error) {
@@ -57,7 +72,7 @@ router
     }
   });
 
-  export default router.handler({
+export default router.handler({
   onError(error: any, req, res) {
     res.status(501).json({ error: `Something went wrong! ${error.message}` });
   },

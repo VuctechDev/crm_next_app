@@ -8,6 +8,7 @@ import { TagType } from "@/db/tags";
 import FieldLabel from "./FieldLabel";
 import { storage } from "@/lib/client/storage";
 import LoadingOverlayer from "@/components/LoadingOverlayer";
+import TagItem from "@/components/tags/TagItem";
 
 interface TagsSelectProps {
   elementProps?: FieldInputProps<any>;
@@ -53,8 +54,8 @@ const TagsSelect: FC<TagsSelectProps> = ({
           )
       ) ?? [];
   }
-
   const handleSelect = (value: TagType[]) => {
+    console.log(onChange, value);
     if (onChange) {
       const ids = value.map((x) => x._id);
       onChange(ids);
@@ -84,24 +85,7 @@ const TagsSelect: FC<TagsSelectProps> = ({
         noOptionsText={isLoading ? "Loading" : "No Options"}
         filterSelectedOptions
         renderTags={(data) =>
-          data.map((x) => (
-            <Box
-              key={x._id}
-              sx={{
-                height: "30px",
-                borderRadius: "8px",
-                backgroundColor: x.color,
-                width: "fit-content",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                p: "6px 8px",
-                mr: "8px",
-              }}
-            >
-              <Typography color="#fff"> {x.tag}</Typography>
-            </Box>
-          ))
+          data.map((tag) => <TagItem key={tag._id} data={tag} mr="8px" />)
         }
         renderInput={(params) => (
           <TextField

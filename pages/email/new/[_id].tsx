@@ -10,6 +10,7 @@ import { useGetUser } from "@/lib/client/api/user/queries";
 import NewEmail from "@/components/email/NewEmail";
 import { useGetEmailConfig } from "@/lib/client/api/email/configs/queries";
 import { useGetEmailSignature } from "@/lib/client/api/email/signature/queries";
+import EmailForm from "@/components/forms/email/EmailForm";
 
 interface NewLeadEmailPageProps {}
 
@@ -44,7 +45,8 @@ const NewLeadEmailPage: FC<NewLeadEmailPageProps> = (): ReactElement => {
             p: "20px",
           }}
         >
-          <NewEmail to={data?.email} from={from} recipient={params?._id} />
+          {/* <NewEmail to={data?.email} from={from} recipient={params?._id} /> */}
+          <EmailForm to={data?.email} from={from} lead={params?._id} />
         </Box>
       </PageContentWrapper>
     </PageLayout>

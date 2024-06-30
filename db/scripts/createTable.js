@@ -31,7 +31,7 @@ const query = (query, values) => {
 };
 
 const create_table_leads = `CREATE TABLE leads (
-    _id INT AUTO_INCREMENT PRIMARY KEY, 
+    _id SERIAL PRIMARY KEY, 
     firstName VARCHAR(30), 
     lastName VARCHAR(30), 
     role VARCHAR(50), 
@@ -51,8 +51,7 @@ const create_table_leads = `CREATE TABLE leads (
     website VARCHAR(60), 
     archived TINYINT,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) 
-    ENGINE=InnoDB AUTO_INCREMENT=1000`;
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)`;
 
 const create_table_auth = `CREATE TABLE auth (
     _id SERIAL PRIMARY KEY,
@@ -113,12 +112,12 @@ const comments = `CREATE TABLE comments (
 
 const emails = `CREATE TABLE emails (
   _id SERIAL PRIMARY KEY,
-  html VARCHAR(2000),
+  body VARCHAR(2000),
   subject VARCHAR(60),
-  sentBy INT,
+  user INT,
   organization INT,
-  recipient INT,
-  recipientEmail VARCHAR(50),
+  lead INT,
+  to VARCHAR(50),
   open TINYINT DEFAULT 0,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -126,7 +125,7 @@ const emails = `CREATE TABLE emails (
 
 const email_signatures = `CREATE TABLE email_signatures (
   _id SERIAL PRIMARY KEY,
-  html VARCHAR(1000),
+  body VARCHAR(1000),
   user INT,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -155,7 +154,17 @@ const tags = `CREATE TABLE tags (
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );`;
 
-const createTableQuery = tags;
+const email_templates = `CREATE TABLE email_templates (
+  _id SERIAL PRIMARY KEY,
+  name VARCHAR(40),
+  description VARCHAR(200),
+  body VARCHAR(2500),
+  user INT,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`;
+
+const createTableQuery = email_templates;
 
 const createTable = async () => {
   try {

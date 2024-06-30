@@ -61,11 +61,11 @@ const drawerItems = [
         icon: <ForwardToInboxOutlinedIcon />,
         href: ROUTES.EMAIL.NEW,
       },
-      // {
-      //   label: "templates",
-      //   icon: <DescriptionOutlinedIcon />,
-      //   href: "/mailing/templates",
-      // },
+      {
+        label: "templates",
+        icon: <DescriptionOutlinedIcon />,
+        href: ROUTES.EMAIL.TEMPLATES,
+      },
       //     {
       //       label: "mailingLists",
       //       icon: <FormatListBulletedOutlinedIcon />,

@@ -28,12 +28,12 @@ const SignaturePage: FC<SignaturePageProps> = (): ReactElement => {
   const { mutateAsync: updateSignature, isPending: updateLoading } =
     useUpdateEmailSignature();
 
-  const handleSubmit = async (html: string) => {
+  const handleSubmit = async (body: string) => {
     try {
       if (data) {
-        await updateSignature(html);
+        await updateSignature(body);
       } else {
-        await createSignature(html);
+        await createSignature(body);
       }
     } catch (error) {
       console.error(error);
@@ -79,7 +79,7 @@ const SignaturePage: FC<SignaturePageProps> = (): ReactElement => {
             <EmailEditor
               handleSubmit={handleSubmit}
               loading={creationLoading || updateLoading}
-              initialValue={data ? data?.html : defaultSignature}
+              initialValue={data ? data?.body : defaultSignature}
               label="save"
             />
           </Card>

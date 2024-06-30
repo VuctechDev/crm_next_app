@@ -8,7 +8,7 @@ export const handleFilterQuery = (query: Record<string, string>): string => {
   Object.entries(query).forEach(([key, value]) => {
     if (key === "search") {
       addCondition(
-        `(emails.recipientEmail LIKE '%${value}%' OR 
+        `(emails.to LIKE '%${value}%' OR 
           emails.subject LIKE '%${value}%'
         )`
       );
