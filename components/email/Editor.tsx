@@ -37,8 +37,9 @@ const EmailEditor: FC<EmailEditorProps> = ({
   return (
     <Box>
       <Box
-        style={{ width: 1000, height: 420, overflow: "hidden" }}
         sx={(t) => ({
+          width: "1000px",
+          height: "520px",
           "& > div": {
             border: "none !important",
           },
@@ -49,6 +50,14 @@ const EmailEditor: FC<EmailEditorProps> = ({
           },
           "& > div:nth-child(2)": {
             border: "none !important",
+            height: "calc(100% - 50px)",
+          },
+          [t.breakpoints.down("sm")]: {
+            width: "100%",
+            height: "360px",
+            "& > div:nth-child(2)": {
+              height: "calc(100% - 80px)",
+            },
           },
         })}
       >
@@ -61,7 +70,6 @@ const EmailEditor: FC<EmailEditorProps> = ({
           justifyContent: "flex-end",
           alignItems: "center",
           p: "16px 24px",
-       
         }}
       >
         {/* <IconButton>

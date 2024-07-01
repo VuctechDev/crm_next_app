@@ -207,33 +207,16 @@ const PageLayout: FC<PageLayoutProps> = ({
                 rowGap: "16px",
               }}
             >
-              {/* <Card
-              sx={{
-                // height: "100%",
-                // flexGrow: 1,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                p: "28px",
-                rowGap: "16px",
-              }}
-            > */}
               <ThemeToggle />
               <Typography>
                 {t("hi")}, {user?.firstName}
               </Typography>
-              <Button
-                // size="small"
-                variant="outlined"
-                onClick={handleLogout}
-              >
+              <Button variant="outlined" onClick={handleLogout}>
                 {t("logout")}
               </Button>
               <Typography variant="body2">
                 {t("lastLogin")}: {getDisplayDateTime(user?.lastLogin)}
               </Typography>
-              {/* </Card> */}
             </Box>
           )}
         </Drawer>
