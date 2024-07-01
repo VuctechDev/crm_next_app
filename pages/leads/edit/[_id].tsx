@@ -22,30 +22,23 @@ const EditLeadPage: FC<EditLeadPageProps> = (): ReactElement => {
   return (
     <PageLayout>
       <PageContentWrapper title={name} lastBreadcrumb={data?.firstName} center>
-        <Box
-          width={1}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-            p: "20px",
-            maxWidth: "900px",
-          }}
-        >
           <Card
-            sx={{
+            sx={(t) => ({
               width: "100%",
               display: "flex",
               flexDirection: "column",
               rowGap: "24px",
               maxWidth: "900px",
               p: "24px 24px 36px",
-            }}
+              [t.breakpoints.down("sm")]: {
+                rowGap: "14px",
+                p: "20px",
+              },
+            })}
           >
             <LeadsForm data={data} />
           </Card>
-        </Box>
+      
       </PageContentWrapper>
     </PageLayout>
   );

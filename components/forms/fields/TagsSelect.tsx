@@ -71,7 +71,16 @@ const TagsSelect: FC<TagsSelectProps> = ({
   };
 
   return (
-    <Box width={1} sx={onChange ? { width: "520px", mb: "40px" } : {}}>
+    <Box
+      width={1}
+      sx={(t) => ({
+        minWidth: onChange ? "520px" : "0px",
+        mb: onChange ? "40px" : "0px",
+        [t.breakpoints.down("sm")]: {
+          minWidth: "100%",
+        },
+      })}
+    >
       {onChange && <FieldLabel label="tags" />}
       <Autocomplete
         {...params}

@@ -31,7 +31,8 @@ const EmailConfigPage: FC<EmailConfigPageProps> = (): ReactElement => {
             maxWidth: "500px",
             p: "24px 24px 36px",
             [t.breakpoints.down("sm")]: {
-              rowGap: "20px",
+              rowGap: "14px",
+              p: "20px",
             },
           })}
         >

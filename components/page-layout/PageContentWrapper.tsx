@@ -33,17 +33,24 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
         flexDirection: "column",
         overflowX: "auto",
         [t.breakpoints.down("sm")]: {
-          p: "20px",
+          p: "20px 10px",
         },
       })}
     >
       <Box
-        sx={{
+        sx={(t) => ({
           display: "flex",
           alignItems: "flex-start",
           flexGrow: 1,
           maxHeight: "80px",
-        }}
+          [t.breakpoints.down("sm")]: {
+            flexDirection: "column",
+            rowGap: "14px",
+            maxHeight: "fit-content",
+            height: "fit-content",
+            flexGrow: 0,
+          },
+        })}
       >
         <Box>
           {title && (
@@ -54,13 +61,18 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
           <Breadcrumbs aria-label="breadcrumb" lastValue={lastBreadcrumb} />
         </Box>
         <Box
-          sx={{
+          sx={(t) => ({
             display: "flex",
             justifyContent: "flex-end",
             flexGrow: 1,
             columnGap: "28px",
             pl: "36px",
-          }}
+            [t.breakpoints.down("sm")]: {
+              flexGrow: 0,
+              pl: "0px",
+              columnGap: "16px",
+            },
+          })}
         >
           {actions}
         </Box>
@@ -68,15 +80,19 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
 
       <Box
         width={1}
-        sx={{
+        sx={(t) => ({
           flexGrow: 1,
           pt: "50px",
           display: "flex",
           justifyContent: center ? "center" : "unset",
           flexDirection: "column",
           alignItems: center ? "center" : "unset",
-          // overflowX: "auto",
-        }}
+          [t.breakpoints.down("sm")]: {
+            pt: "20px",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+          },
+        })}
       >
         {children}
       </Box>

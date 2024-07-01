@@ -94,8 +94,13 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
         <Grid
           container
           columnSpacing="80px"
-          // rowSpacing="36px"
-          sx={{ px: "20px" }}
+          rowSpacing="24px"
+          sx={(t) => ({
+            px: "20px",
+            [t.breakpoints.down("sm")]: {
+              px: "6px",
+            },
+          })}
         >
           <Grid item xs={12} md={6}>
             <Card
@@ -107,7 +112,7 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
                 // maxWidth: "450px",
                 // p: "24px 24px 36px",
                 [t.breakpoints.down("sm")]: {
-                  rowGap: "20px",
+                  rowGap: "14px",
                 },
               })}
             >

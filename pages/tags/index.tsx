@@ -110,9 +110,13 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
       <PageContentWrapper title="tags">
         <Grid
           container
-          // columnSpacing="50px"
-          rowSpacing="36px"
-          sx={{ px: "20px" }}
+          rowSpacing="24px"
+          sx={(t) => ({
+            px: "20px",
+            [t.breakpoints.down("sm")]: {
+              px: "6px",
+            },
+          })}
         >
           <Grid item xs={12} md={8}>
             <Card
@@ -120,9 +124,6 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
                 width: "100%",
                 display: "flex",
                 flexDirection: "column",
-                // rowGap: "24px",
-                // maxWidth: "450px",
-                // p: "24px 24px 36px",
                 [t.breakpoints.down("sm")]: {
                   rowGap: "20px",
                 },
@@ -142,7 +143,7 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
               />
             </Card>
           </Grid>
-          <Grid item xs={1} />
+          <Grid item xs={1} sx={(t) => ({[t.breakpoints.down("sm")]: {display: "none"}})} />
           <Grid item xs={12} md={3}>
             <Card
               sx={(t) => ({
@@ -153,7 +154,8 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
                 maxWidth: "430px",
                 p: "24px 24px 36px",
                 [t.breakpoints.down("sm")]: {
-                  rowGap: "20px",
+                  rowGap: "14px",
+                  p: "20px",
                 },
               })}
             >

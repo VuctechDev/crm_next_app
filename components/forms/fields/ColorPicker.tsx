@@ -28,7 +28,7 @@ const ColorPicker: FC<ColorPickerProps> = ({
         "#FF33A1",
         "#8D6E63",
       ].map((x) => (
-        <Grid xs={2} item key={x}>
+        <Grid xs={3} sm={2} item key={x}>
           <Box
             sx={{
               backgroundColor: x,

@@ -29,6 +29,9 @@ const DrawerItem: FC<DrawerItemProps> = ({
         sx={(t) => ({
           display: "block",
           p: "2px 10px",
+          [t.breakpoints.down("sm")]: {
+            p: "2px 6px",
+          },
         })}
       >
         <ListItemButton
@@ -39,7 +42,11 @@ const DrawerItem: FC<DrawerItemProps> = ({
             px: 2.5,
             borderRadius: "10px",
             background: active ? t.palette.action.hover : "inherit",
-            pl: open && nested ? "24px" : "8px",
+            pl: open && nested ? "24px" : "10px",
+            [t.breakpoints.down("sm")]: {
+              pl: open && nested ? "24px" : "2px",
+              minHeight: 40,
+            },
           })}
         >
           <ListItemIcon
@@ -48,6 +55,9 @@ const DrawerItem: FC<DrawerItemProps> = ({
               mr: open ? 3 : "auto",
               justifyContent: "center",
               color: active ? t.palette.primary.main : t.palette.text.secondary,
+              [t.breakpoints.down("sm")]: {
+                mr: "10px"
+              },
             })}
           >
             {data.icon}

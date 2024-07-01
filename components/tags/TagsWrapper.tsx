@@ -22,7 +22,7 @@ const TagsWrapper: FC<TagsWrapperProps> = ({
   }
   return (
     <Box
-      sx={{
+      sx={(t) => ({
         display: "flex",
         minWidth: "220px",
         flexWrap: "wrap",
@@ -30,7 +30,11 @@ const TagsWrapper: FC<TagsWrapperProps> = ({
         rowGap: "4px",
         justifyContent: "flex-end",
         alignItems: "center",
-      }}
+        [t.breakpoints.down("sm")]: {
+          minWidth: "0px",
+          justifyContent: "flex-start",
+        },
+      })}
     >
       {dataHandler.map((tag) => (
         <TagItem key={tag._id} data={tag} {...rest} />

@@ -165,11 +165,10 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
         <Card
           elevation={1}
           sx={{
-            p: "0px",
             height: "1",
             borderRadius: "20px",
             width: "100%",
-            minWidth: "600px",
+            minWidth: "900px",
           }}
         >
           <TableWrapper

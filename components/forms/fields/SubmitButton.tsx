@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 import Button, { ButtonProps as BaseProps } from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import { SxProps, Theme } from "@mui/system";
+import { useTheme } from "@mui/material";
 
 type SubmitButtonProps = BaseProps & {
   loading: boolean;
@@ -16,6 +16,7 @@ const SubmitButton: FC<SubmitButtonProps> = ({
   onClick,
   sx,
 }): ReactElement => {
+  const theme = useTheme();
   const a = sx ? { ...sx } : {};
   return (
     <Button
@@ -28,6 +29,9 @@ const SubmitButton: FC<SubmitButtonProps> = ({
         mt: "40px",
         ...a,
         "& circle": { color: "rgba(0,0,0,0.9)" },
+        [theme.breakpoints.down("sm")]: {
+          mt: "30px",
+        },
       }}
     >
       {loading ? <CircularProgress size={22} /> : label}

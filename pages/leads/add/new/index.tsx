@@ -12,30 +12,22 @@ const CreateLeadPage: FC<CreateLeadPageProps> = (): ReactElement => {
   return (
     <PageLayout>
       <PageContentWrapper title="newLead" center>
-        <Box
-          width={1}
-          sx={{
+        <Card
+          sx={(t) => ({
+            width: "100%",
             display: "flex",
-            justifyContent: "center",
             flexDirection: "column",
-            alignItems: "center",
-            p: "20px",
+            rowGap: "24px",
             maxWidth: "900px",
-          }}
+            p: "24px 24px 36px",
+            [t.breakpoints.down("sm")]: {
+              rowGap: "14px",
+              p: "20px",
+            },
+          })}
         >
-          <Card
-            sx={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              rowGap: "24px",
-              maxWidth: "900px",
-              p: "24px 24px 36px",
-            }}
-          >
-            <LeadsForm />
-          </Card>
-        </Box>
+          <LeadsForm />
+        </Card>
       </PageContentWrapper>
     </PageLayout>
   );

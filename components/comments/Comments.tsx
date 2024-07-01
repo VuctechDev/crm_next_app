@@ -40,7 +40,6 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
   const handleModal = (_id?: number) => setDeleteModalID(_id ? `${_id}` : "");
 
   const handleCreate = async () => {
-    console.log("OPAA");
     try {
       await createComment({
         comment,
@@ -72,12 +71,16 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
   return (
     <Box width={1} sx={{ display: "flex", justifyContent: "center" }}>
       <Card
-        sx={{
+        sx={(t) => ({
           width: "1000px",
           display: "flex",
           flexDirection: "column",
           p: "32px",
-        }}
+          [t.breakpoints.down("sm")]: {
+            rowGap: "14px",
+            p: "14px",
+          },
+        })}
       >
         <Typography>{t("newComment")}</Typography>
         <TextField
@@ -85,7 +88,14 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
           multiline
           rows={3}
           value={comment}
-          sx={{ mt: "12px", mb: "28px" }}
+          sx={(t) => ({
+            mt: "12px",
+            mb: "28px",
+            [t.breakpoints.down("sm")]: {
+              mt: "4px",
+              mb: "0px",
+            },
+          })}
           onChange={(e) => setComment(e.target.value)}
         />
         <Box width={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -102,7 +112,15 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
           <LoadingSkeleton />
         ) : (
           data?.data?.map((comment) => (
-            <Box key={comment._id} sx={{ mt: "20px" }}>
+            <Box
+              key={comment._id}
+              sx={(t) => ({
+                mt: "20px",
+                [t.breakpoints.down("sm")]: {
+                  mt: "10px",
+                },
+              })}
+            >
               <Box
                 sx={{
                   display: "flex",
@@ -143,7 +161,16 @@ const Comments: FC<CommentsProps> = ({ parentId }): ReactElement => {
           ))
         )}
         {!!data?.total && (
-          <Typography variant="body2" textAlign="center" mt="30px">
+          <Typography
+            variant="body2"
+            textAlign="center"
+            sx={(t) => ({
+              mt: "30px",
+              [t.breakpoints.down("sm")]: {
+                mt: "0px",
+              },
+            })}
+          >
             {paginationLabel}
           </Typography>
         )}

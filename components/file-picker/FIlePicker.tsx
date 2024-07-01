@@ -256,7 +256,7 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
       {type === "img" && (
         <Grid container columnSpacing={2} rowGap={3} mt="30px">
           {myFile.map((file) => (
-            <Grid item xs={12} sm={6} md={4} lg={2} key={file.name}>
+            <Grid item xs={6} md={4} lg={2} key={file.name}>
               <Box
                 sx={(t) => ({
                   width: "100%",

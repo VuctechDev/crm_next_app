@@ -78,7 +78,16 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
           </>
         }
       >
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box
+          sx={(t) => ({
+            display: "flex",
+            justifyContent: "space-between",
+            [t.breakpoints.down("sm")]: {
+              flexDirection: "column",
+              rowGap: "28px",
+            },
+          })}
+        >
           <Box
             sx={{
               display: "flex",
@@ -112,17 +121,30 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
             )}
           </Box>
           <Card
-            sx={{
+            sx={(t) => ({
               display: "flex",
+              // flexWrap: "wrap",
               alignItems: "center",
               p: "28px",
               borderRadius: "8px",
               width: "fit-content",
               minWidth: "300px",
               height: "fit-content",
-            }}
+              [t.breakpoints.down("sm")]: {
+                minWidth: "100%",
+                p: "10px ",
+              },
+            })}
           >
-            <Typography sx={{ mr: "12px" }} variant="h4">
+            <Typography
+              sx={(t) => ({
+                mr: "12px",
+                [t.breakpoints.down("sm")]: {
+                  mr: "8px",
+                },
+              })}
+              variant="h4"
+            >
               {t("tags")}:
             </Typography>
             <TagsWrapper data={data?.tags ?? []} />
@@ -130,7 +152,7 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
         </Box>
 
         <Card
-          sx={{
+          sx={(t) => ({
             display: "inline-flex",
             flexDirection: "column",
             rowGap: "8px",
@@ -139,7 +161,11 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
             borderRadius: "8px",
             width: "fit-content",
             minWidth: "300px",
-          }}
+            [t.breakpoints.down("sm")]: {
+              minWidth: "100%",
+              p: "16px ",
+            },
+          })}
         >
           {data?.company && (
             <Typography variant="h4">{data?.company}</Typography>
@@ -184,7 +210,15 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
             </a>
           )}
         </Card>
-        <Divider sx={{ width: "100%", my: "60px" }} />
+        <Divider
+          sx={(t) => ({
+            width: "100%",
+            my: "60px",
+            [t.breakpoints.down("sm")]: {
+              my: "40px",
+            },
+          })}
+        />
         <Comments parentId={params?._id} />
         {deleteModalOpen && (
           <ConfirmationModal
