@@ -1,19 +1,30 @@
 import React, { FC, ReactElement } from "react";
 import Box from "@mui/material/Box";
-import { useTranslation } from "next-i18next";
 import ThemeToggle from "../ThemeToggle";
 import LanguageSelect from "../LanguageSelect";
 import AccountMenu from "../AccountMenu";
 import { useGetUser } from "@/lib/client/api/user/queries";
 
 interface AppBarProps {
-  open?: boolean;
+  open: boolean;
+  publicPage?: boolean;
 }
 
-const AppBar: FC<AppBarProps> = ({ open }): ReactElement => {
+const AppBar: FC<AppBarProps> = ({ open, publicPage }): ReactElement => {
   const { data: user } = useGetUser();
   const screenWidth = window?.screen?.width ?? 360;
   const width = open ? `${screenWidth - 150}` : `${screenWidth - 40}`;
+
+  const mdDownStyle = publicPage
+    ? { justifyContent: "flex-end" }
+    : {
+        justifyContent: "space-around",
+        pr: "0px",
+        columnGap: "0px",
+        height: "50px",
+        width: `${width}px`,
+        transition: "all 0.2s",
+      };
   return (
     <Box
       width={1}
@@ -25,12 +36,7 @@ const AppBar: FC<AppBarProps> = ({ open }): ReactElement => {
         pr: "20px",
         columnGap: "20px",
         [t.breakpoints.down("md")]: {
-          justifyContent: "space-around",
-          pr: "0px",
-          columnGap: "0px",
-          height: "50px",
-          width: `${width}px`,
-          transition: "all 0.2s",
+          ...mdDownStyle,
         },
       })}
     >

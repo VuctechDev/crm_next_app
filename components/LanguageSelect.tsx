@@ -7,15 +7,16 @@ import Image from "next/image";
 
 const languages = [
   {
-    value: "sr",
-    label: "SR",
-    iso: "rs",
-  },
-  {
     value: "en",
     label: "EN",
     iso: "gb",
   },
+  {
+    value: "sr",
+    label: "SR",
+    iso: "rs",
+  },
+
   {
     value: "de",
     label: "DE",

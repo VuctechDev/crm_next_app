@@ -212,11 +212,11 @@ const PageLayout: FC<PageLayoutProps> = ({
           flexDirection: "column",
           boxSizing: "border-box",
           [t.breakpoints.down("md")]: {
-            width: `calc(100% - 40px)`,
+            width: publicPage ? "100%" : `calc(100% - 40px)`,
           },
         })}
       >
-        <AppBar open={open} />
+        <AppBar open={open} publicPage={publicPage} />
         {publicPage ? (
           <PublicPageWrapper {...rest}> {children}</PublicPageWrapper>
         ) : (

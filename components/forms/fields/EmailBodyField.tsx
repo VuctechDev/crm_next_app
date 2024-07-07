@@ -129,7 +129,7 @@ const EmailBodyField: FC<EmailBodyFieldProps> = ({
       </Box>
       {instructionsModalOpen && (
         <Dialog open onClose={handleInstructionsModal}>
-          <Box sx={{ p: "30px" }}>
+          <Box sx={{ p: "30px 30px 50px" }}>
             <Typography variant="h4" my="12px">
               Enhance Your Email Campaigns with Dynamic Email Body
             </Typography>

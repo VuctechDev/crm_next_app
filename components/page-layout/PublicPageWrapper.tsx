@@ -32,7 +32,7 @@ const PublicPageWrapper: FC<PublicPageWrapperProps> = ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "84vh",
+        minHeight: "80vh",
         p: "20px",
       }}
     >

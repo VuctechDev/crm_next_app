@@ -64,13 +64,11 @@ const Content: FC<ContentProps> = ({
           sx={{
             p: "14px",
             marginBottom: "8px",
-            "& :hover": {
-              cursor: hover
-                ? {
-                    cursor: "pointer",
-                  }
-                : {},
-            },
+            "& :hover": hover
+              ? {
+                  cursor: "pointer",
+                }
+              : {},
           }}
         >
           {keys.map(({ key, preventClick, render }) => {
