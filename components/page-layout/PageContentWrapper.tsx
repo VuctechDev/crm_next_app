@@ -7,7 +7,7 @@ import Breadcrumbs from "./Breadcrumbs";
 interface PageContentWrapperProps {
   title?: string;
   center?: boolean;
-  lastBreadcrumb?: string;
+  labels?: { [key: number]: string | undefined };
   children: React.ReactNode;
   actions?: React.ReactNode;
 }
@@ -15,23 +15,25 @@ interface PageContentWrapperProps {
 const PageContentWrapper: FC<PageContentWrapperProps> = ({
   title,
   center,
-  lastBreadcrumb,
+  labels,
   children,
   actions,
 }): ReactElement => {
   const { t } = useTranslation();
   return (
     <Box
-      component="main"
+      // component="main"
+      width={1}
       sx={(t) => ({
         flexGrow: 1,
-        p: " 0px 32px 32px",
+        p: "0px 32px 32px",
         minHeight: "84vh",
         height: "fit-content",
         display: "flex",
         flexDirection: "column",
         overflowX: "auto",
         [t.breakpoints.down("sm")]: {
+          boxSizing: "border-box",
           p: "20px 10px",
         },
       })}
@@ -57,7 +59,7 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
               {t(title)}
             </Typography>
           )}
-          <Breadcrumbs aria-label="breadcrumb" lastValue={lastBreadcrumb} />
+          <Breadcrumbs aria-label="breadcrumb" labels={labels} />
         </Box>
         <Box
           sx={(t) => ({

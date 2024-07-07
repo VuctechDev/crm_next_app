@@ -6,27 +6,36 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 interface BreadcrumbsProps {
-  lastValue?: string;
+  labels?: { [key: number]: string | undefined };
 }
 
-function generateBreadcrumbs(url: string): { label: string; href: string }[] {
+function generateBreadcrumbs(
+  url: string,
+  labels: { [key: number]: string | undefined }
+): { label: string; href: string }[] {
   if (!url) {
     return [];
   }
   const segments = url.split("/").filter((segment) => segment);
   const breadcrumbs = segments.map((segment, index) => {
+    const label = labels?.[index];
     const href = "/" + segments.slice(0, index + 1).join("/");
+    if (label) {
+      return { label, href };
+    }
+    console.log(index, segment);
+
     return { label: segment, href };
   });
   return [{ label: "home", href: "/" }, ...breadcrumbs];
 }
 
-const Breadcrumbs: FC<BreadcrumbsProps> = ({ lastValue }): ReactElement => {
+const Breadcrumbs: FC<BreadcrumbsProps> = ({ labels }): ReactElement => {
   const { t } = useTranslation();
   const path = usePathname();
   const breadcrumbItems = path?.split("/");
 
-  const data = generateBreadcrumbs(path);
+  const data = generateBreadcrumbs(path, labels ?? {});
 
   if (data.length === 1) {
     return <></>;
@@ -35,8 +44,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ lastValue }): ReactElement => {
   return (
     <MuiBreadcrumbs aria-label="breadcrumb">
       {data?.map(({ label, href }, i) => {
-        const lastLabel = lastValue ?? label;
-        const nonLinkLabel = label === "edit" ? "edit" : lastLabel;
+        const nonLinkLabel = label === "edit" ? "edit" : label;
         return i !== breadcrumbItems.length - 1 && label !== "edit" ? (
           <Link key={label} color="inherit" href={href}>
             <Typography color="info.main">{t(label)}</Typography>

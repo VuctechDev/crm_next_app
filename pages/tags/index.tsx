@@ -87,7 +87,7 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
     {
       key: "_id",
       render: (value: string, data: TagType) => (
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", justifyContent:"center" }}>
           <TooltipIconButton
             title="edit"
             icon={<CreateIcon />}
@@ -100,7 +100,7 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
           />
         </Box>
       ),
-      // preventClick: true,
+      preventClick: true,
     },
   ];
 

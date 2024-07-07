@@ -25,9 +25,6 @@ export const ROUTES = {
       CSV: "/leads/add/csv",
       NEW: "/leads/add/new",
     },
-    EDIT: {
-      ROOT: "/leads/edit",
-    },
   },
   EMAIL: {
     ROOT: "/email",
@@ -38,6 +35,9 @@ export const ROUTES = {
   },
   USAGE: {
     ROOT: "/usage",
+  },
+  COMMON: {
+    EDIT: "edit",
   },
 };
 

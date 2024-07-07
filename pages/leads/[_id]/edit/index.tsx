@@ -18,7 +18,7 @@ const EditLeadPage: FC<EditLeadPageProps> = (): ReactElement => {
   }
   const name = data?.firstName + " " + data?.lastName;
   return (
-    <PageLayout title={name} lastBreadcrumb={data?.firstName} center>
+    <PageLayout title={name} labels={{ 1: data?.firstName }} center>
       <Card
         sx={(t) => ({
           width: "100%",

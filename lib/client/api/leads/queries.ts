@@ -48,7 +48,7 @@ export const useUpdateLead = (_id: string) => {
   });
 };
 
-export const useDeleteCustomer = (_id: string) => {
+export const useDeleteLead = (_id: string) => {
   const queryClient = useQueryClient();
   const { openSnackbar } = useSnackbar();
   return useMutation({

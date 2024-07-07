@@ -1,4 +1,3 @@
-"use client";
 import React, { FC, ReactElement, useState } from "react";
 import Box from "@mui/material/Box";
 import { useParams } from "next/navigation";
@@ -12,10 +11,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Link from "next/link";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
-import {
-  useDeleteCustomer,
-  useGetLeadById,
-} from "@/lib/client/api/leads/queries";
+import { useDeleteLead, useGetLeadById } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 import { getCountryName } from "@/lib/shared/getCountry";
@@ -34,7 +30,7 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
   const params = useParams() as { _id: string };
   const { push } = useRouter();
   const { data, isLoading } = useGetLeadById(params?._id);
-  const { mutateAsync } = useDeleteCustomer(params?._id);
+  const { mutateAsync } = useDeleteLead(params?._id);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -58,10 +54,12 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
   return (
     <PageLayout
       title={name}
-      lastBreadcrumb={data?.firstName}
+      labels={{ 1: data?.firstName }}
       actions={
         <>
-          <Link href={`${ROUTES.LEADS.EDIT.ROOT}/${params?._id}`}>
+          <Link
+            href={`${ROUTES.LEADS.ROOT}/${params?._id}/${ROUTES.COMMON.EDIT}`}
+          >
             <Button
               variant="outlined"
               color="info"
@@ -87,12 +85,15 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
         })}
       >
         <Box
-          sx={{
+          sx={(t) => ({
             display: "flex",
             flexDirection: "column",
             rowGap: "8px",
             width: "fit-content",
-          }}
+            [t.breakpoints.down("sm")]: {
+              mt: "24px",
+            },
+          })}
         >
           <Typography variant="body2">
             {getDisplayDateTime(data?.created)}

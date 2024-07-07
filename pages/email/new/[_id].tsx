@@ -30,8 +30,9 @@ const NewLeadEmailPage: FC<NewLeadEmailPageProps> = (): ReactElement => {
     from += ` <${process.env.NEXT_PUBLIC_EMAIL_USER}>`;
   }
   const name = `${data?.firstName} ${data?.lastName}`;
+
   return (
-    <PageLayout title={name} lastBreadcrumb={data?.firstName} center>
+    <PageLayout title={name} labels={{ 2: data?.firstName }} center>
       <Box
         width={1}
         sx={{
@@ -42,7 +43,6 @@ const NewLeadEmailPage: FC<NewLeadEmailPageProps> = (): ReactElement => {
           p: "20px",
         }}
       >
-        {/* <NewEmail to={data?.email} from={from} recipient={params?._id} /> */}
         <EmailForm to={data?.email} from={from} lead={params?._id} />
       </Box>
     </PageLayout>

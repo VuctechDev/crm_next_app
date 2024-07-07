@@ -31,7 +31,7 @@ interface PageLayoutProps {
   publicPage?: boolean;
   actions?: React.ReactNode;
   title?: string;
-  lastBreadcrumb?: string;
+  labels?: { [key: number]: string | undefined };
   center?: boolean;
 }
 
@@ -125,10 +125,6 @@ const PageLayout: FC<PageLayoutProps> = ({
   children,
   publicPage,
   ...rest
-  // actions,
-  // title,
-  // center,
-  // lastBreadcrumb,
 }): ReactElement => {
   const { t } = useTranslation();
   const { data: user } = useGetUser();
@@ -209,8 +205,18 @@ const PageLayout: FC<PageLayoutProps> = ({
           )}
         </Drawer>
       )}
-      <Box width={1} sx={{ display: "flex", flexDirection: "column" }}>
-        <AppBar />
+      <Box
+        width={1}
+        sx={(t) => ({
+          display: "flex",
+          flexDirection: "column",
+          boxSizing: "border-box",
+          [t.breakpoints.down("md")]: {
+            width: `calc(100% - 40px)`,
+          },
+        })}
+      >
+        <AppBar open={open} />
         {publicPage ? (
           <PublicPageWrapper {...rest}> {children}</PublicPageWrapper>
         ) : (

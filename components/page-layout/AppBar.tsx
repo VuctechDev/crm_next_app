@@ -6,11 +6,14 @@ import LanguageSelect from "../LanguageSelect";
 import AccountMenu from "../AccountMenu";
 import { useGetUser } from "@/lib/client/api/user/queries";
 
-interface AppBarProps {}
+interface AppBarProps {
+  open?: boolean;
+}
 
-const AppBar: FC<AppBarProps> = ({}): ReactElement => {
+const AppBar: FC<AppBarProps> = ({ open }): ReactElement => {
   const { data: user } = useGetUser();
-  const { t } = useTranslation();
+  const screenWidth = window?.screen?.width ?? 360;
+  const width = open ? `${screenWidth - 150}` : `${screenWidth - 40}`;
   return (
     <Box
       width={1}
@@ -21,6 +24,14 @@ const AppBar: FC<AppBarProps> = ({}): ReactElement => {
         alignItems: "center",
         pr: "20px",
         columnGap: "20px",
+        [t.breakpoints.down("md")]: {
+          justifyContent: "space-around",
+          pr: "0px",
+          columnGap: "0px",
+          height: "50px",
+          width: `${width}px`,
+          transition: "all 0.2s",
+        },
       })}
     >
       <LanguageSelect />

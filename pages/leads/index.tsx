@@ -8,7 +8,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Box, Button, IconButton, TextField } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import { useGetLeads } from "@/lib/client/api/leads/queries";
+import { useDeleteLead, useGetLeads } from "@/lib/client/api/leads/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 import { getCountryName } from "@/lib/shared/getCountry";
@@ -25,6 +25,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import { TagType } from "@/db/tags";
 import { useGetTags } from "@/lib/client/api/tags/queries";
 import TagsWrapper from "@/components/tags/TagsWrapper";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 interface LeadsPageProps {
   params: { locale: string };
@@ -50,6 +51,20 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   const { data: tags } = useGetTags();
   const [csvModalOpen, setCSVModalOpen] = useState(false);
   const inputRef = useRef("");
+  const [deleteModalId, setDeleteModalId] = useState("");
+
+  const { mutateAsync } = useDeleteLead(deleteModalId);
+
+  const handleDelete = async () => {
+    try {
+      await mutateAsync(deleteModalId);
+      router.push(`${ROUTES.LEADS.ROOT}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteModal = (_id?: string) => setDeleteModalId(_id ?? "");
 
   const keys = [
     {
@@ -98,18 +113,23 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
       preventClick: true,
     },
     {
-      key: "",
-      render: (value: string, data: LeadType) => (
+      key: "_id",
+      render: (value: string) => (
         <Box display="flex" justifyContent="center">
-          <Link href={`${ROUTES.EMAIL.NEW}/${data._id}`}>
+          <Link href={`${ROUTES.EMAIL.NEW}/${value}`}>
             <TooltipIconButton
               title="sendEmail"
               icon={<ForwardToInboxOutlinedIcon />}
             />
           </Link>
-          <Link href={`${ROUTES.LEADS.EDIT.ROOT}/${data._id}`}>
+          <Link href={`${ROUTES.LEADS.ROOT}/${value}/${ROUTES.COMMON.EDIT}`}>
             <TooltipIconButton title="edit" icon={<CreateIcon />} />
           </Link>
+          <TooltipIconButton
+            onClick={() => handleDeleteModal(value)}
+            title="delete"
+            icon={<DeleteOutlineIcon color="error" />}
+          />
         </Box>
       ),
       preventClick: true,
@@ -216,6 +236,14 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
             />
           </>
         </ConfirmationModal>
+      )}
+      {!!deleteModalId && (
+        <ConfirmationModal
+          title="deleteLead"
+          message="deleteLeadConfirmation"
+          onCancel={handleDeleteModal}
+          onConfirm={handleDelete}
+        />
       )}
     </PageLayout>
   );
