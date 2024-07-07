@@ -3,11 +3,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { DrawerItemType } from "./PageLayout";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "next-i18next";
 
+interface DrawerItemType {
+  label: string;
+  icon: React.ReactNode;
+  href: string;
+}
 interface DrawerItemProps {
   open: boolean;
   data: DrawerItemType;
@@ -56,7 +60,7 @@ const DrawerItem: FC<DrawerItemProps> = ({
               justifyContent: "center",
               color: active ? t.palette.primary.main : t.palette.text.secondary,
               [t.breakpoints.down("sm")]: {
-                mr: "10px"
+                mr: "10px",
               },
             })}
           >

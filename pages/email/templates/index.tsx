@@ -3,7 +3,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Card from "@mui/material/Card";
 import PageLayout from "@/components/page-layout/PageLayout";
 import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
-import { Grid, Tooltip, Typography } from "@mui/material";
+import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import TableWrapper from "@/components/table/TableWrapper";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -71,7 +71,7 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
     {
       key: "_id",
       render: (value: string, data: EmailTemplateType) => (
-        <>
+        <Box sx={{ display: "flex" }}>
           <TooltipIconButton
             title="edit"
             icon={<CreateIcon />}
@@ -82,7 +82,7 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
             icon={<DeleteOutlineOutlinedIcon />}
             onClick={() => setDeleteId(value)}
           />
-        </>
+        </Box>
       ),
       // preventClick: true,
     },

@@ -1,3 +1,5 @@
+import { translate } from "./translate";
+
 const hour = 60 * 1000 * 60;
 
 const getFromUTC = (time: string): number => {
@@ -31,19 +33,23 @@ export const getDisplayTime = (time?: string) => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-export const getChartLabel = (time?: string, interval: string = "day") => {
-  const d = time ? new Date(getFromUTC(time)) : new Date();
-  const hours = formatNumber(d.getHours());
-  const minutes = formatNumber(d.getMinutes());
-  const date = formatNumber(d.getDate());
-  const month = formatNumber(d.getMonth() + 1);
-  if (interval === "hour") {
-    return `${hours}:${minutes}h`;
-  } else if (interval === "day") {
-    return `${hours}h`;
-  } else if (interval === "week") {
-    return `${date}.${month}, ${hours}h`;
-  }
+const months = [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
+];
 
-  return `${date}.${month}.`;
+export const getStatsPeriod = (period: string): string => {
+  const month = months[+period.split("-")[1] - 1];
+
+  return `${translate(month as any)} ${period.split("-")[0]}`;
 };

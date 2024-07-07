@@ -45,7 +45,7 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
 
   const handleDelete = async () => {
     try {
-      deleteTag(+deleteId);
+      await deleteTag(+deleteId);
     } catch (error) {
       console.error(error);
     }
@@ -88,7 +88,7 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
     {
       key: "_id",
       render: (value: string, data: TagType) => (
-        <>
+        <Box sx={{ display: "flex" }}>
           <TooltipIconButton
             title="edit"
             icon={<CreateIcon />}
@@ -99,7 +99,7 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
             icon={<DeleteOutlineOutlinedIcon />}
             onClick={() => setDeleteId(value)}
           />
-        </>
+        </Box>
       ),
       // preventClick: true,
     },
@@ -143,7 +143,11 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
               />
             </Card>
           </Grid>
-          <Grid item xs={1} sx={(t) => ({[t.breakpoints.down("sm")]: {display: "none"}})} />
+          <Grid
+            item
+            xs={1}
+            sx={(t) => ({ [t.breakpoints.down("sm")]: { display: "none" } })}
+          />
           <Grid item xs={12} md={3}>
             <Card
               sx={(t) => ({

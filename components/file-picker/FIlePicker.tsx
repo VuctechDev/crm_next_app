@@ -65,7 +65,7 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
       setMyFile([]);
       return openSnackbar(data.message, "success");
     } catch (err: any) {
-      const message = err.response.data.message;
+      const message = err?.response?.data?.message || "Something went wrong!";
       openSnackbar(message, "error");
     } finally {
       setLoading(false);

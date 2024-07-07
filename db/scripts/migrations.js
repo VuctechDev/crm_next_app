@@ -28,13 +28,13 @@ const query = (query, values) => {
   });
 };
 
-const table = "emails";
+const table = "usages";
 
 const renameQuery = `ALTER TABLE ${table} RENAME COLUMN sentBy TO user;`;
 const renameQuery2 = `ALTER TABLE ${table} RENAME COLUMN recipient TO lead;`;
 const renameQuery3 = `ALTER TABLE ${table} RENAME COLUMN recipientEmail TO \`to\`;`;
 const dropQuery = `ALTER TABLE ${table} DROP COLUMN password`;
-const addQuery = `ALTER TABLE ${table} ADD tag INT;`;
+const addQuery = `ALTER TABLE ${table} ADD createdLeads INT DEFAULT 0;`;
 const addQuery2 = `ALTER TABLE ${table} ADD tags JSON NOT NULL;`;
 const changeTypeQuery = `ALTER TABLE ${table} MODIFY html VARCHAR(2000);`;
 const updateQuery = `UPDATE ${table} SET tags = '[]'`;

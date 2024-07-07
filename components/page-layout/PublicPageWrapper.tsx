@@ -5,16 +5,17 @@ import { useTranslation } from "next-i18next";
 
 interface PublicPageWrapperProps {
   children: React.ReactNode;
-  callToAction?: React.ReactNode;
+  actions?: React.ReactNode;
   title?: string;
 }
 
 const PublicPageWrapper: FC<PublicPageWrapperProps> = ({
   children,
-  callToAction,
+  actions,
   title,
 }): ReactElement => {
   const { t } = useTranslation();
+
   return (
     <Box
       width={1}
@@ -41,7 +42,7 @@ const PublicPageWrapper: FC<PublicPageWrapperProps> = ({
         {children}
       </Card>
 
-      {callToAction && (
+      {actions && (
         <Box
           sx={{
             display: "flex",
@@ -50,7 +51,7 @@ const PublicPageWrapper: FC<PublicPageWrapperProps> = ({
             mt: "20px",
           }}
         >
-          {callToAction}
+          {actions}
         </Box>
       )}
     </Box>

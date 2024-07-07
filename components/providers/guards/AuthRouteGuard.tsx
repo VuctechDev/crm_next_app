@@ -52,19 +52,16 @@ const RouteGuard: FC<RouteGuardProps> = ({ children }): ReactElement => {
   const path = asPath.split("?")[0];
 
   const [checking, setChecking] = useState(true);
-  const { data: user, isLoading } = useGetUser();
+  const { data: user, isLoading, isFetched } = useGetUser();
 
   useEffect(() => {
-    if (isLoading) {
-      setChecking(true);
-      return;
-    }
+    console.log(asPath, user, isLoading, isFetched);
+    if (!isFetched) return;
+    setChecking(true);
 
     const handleRedirect = (path: string) => {
       replace(path);
     };
-
-    console.log(asPath, user, isLoading);
 
     if (user) {
       if (!user.firstName && asPath !== ROUTES.ONBOARDING.USER) {
@@ -86,23 +83,19 @@ const RouteGuard: FC<RouteGuardProps> = ({ children }): ReactElement => {
         setChecking(false);
       }
     } else {
-      if (!isLoading && !publicPages.includes(path)) {
+      if (!publicPages.includes(path)) {
         handleRedirect(ROUTES.LOGIN);
       } else {
         setChecking(false);
       }
     }
-  }, [asPath, user, isLoading]);
+  }, [asPath, user, isFetched]);
 
-  if (checking || isLoading) {
+  if (checking || !isFetched) {
     return <LoadingOverlayer />;
   }
 
-  if (!checking) {
-    return <>{children}</>;
-  }
-
-  return <></>;
+  return <>{children}</>;
 };
 
 export default RouteGuard;

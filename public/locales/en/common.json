@@ -136,5 +136,21 @@
   "invalidDynamicKey": "Invalid dynamic key!",
   "notSupportedDynamicKey": "is not supported as a dynamic body key.",
   "learnAboutDynamicKeys": "Enhance your email campaigns with dynamic email body",
-  "learnMore": "Learn More"
+  "learnMore": "Learn More",
+  "aiUploadedCards": "AI uploaded Cards",
+  "CSVCreatedLeads": "CSV imported",
+  "leadsCreation": "Leads creation:",
+  "manualyCreatedLeads": "Manually created",
+  "january": "January",
+  "february": "February",
+  "march": "March",
+  "april": "April",
+  "may": "May",
+  "june": "June",
+  "july": "July",
+  "august": "August",
+  "september": "September",
+  "october": "October",
+  "november": "November",
+  "december": "December"
 }

@@ -164,7 +164,19 @@ const email_templates = `CREATE TABLE email_templates (
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );`;
 
-const createTableQuery = email_templates;
+const usage = `CREATE TABLE usages (
+  _id SERIAL PRIMARY KEY,
+  organization INT NOT NULL,
+  period VARCHAR(8) NOT NULL,
+  cards INT DEFAULT 0,
+  csv INT DEFAULT 0,
+  createdLeads INT DEFAULT 0,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE (organization, period)
+);`;
+
+const createTableQuery = usage;
 
 const createTable = async () => {
   try {

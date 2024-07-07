@@ -74,7 +74,7 @@ const TagsSelect: FC<TagsSelectProps> = ({
     <Box
       width={1}
       sx={(t) => ({
-        minWidth: onChange ? "520px" : "0px",
+        maxWidth: onChange ? "520px" : "100%",
         mb: onChange ? "40px" : "0px",
         [t.breakpoints.down("sm")]: {
           minWidth: "100%",

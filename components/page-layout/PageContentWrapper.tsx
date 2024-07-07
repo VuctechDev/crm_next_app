@@ -1,4 +1,3 @@
-"use client";
 import React, { FC, ReactElement } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -26,7 +25,7 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
       component="main"
       sx={(t) => ({
         flexGrow: 1,
-        p: "32px",
+        p: " 0px 32px 32px",
         minHeight: "92vh",
         height: "fit-content",
         display: "flex",
@@ -77,7 +76,6 @@ const PageContentWrapper: FC<PageContentWrapperProps> = ({
           {actions}
         </Box>
       </Box>
-
       <Box
         width={1}
         sx={(t) => ({

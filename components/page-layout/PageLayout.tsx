@@ -13,24 +13,16 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined";
 import DrawerItem from "./DrawerItem";
 import { useGetUser } from "@/lib/client/api/user/queries";
-import Button from "@mui/material/Button";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
 import { Typography, useMediaQuery } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { ROUTES } from "../providers/guards/AuthRouteGuard";
-import { useLogout } from "@/lib/client/api/auth/queries";
-import ThemeToggle from "../ThemeToggle";
 import DrawIcon from "@mui/icons-material/Draw";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import TagIcon from "@mui/icons-material/Tag";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-
-export interface DrawerItemType {
-  label: string;
-  icon: React.ReactNode;
-  href: string;
-}
+import AppBar from "./AppBar";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -89,12 +81,12 @@ const drawerItems = [
     href: "/tags",
     nestedLinks: [],
   },
-  // {
-  //   label: "usage",
-  //   icon: <BarChartOutlinedIcon />,
-  //   href: ROUTES.USAGE.ROOT,
-  //   nestedLinks: [],
-  // },
+  {
+    label: "usage",
+    icon: <BarChartOutlinedIcon />,
+    href: ROUTES.USAGE.ROOT,
+    nestedLinks: [],
+  },
 ];
 
 const drawerWidth = 200;
@@ -129,19 +121,10 @@ const PageLayout: FC<PageLayoutProps> = ({
 }): ReactElement => {
   const { t } = useTranslation();
   const { data: user } = useGetUser();
-  const { mutate } = useLogout();
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [open, setOpen] = React.useState(!smDown);
-
-  const handleLogout = async () => {
-    try {
-      mutate();
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleDrawer = () => setOpen((prev) => !prev);
   return (
@@ -204,24 +187,21 @@ const PageLayout: FC<PageLayoutProps> = ({
                 alignItems: "center",
                 justifyContent: "flex-end",
                 pb: "20px",
-                rowGap: "16px",
+                rowGap: "6px",
               }}
             >
-              <ThemeToggle />
-              <Typography>
-                {t("hi")}, {user?.firstName}
-              </Typography>
-              <Button variant="outlined" onClick={handleLogout}>
-                {t("logout")}
-              </Button>
+              <Typography variant="body2">{t("lastLogin")}</Typography>
               <Typography variant="body2">
-                {t("lastLogin")}: {getDisplayDateTime(user?.lastLogin)}
+                {getDisplayDateTime(user?.lastLogin)}
               </Typography>
             </Box>
           )}
         </Drawer>
       )}
-      <>{children}</>
+      <Box width={1} sx={{ display: "flex", flexDirection: "column" }}>
+        <AppBar />
+        {children}
+      </Box>
     </Box>
   );
 };
