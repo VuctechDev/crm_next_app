@@ -23,10 +23,16 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import TagIcon from "@mui/icons-material/Tag";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import AppBar from "./AppBar";
+import PublicPageWrapper from "./PublicPageWrapper";
+import PageContentWrapper from "./PageContentWrapper";
 
 interface PageLayoutProps {
   children: React.ReactNode;
-  hideLayout?: boolean;
+  publicPage?: boolean;
+  actions?: React.ReactNode;
+  title?: string;
+  lastBreadcrumb?: string;
+  center?: boolean;
 }
 
 const drawerItems = [
@@ -117,7 +123,12 @@ const closedMixin = (theme: Theme): CSSObject => ({
 
 const PageLayout: FC<PageLayoutProps> = ({
   children,
-  hideLayout,
+  publicPage,
+  ...rest
+  // actions,
+  // title,
+  // center,
+  // lastBreadcrumb,
 }): ReactElement => {
   const { t } = useTranslation();
   const { data: user } = useGetUser();
@@ -129,7 +140,7 @@ const PageLayout: FC<PageLayoutProps> = ({
   const handleDrawer = () => setOpen((prev) => !prev);
   return (
     <Box width={1} sx={{ display: "flex" }}>
-      {!hideLayout && (
+      {!publicPage && (
         <Drawer
           variant="permanent"
           open={open}
@@ -200,7 +211,11 @@ const PageLayout: FC<PageLayoutProps> = ({
       )}
       <Box width={1} sx={{ display: "flex", flexDirection: "column" }}>
         <AppBar />
-        {children}
+        {publicPage ? (
+          <PublicPageWrapper {...rest}> {children}</PublicPageWrapper>
+        ) : (
+          <PageContentWrapper {...rest}> {children}</PageContentWrapper>
+        )}
       </Box>
     </Box>
   );

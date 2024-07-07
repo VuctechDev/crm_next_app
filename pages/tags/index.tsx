@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Card from "@mui/material/Card";
 import PageLayout from "@/components/page-layout/PageLayout";
-import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TagsForm from "@/components/forms/tags/TagsForm";
 import {
   useDeleteTag,
@@ -106,79 +105,77 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
   ];
 
   return (
-    <PageLayout>
-      <PageContentWrapper title="tags">
-        <Grid
-          container
-          rowSpacing="24px"
-          sx={(t) => ({
-            px: "20px",
-            [t.breakpoints.down("sm")]: {
-              px: "6px",
-            },
-          })}
-        >
-          <Grid item xs={12} md={8}>
-            <Card
-              sx={(t) => ({
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                [t.breakpoints.down("sm")]: {
-                  rowGap: "20px",
-                },
-              })}
-            >
-              <TableWrapper
-                data={data?.data ?? []}
-                headers={headers}
-                keys={keys}
-                loading={isLoading}
-                totalCount={data?.total ?? 0}
-                skeletonCount={8}
-                handleQueryChange={handleQueryChange}
-                handleRowSelect={(_id: string) => null}
-                hover={false}
-                filterKeys={[]}
-              />
-            </Card>
-          </Grid>
-          <Grid
-            item
-            xs={1}
-            sx={(t) => ({ [t.breakpoints.down("sm")]: { display: "none" } })}
-          />
-          <Grid item xs={12} md={3}>
-            <Card
-              sx={(t) => ({
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                rowGap: "24px",
-                maxWidth: "430px",
-                p: "24px 24px 36px",
-                [t.breakpoints.down("sm")]: {
-                  rowGap: "14px",
-                  p: "20px",
-                },
-              })}
-            >
-              <TagsForm
-                data={selectedTag}
-                handleClear={() => setSelectedTag(null)}
-              />
-            </Card>
-          </Grid>
+    <PageLayout title="tags">
+      <Grid
+        container
+        rowSpacing="24px"
+        sx={(t) => ({
+          px: "20px",
+          [t.breakpoints.down("sm")]: {
+            px: "6px",
+          },
+        })}
+      >
+        <Grid item xs={12} md={8}>
+          <Card
+            sx={(t) => ({
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              [t.breakpoints.down("sm")]: {
+                rowGap: "20px",
+              },
+            })}
+          >
+            <TableWrapper
+              data={data?.data ?? []}
+              headers={headers}
+              keys={keys}
+              loading={isLoading}
+              totalCount={data?.total ?? 0}
+              skeletonCount={8}
+              handleQueryChange={handleQueryChange}
+              handleRowSelect={(_id: string) => null}
+              hover={false}
+              filterKeys={[]}
+            />
+          </Card>
         </Grid>
-        {!!deleteId && (
-          <ConfirmationModal
-            title="deleteTag"
-            message="deleteLeadConfirmation"
-            onCancel={() => handleModal()}
-            onConfirm={handleDelete}
-          />
-        )}
-      </PageContentWrapper>
+        <Grid
+          item
+          xs={1}
+          sx={(t) => ({ [t.breakpoints.down("sm")]: { display: "none" } })}
+        />
+        <Grid item xs={12} md={3}>
+          <Card
+            sx={(t) => ({
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              rowGap: "24px",
+              maxWidth: "430px",
+              p: "24px 24px 36px",
+              [t.breakpoints.down("sm")]: {
+                rowGap: "14px",
+                p: "20px",
+              },
+            })}
+          >
+            <TagsForm
+              data={selectedTag}
+              handleClear={() => setSelectedTag(null)}
+            />
+          </Card>
+        </Grid>
+      </Grid>
+      {!!deleteId && (
+        <ConfirmationModal
+          title="deleteTag"
+          message="deleteLeadConfirmation"
+          onCancel={() => handleModal()}
+          onConfirm={handleDelete}
+        />
+      )}
     </PageLayout>
   );
 };

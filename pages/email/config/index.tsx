@@ -1,6 +1,5 @@
 import React, { FC, ReactElement } from "react";
 import Box from "@mui/material/Box";
-import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import PageLayout from "@/components/page-layout/PageLayout";
 import { Card, Typography } from "@mui/material";
@@ -20,39 +19,37 @@ const EmailConfigPage: FC<EmailConfigPageProps> = (): ReactElement => {
   }
 
   return (
-    <PageLayout>
-      <PageContentWrapper title="emailConfig" center>
-        <Card
-          sx={(t) => ({
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            rowGap: "24px",
-            maxWidth: "500px",
-            p: "24px 24px 36px",
-            [t.breakpoints.down("sm")]: {
-              rowGap: "14px",
-              p: "20px",
-            },
-          })}
-        >
-          {config ? (
-            <Box display="flex">
-              <Typography>
-                {t("emailConfigured")}{" "}
-                <Typography
-                  color="info.main"
-                  sx={{ ml: "5px", display: "inline" }}
-                >
-                  {config?.email}
-                </Typography>
+    <PageLayout title="emailConfig" center>
+      <Card
+        sx={(t) => ({
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          rowGap: "24px",
+          maxWidth: "500px",
+          p: "24px 24px 36px",
+          [t.breakpoints.down("sm")]: {
+            rowGap: "14px",
+            p: "20px",
+          },
+        })}
+      >
+        {config ? (
+          <Box display="flex">
+            <Typography>
+              {t("emailConfigured")}{" "}
+              <Typography
+                color="info.main"
+                sx={{ ml: "5px", display: "inline" }}
+              >
+                {config?.email}
               </Typography>
-            </Box>
-          ) : (
-            <EmailConfigForm />
-          )}
-        </Card>
-      </PageContentWrapper>
+            </Typography>
+          </Box>
+        ) : (
+          <EmailConfigForm />
+        )}
+      </Card>
     </PageLayout>
   );
 };

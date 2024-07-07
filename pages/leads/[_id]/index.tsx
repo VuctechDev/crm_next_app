@@ -3,7 +3,6 @@ import React, { FC, ReactElement, useState } from "react";
 import Box from "@mui/material/Box";
 import { useParams } from "next/navigation";
 import { Button, Card, Divider, Typography } from "@mui/material";
-import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
@@ -57,178 +56,174 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
   const name = data?.firstName + " " + data?.lastName;
 
   return (
-    <PageLayout>
-      <PageContentWrapper
-        title={name}
-        lastBreadcrumb={data?.firstName}
-        actions={
-          <>
-            <Link href={`${ROUTES.LEADS.EDIT.ROOT}/${params?._id}`}>
-              <Button
-                variant="outlined"
-                color="info"
-                startIcon={<BorderColorIcon />}
-              >
-                {t("edit")}
-              </Button>
-            </Link>
-            <Button color="error" variant="outlined" onClick={handleModal}>
-              {t("delete")}
+    <PageLayout
+      title={name}
+      lastBreadcrumb={data?.firstName}
+      actions={
+        <>
+          <Link href={`${ROUTES.LEADS.EDIT.ROOT}/${params?._id}`}>
+            <Button
+              variant="outlined"
+              color="info"
+              startIcon={<BorderColorIcon />}
+            >
+              {t("edit")}
             </Button>
-          </>
-        }
+          </Link>
+          <Button color="error" variant="outlined" onClick={handleModal}>
+            {t("delete")}
+          </Button>
+        </>
+      }
+    >
+      <Box
+        sx={(t) => ({
+          display: "flex",
+          justifyContent: "space-between",
+          [t.breakpoints.down("sm")]: {
+            flexDirection: "column",
+            rowGap: "28px",
+          },
+        })}
       >
         <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            rowGap: "8px",
+            width: "fit-content",
+          }}
+        >
+          <Typography variant="body2">
+            {getDisplayDateTime(data?.created)}
+          </Typography>
+          <Typography variant="h5">{data?.role}</Typography>
+
+          {data?.email && (
+            <Box sx={{ display: "flex", alignItems: "center", mt: "8px" }}>
+              <AlternateEmailIcon sx={{ mr: "10px" }} />
+              <Typography> {data?.email}</Typography>
+            </Box>
+          )}
+          {data?.mobile && (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <SmartphoneIcon sx={{ mr: "10px" }} />
+              <Typography> {data?.mobile}</Typography>
+            </Box>
+          )}
+          {data?.phone && (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <PhoneEnabledIcon sx={{ mr: "10px" }} />
+              <Typography> {data?.phone}</Typography>
+            </Box>
+          )}
+        </Box>
+        <Card
           sx={(t) => ({
             display: "flex",
-            justifyContent: "space-between",
+            // flexWrap: "wrap",
+            alignItems: "center",
+            p: "28px",
+            borderRadius: "8px",
+            width: "fit-content",
+            minWidth: "300px",
+            height: "fit-content",
             [t.breakpoints.down("sm")]: {
-              flexDirection: "column",
-              rowGap: "28px",
+              minWidth: "100%",
+              p: "10px ",
             },
           })}
         >
+          <Typography
+            sx={(t) => ({
+              mr: "12px",
+              [t.breakpoints.down("sm")]: {
+                mr: "8px",
+              },
+            })}
+            variant="h4"
+          >
+            {t("tags")}:
+          </Typography>
+          <TagsWrapper data={data?.tags ?? []} />
+        </Card>
+      </Box>
+
+      <Card
+        sx={(t) => ({
+          display: "inline-flex",
+          flexDirection: "column",
+          rowGap: "8px",
+          mt: "44px",
+          p: "32px",
+          borderRadius: "8px",
+          width: "fit-content",
+          minWidth: "300px",
+          [t.breakpoints.down("sm")]: {
+            minWidth: "100%",
+            p: "16px ",
+          },
+        })}
+      >
+        {data?.company && <Typography variant="h4">{data?.company}</Typography>}
+        {data?.industry && (
+          <Typography variant="h5">{data?.industry}</Typography>
+        )}
+        <Box sx={{ display: "flex", alignItems: "center", mt: "20px" }}>
+          <LocationOnIcon sx={{ mr: "10px" }} />
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
-              rowGap: "8px",
-              width: "fit-content",
+              rowGap: "6px",
             }}
           >
-            <Typography variant="body2">
-              {getDisplayDateTime(data?.created)}
-            </Typography>
-            <Typography variant="h5">{data?.role}</Typography>
-
-            {data?.email && (
-              <Box sx={{ display: "flex", alignItems: "center", mt: "8px" }}>
-                <AlternateEmailIcon sx={{ mr: "10px" }} />
-                <Typography> {data?.email}</Typography>
-              </Box>
+            <Typography>{data?.address}</Typography>
+            {(data?.zip || data?.city) && (
+              <Typography>
+                {data?.zip && data?.city
+                  ? `${data?.zip}, ${data?.city}`
+                  : `${data?.zip} ${data?.city}`}
+              </Typography>
             )}
-            {data?.mobile && (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <SmartphoneIcon sx={{ mr: "10px" }} />
-                <Typography> {data?.mobile}</Typography>
-              </Box>
-            )}
-            {data?.phone && (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <PhoneEnabledIcon sx={{ mr: "10px" }} />
-                <Typography> {data?.phone}</Typography>
-              </Box>
+            {data?.country && (
+              <Typography>{getCountryName(data?.country)}</Typography>
             )}
           </Box>
-          <Card
-            sx={(t) => ({
-              display: "flex",
-              // flexWrap: "wrap",
-              alignItems: "center",
-              p: "28px",
-              borderRadius: "8px",
-              width: "fit-content",
-              minWidth: "300px",
-              height: "fit-content",
-              [t.breakpoints.down("sm")]: {
-                minWidth: "100%",
-                p: "10px ",
-              },
-            })}
-          >
-            <Typography
-              sx={(t) => ({
-                mr: "12px",
-                [t.breakpoints.down("sm")]: {
-                  mr: "8px",
-                },
-              })}
-              variant="h4"
-            >
-              {t("tags")}:
-            </Typography>
-            <TagsWrapper data={data?.tags ?? []} />
-          </Card>
         </Box>
 
-        <Card
-          sx={(t) => ({
-            display: "inline-flex",
-            flexDirection: "column",
-            rowGap: "8px",
-            mt: "44px",
-            p: "32px",
-            borderRadius: "8px",
-            width: "fit-content",
-            minWidth: "300px",
-            [t.breakpoints.down("sm")]: {
-              minWidth: "100%",
-              p: "16px ",
-            },
-          })}
-        >
-          {data?.company && (
-            <Typography variant="h4">{data?.company}</Typography>
-          )}
-          {data?.industry && (
-            <Typography variant="h5">{data?.industry}</Typography>
-          )}
-          <Box sx={{ display: "flex", alignItems: "center", mt: "20px" }}>
-            <LocationOnIcon sx={{ mr: "10px" }} />
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                rowGap: "6px",
-              }}
-            >
-              <Typography>{data?.address}</Typography>
-              {(data?.zip || data?.city) && (
-                <Typography>
-                  {data?.zip && data?.city
-                    ? `${data?.zip}, ${data?.city}`
-                    : `${data?.zip} ${data?.city}`}
-                </Typography>
-              )}
-              {data?.country && (
-                <Typography>{getCountryName(data?.country)}</Typography>
-              )}
-            </Box>
+        {data?.employees && (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <GroupIcon sx={{ mr: "10px" }} />
+            <Typography> {data.employees}</Typography>
           </Box>
-
-          {data?.employees && (
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <GroupIcon sx={{ mr: "10px" }} />
-              <Typography> {data.employees}</Typography>
-            </Box>
-          )}
-          {data?.website && (
-            <a href={data?.website} target="_blak">
-              <Button variant="outlined" color="info" sx={{ mt: "20px" }}>
-                {t("website")}
-              </Button>
-            </a>
-          )}
-        </Card>
-        <Divider
-          sx={(t) => ({
-            width: "100%",
-            my: "60px",
-            [t.breakpoints.down("sm")]: {
-              my: "40px",
-            },
-          })}
-        />
-        <Comments parentId={params?._id} />
-        {deleteModalOpen && (
-          <ConfirmationModal
-            title="deleteLead"
-            message="deleteLeadConfirmation"
-            onCancel={handleModal}
-            onConfirm={handleDelete}
-          />
         )}
-      </PageContentWrapper>
+        {data?.website && (
+          <a href={data?.website} target="_blak">
+            <Button variant="outlined" color="info" sx={{ mt: "20px" }}>
+              {t("website")}
+            </Button>
+          </a>
+        )}
+      </Card>
+      <Divider
+        sx={(t) => ({
+          width: "100%",
+          my: "60px",
+          [t.breakpoints.down("sm")]: {
+            my: "40px",
+          },
+        })}
+      />
+      <Comments parentId={params?._id} />
+      {deleteModalOpen && (
+        <ConfirmationModal
+          title="deleteLead"
+          message="deleteLeadConfirmation"
+          onCancel={handleModal}
+          onConfirm={handleDelete}
+        />
+      )}
     </PageLayout>
   );
 };

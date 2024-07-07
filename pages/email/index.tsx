@@ -1,6 +1,5 @@
 import React, { FC, ReactElement, useState } from "react";
 import Card from "@mui/material/Card";
-import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Box, Button, Typography } from "@mui/material";
@@ -145,53 +144,51 @@ const EmailPage: FC<EmailPageProps> = (): ReactElement => {
   };
 
   return (
-    <PageLayout>
-      <PageContentWrapper
-        title="emails"
-        actions={
-          <Link href={ROUTES.EMAIL.NEW}>
-            <Button
-              variant="outlined"
-              color="info"
-              startIcon={<ForwardToInboxOutlinedIcon />}
-            >
-              {t("new")}
-            </Button>
-          </Link>
-        }
+    <PageLayout
+      title="emails"
+      actions={
+        <Link href={ROUTES.EMAIL.NEW}>
+          <Button
+            variant="outlined"
+            color="info"
+            startIcon={<ForwardToInboxOutlinedIcon />}
+          >
+            {t("new")}
+          </Button>
+        </Link>
+      }
+    >
+      {/* <StatsWrapper /> */}
+      <Card
+        sx={{
+          p: "0px",
+          height: "1",
+          borderRadius: "20px",
+          width: "100%",
+          minWidth: "600px",
+        }}
       >
-        {/* <StatsWrapper /> */}
-        <Card
-          sx={{
-            p: "0px",
-            height: "1",
-            borderRadius: "20px",
-            width: "100%",
-            minWidth: "600px",
-          }}
-        >
-          <TableWrapper
-            data={data?.data ?? []}
-            headers={headers}
-            keys={keys}
-            loading={isLoading}
-            totalCount={data?.total ?? 0}
-            skeletonCount={8}
-            handleQueryChange={handleQueryChange}
-            handleRowSelect={(_id: string) => null}
-            hover={false}
-            filterKeys={[
-              {
-                label: "status",
-                options: [
-                  { label: "sent", value: "sent" },
-                  { label: "read", value: "read" },
-                ],
-              },
-            ]}
-          />
-        </Card>
-      </PageContentWrapper>
+        <TableWrapper
+          data={data?.data ?? []}
+          headers={headers}
+          keys={keys}
+          loading={isLoading}
+          totalCount={data?.total ?? 0}
+          skeletonCount={8}
+          handleQueryChange={handleQueryChange}
+          handleRowSelect={(_id: string) => null}
+          hover={false}
+          filterKeys={[
+            {
+              label: "status",
+              options: [
+                { label: "sent", value: "sent" },
+                { label: "read", value: "read" },
+              ],
+            },
+          ]}
+        />
+      </Card>
     </PageLayout>
   );
 };

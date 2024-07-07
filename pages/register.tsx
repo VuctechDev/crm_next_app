@@ -8,7 +8,6 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import FormFields from "@/components/forms/register/FormFields";
 import SubmitButton from "@/components/forms/fields/SubmitButton";
-import PublicPageWrapper from "@/components/page-layout/PublicPageWrapper";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 import { useRegister } from "@/lib/client/api/auth/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
@@ -60,33 +59,30 @@ const Register: FC = (): ReactElement => {
   };
 
   return (
-    <PageLayout hideLayout>
-      <PublicPageWrapper
-        title="register"
-        actions={
-          <>
-            <Typography sx={{ mr: "8px" }}>
-              {t("alreadyHaveAccount")}
-            </Typography>
-            <Link href={ROUTES.LOGIN}>
-              <Typography color="info.main">{t("signin")}</Typography>
-            </Link>
-          </>
-        }
+    <PageLayout
+      publicPage
+      title="register"
+      actions={
+        <>
+          <Typography sx={{ mr: "8px" }}>{t("alreadyHaveAccount")}</Typography>
+          <Link href={ROUTES.LOGIN}>
+            <Typography color="info.main">{t("signin")}</Typography>
+          </Link>
+        </>
+      }
+    >
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
       >
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <FormFields />
-              <SubmitButton loading={isSubmitting} label={t("register")} />
-            </Form>
-          )}
-        </Formik>
-      </PublicPageWrapper>
+        {({ isSubmitting }) => (
+          <Form>
+            <FormFields />
+            <SubmitButton loading={isSubmitting} label={t("register")} />
+          </Form>
+        )}
+      </Formik>
     </PageLayout>
   );
 };

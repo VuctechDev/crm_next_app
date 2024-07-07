@@ -2,7 +2,6 @@ import React, { FC, ReactElement, useState } from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Card from "@mui/material/Card";
 import PageLayout from "@/components/page-layout/PageLayout";
-import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import TableWrapper from "@/components/table/TableWrapper";
 import { getDisplayDateTime } from "@/lib/client/getDisplayDate";
@@ -89,77 +88,75 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
   ];
 
   return (
-    <PageLayout>
-      <PageContentWrapper title="templates">
-        <Grid
-          container
-          columnSpacing="80px"
-          rowSpacing="24px"
-          sx={(t) => ({
-            px: "20px",
-            [t.breakpoints.down("sm")]: {
-              px: "6px",
-            },
-          })}
-        >
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={(t) => ({
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                // rowGap: "24px",
-                // maxWidth: "450px",
-                // p: "24px 24px 36px",
-                [t.breakpoints.down("sm")]: {
-                  rowGap: "14px",
-                },
-              })}
-            >
-              <TableWrapper
-                data={data?.data ?? []}
-                headers={headers}
-                keys={keys}
-                loading={isLoading}
-                totalCount={data?.total ?? 0}
-                skeletonCount={8}
-                handleQueryChange={handleQueryChange}
-                handleRowSelect={(_id: string) => null}
-                hover={false}
-                filterKeys={[]}
-              />
-            </Card>
-          </Grid>
-          {/* <Grid item xs={1} /> */}
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={(t) => ({
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                rowGap: "24px",
-                p: "24px 24px 36px",
-                [t.breakpoints.down("sm")]: {
-                  rowGap: "20px",
-                },
-              })}
-            >
-              <TemplateForm
-                data={selectedTemplate}
-                handleClear={() => setSelectedTemplate(null)}
-              />
-            </Card>
-          </Grid>
+    <PageLayout title="templates">
+      <Grid
+        container
+        columnSpacing="80px"
+        rowSpacing="24px"
+        sx={(t) => ({
+          px: "20px",
+          [t.breakpoints.down("sm")]: {
+            px: "6px",
+          },
+        })}
+      >
+        <Grid item xs={12} md={6}>
+          <Card
+            sx={(t) => ({
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              // rowGap: "24px",
+              // maxWidth: "450px",
+              // p: "24px 24px 36px",
+              [t.breakpoints.down("sm")]: {
+                rowGap: "14px",
+              },
+            })}
+          >
+            <TableWrapper
+              data={data?.data ?? []}
+              headers={headers}
+              keys={keys}
+              loading={isLoading}
+              totalCount={data?.total ?? 0}
+              skeletonCount={8}
+              handleQueryChange={handleQueryChange}
+              handleRowSelect={(_id: string) => null}
+              hover={false}
+              filterKeys={[]}
+            />
+          </Card>
         </Grid>
-        {!!deleteId && (
-          <ConfirmationModal
-            title="deleteTemplate"
-            message="deleteLeadConfirmation"
-            onCancel={() => handleModal()}
-            onConfirm={handleDelete}
-          />
-        )}
-      </PageContentWrapper>
+        {/* <Grid item xs={1} /> */}
+        <Grid item xs={12} md={6}>
+          <Card
+            sx={(t) => ({
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              rowGap: "24px",
+              p: "24px 24px 36px",
+              [t.breakpoints.down("sm")]: {
+                rowGap: "20px",
+              },
+            })}
+          >
+            <TemplateForm
+              data={selectedTemplate}
+              handleClear={() => setSelectedTemplate(null)}
+            />
+          </Card>
+        </Grid>
+      </Grid>
+      {!!deleteId && (
+        <ConfirmationModal
+          title="deleteTemplate"
+          message="deleteLeadConfirmation"
+          onCancel={() => handleModal()}
+          onConfirm={handleDelete}
+        />
+      )}
     </PageLayout>
   );
 };

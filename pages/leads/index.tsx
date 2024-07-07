@@ -3,7 +3,6 @@ import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDes
 import Card from "@mui/material/Card";
 import { useRouter } from "next/navigation";
 import { LeadType } from "@/db/leads";
-import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Box, Button, IconButton, TextField } from "@mui/material";
@@ -136,90 +135,88 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
   };
 
   return (
-    <PageLayout>
-      <PageContentWrapper
-        title="leads"
-        actions={
-          <>
-            <Link href={ROUTES.LEADS.ADD.ROOT}>
-              <Button
-                variant="outlined"
-                color="info"
-                startIcon={<GroupAddOutlinedIcon />}
-              >
-                {t("add")}
-              </Button>
-            </Link>
+    <PageLayout
+      title="leads"
+      actions={
+        <>
+          <Link href={ROUTES.LEADS.ADD.ROOT}>
             <Button
               variant="outlined"
               color="info"
-              startIcon={<FileDownloadIcon />}
-              onClick={handleCSVModal}
-              disabled={!data?.data?.length}
+              startIcon={<GroupAddOutlinedIcon />}
             >
-              {t("exportCSV")}
+              {t("add")}
             </Button>
-          </>
-        }
-      >
-        <Card
-          elevation={1}
-          sx={{
-            height: "1",
-            borderRadius: "20px",
-            width: "100%",
-            minWidth: "900px",
-          }}
-        >
-          <TableWrapper
-            data={data?.data ?? []}
-            headers={headers}
-            keys={keys}
-            loading={isLoading}
-            totalCount={data?.total ?? 0}
-            skeletonCount={8}
-            handleQueryChange={handleQueryChange}
-            handleRowSelect={(_id: string) =>
-              router.push(ROUTES.LEADS.ROOT + `/${_id}`, {})
-            }
-            hover={true}
-            filterKeys={[
-              {
-                label: "role",
-              },
-              {
-                label: "industry",
-              },
-              {
-                label: "country",
-              },
-              {
-                label: "tags",
-                options: tags?.data.map((tag) => ({
-                  value: `${tag._id}`,
-                  label: tag.tag,
-                })),
-              },
-            ]}
-          />
-        </Card>
-        {csvModalOpen && (
-          <ConfirmationModal
-            title="exportCSV"
-            onCancel={handleCSVModal}
-            onConfirm={handleExport}
+          </Link>
+          <Button
+            variant="outlined"
+            color="info"
+            startIcon={<FileDownloadIcon />}
+            onClick={handleCSVModal}
+            disabled={!data?.data?.length}
           >
-            <>
-              <FieldLabel label="fileName" />
-              <TextField
-                onChange={(e) => (inputRef.current = e.target.value)}
-                fullWidth
-                defaultValue={defaultFileName}
-              />
-            </>
-          </ConfirmationModal>
-        )}
-      </PageContentWrapper>
+            {t("exportCSV")}
+          </Button>
+        </>
+      }
+    >
+      <Card
+        elevation={1}
+        sx={{
+          height: "1",
+          borderRadius: "20px",
+          width: "100%",
+          minWidth: "900px",
+        }}
+      >
+        <TableWrapper
+          data={data?.data ?? []}
+          headers={headers}
+          keys={keys}
+          loading={isLoading}
+          totalCount={data?.total ?? 0}
+          skeletonCount={8}
+          handleQueryChange={handleQueryChange}
+          handleRowSelect={(_id: string) =>
+            router.push(ROUTES.LEADS.ROOT + `/${_id}`, {})
+          }
+          hover={true}
+          filterKeys={[
+            {
+              label: "role",
+            },
+            {
+              label: "industry",
+            },
+            {
+              label: "country",
+            },
+            {
+              label: "tags",
+              options: tags?.data.map((tag) => ({
+                value: `${tag._id}`,
+                label: tag.tag,
+              })),
+            },
+          ]}
+        />
+      </Card>
+      {csvModalOpen && (
+        <ConfirmationModal
+          title="exportCSV"
+          onCancel={handleCSVModal}
+          onConfirm={handleExport}
+        >
+          <>
+            <FieldLabel label="fileName" />
+            <TextField
+              onChange={(e) => (inputRef.current = e.target.value)}
+              fullWidth
+              defaultValue={defaultFileName}
+            />
+          </>
+        </ConfirmationModal>
+      )}
     </PageLayout>
   );
 };

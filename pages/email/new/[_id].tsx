@@ -2,12 +2,10 @@ import React, { FC, ReactElement } from "react";
 import Box from "@mui/material/Box";
 import { useParams } from "next/navigation";
 import { useGetLeadById } from "@/lib/client/api/leads/queries";
-import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import PageLayout from "@/components/page-layout/PageLayout";
 import LoadingOverlayer from "@/components/LoadingOverlayer";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useGetUser } from "@/lib/client/api/user/queries";
-import NewEmail from "@/components/email/NewEmail";
 import { useGetEmailConfig } from "@/lib/client/api/email/configs/queries";
 import { useGetEmailSignature } from "@/lib/client/api/email/signature/queries";
 import EmailForm from "@/components/forms/email/EmailForm";
@@ -33,22 +31,20 @@ const NewLeadEmailPage: FC<NewLeadEmailPageProps> = (): ReactElement => {
   }
   const name = `${data?.firstName} ${data?.lastName}`;
   return (
-    <PageLayout>
-      <PageContentWrapper title={name} lastBreadcrumb={data?.firstName} center>
-        <Box
-          width={1}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-            p: "20px",
-          }}
-        >
-          {/* <NewEmail to={data?.email} from={from} recipient={params?._id} /> */}
-          <EmailForm to={data?.email} from={from} lead={params?._id} />
-        </Box>
-      </PageContentWrapper>
+    <PageLayout title={name} lastBreadcrumb={data?.firstName} center>
+      <Box
+        width={1}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+          p: "20px",
+        }}
+      >
+        {/* <NewEmail to={data?.email} from={from} recipient={params?._id} /> */}
+        <EmailForm to={data?.email} from={from} lead={params?._id} />
+      </Box>
     </PageLayout>
   );
 };

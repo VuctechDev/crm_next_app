@@ -1,6 +1,5 @@
 import React, { FC, ReactElement } from "react";
 import Box from "@mui/material/Box";
-import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import PageLayout from "@/components/page-layout/PageLayout";
 import "react-quill/dist/quill.snow.css";
@@ -59,32 +58,30 @@ const SignaturePage: FC<SignaturePageProps> = (): ReactElement => {
   }, ${getCountryName(user?.organization?.country)}</span></p>
 `;
   return (
-    <PageLayout>
-      <PageContentWrapper title="emailSignature">
-        <Box
-          width={1}
-          sx={(t) => ({
-            display: "flex",
-            minHeight: "600px",
-            justifyContent: "center",
-            alignItems: "center",
-            [t.breakpoints.down("sm")]: {
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              rowGap: "24px",
-            },
-          })}
-        >
-          <Card>
-            <EmailEditor
-              handleSubmit={handleSubmit}
-              loading={creationLoading || updateLoading}
-              initialValue={data ? data?.body : defaultSignature}
-              label="save"
-            />
-          </Card>
-        </Box>
-      </PageContentWrapper>
+    <PageLayout title="emailSignature">
+      <Box
+        width={1}
+        sx={(t) => ({
+          display: "flex",
+          minHeight: "600px",
+          justifyContent: "center",
+          alignItems: "center",
+          [t.breakpoints.down("sm")]: {
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            rowGap: "24px",
+          },
+        })}
+      >
+        <Card>
+          <EmailEditor
+            handleSubmit={handleSubmit}
+            loading={creationLoading || updateLoading}
+            initialValue={data ? data?.body : defaultSignature}
+            label="save"
+          />
+        </Card>
+      </Box>
     </PageLayout>
   );
 };

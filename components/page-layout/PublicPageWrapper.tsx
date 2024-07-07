@@ -2,6 +2,8 @@ import React, { FC, ReactElement } from "react";
 import Box from "@mui/material/Box";
 import { Card, Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { ROUTES } from "../providers/guards/AuthRouteGuard";
 
 interface PublicPageWrapperProps {
   children: React.ReactNode;
@@ -15,7 +17,13 @@ const PublicPageWrapper: FC<PublicPageWrapperProps> = ({
   title,
 }): ReactElement => {
   const { t } = useTranslation();
+  const { asPath } = useRouter();
 
+  let maxWidth = "360px";
+  if (asPath.includes(ROUTES.ONBOARDING.ROOT)) {
+    maxWidth = "600px";
+  }
+  
   return (
     <Box
       width={1}
@@ -24,7 +32,7 @@ const PublicPageWrapper: FC<PublicPageWrapperProps> = ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "98vh",
+        minHeight: "84vh",
         p: "20px",
       }}
     >
@@ -34,7 +42,7 @@ const PublicPageWrapper: FC<PublicPageWrapperProps> = ({
           display: "flex",
           flexDirection: "column",
           rowGap: "24px",
-          maxWidth: "360px",
+          maxWidth: maxWidth,
           p: "24px 24px 36px",
         }}
       >

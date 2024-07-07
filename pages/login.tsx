@@ -8,7 +8,6 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import FormFields from "@/components/forms/login/FormFields";
 import SubmitButton from "@/components/forms/fields/SubmitButton";
-import PublicPageWrapper from "@/components/page-layout/PublicPageWrapper";
 import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
 import { useLogin } from "@/lib/client/api/auth/queries";
 import PageLayout from "@/components/page-layout/PageLayout";
@@ -50,31 +49,30 @@ const Login: FC = (): ReactElement => {
   };
 
   return (
-    <PageLayout hideLayout>
-      <PublicPageWrapper
-        title="signin"
-        actions={
-          <>
-            <Typography sx={{ mr: "8px" }}>{t("noAccountYet")}</Typography>
-            <Link href={ROUTES.REGISTER}>
-              <Typography color="info.main">{t("register")}</Typography>
-            </Link>
-          </>
-        }
+    <PageLayout
+      publicPage
+      title="signin"
+      actions={
+        <>
+          <Typography sx={{ mr: "8px" }}>{t("noAccountYet")}</Typography>
+          <Link href={ROUTES.REGISTER}>
+            <Typography color="info.main">{t("register")}</Typography>
+          </Link>
+        </>
+      }
+    >
+      <Formik
+        initialValues={{ ...initialValues, email }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
       >
-        <Formik
-          initialValues={{ ...initialValues, email }}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <FormFields />
-              <SubmitButton loading={isSubmitting} label={t("signin")} />
-            </Form>
-          )}
-        </Formik>
-      </PublicPageWrapper>
+        {({ isSubmitting }) => (
+          <Form>
+            <FormFields />
+            <SubmitButton loading={isSubmitting} label={t("signin")} />
+          </Form>
+        )}
+      </Formik>
     </PageLayout>
   );
 };

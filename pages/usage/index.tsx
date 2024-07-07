@@ -1,7 +1,6 @@
 import React, { FC, ReactElement } from "react";
 import { useTranslation } from "next-i18next";
 import PageLayout from "@/components/page-layout/PageLayout";
-import PageContentWrapper from "@/components/page-layout/PageContentWrapper";
 import Grid from "@mui/material/Grid";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useGetUsage } from "@/lib/client/api/usage/queries";
@@ -81,133 +80,131 @@ const UsagePage: FC<UsagePageProps> = (): ReactElement => {
   };
 
   return (
-    <PageLayout>
-      <PageContentWrapper
-        title="usage"
-        actions={<Button variant="outlined">Change your subscription</Button>}
-      >
-        <Typography variant="h3" mb="30px">
-          {getStatsPeriod(data?.data?.period ?? "")}
-        </Typography>
-        <Typography variant="h6" mb="30px">
-          {t("leadsCreation")}
-        </Typography>
+    <PageLayout
+      title="usage"
+      actions={<Button variant="outlined">Change your subscription</Button>}
+    >
+      <Typography variant="h3" mb="30px">
+        {getStatsPeriod(data?.data?.period ?? "")}
+      </Typography>
+      <Typography variant="h6" mb="30px">
+        {t("leadsCreation")}
+      </Typography>
 
-        <Grid
-          container
-          rowSpacing="24px"
-          columnSpacing="30px"
-          sx={(t) => ({
-            px: "20px",
-            [t.breakpoints.down("sm")]: {
-              px: "6px",
-            },
-          })}
-        >
-          {leadsValues.map((value) => (
-            <Grid key={value.label} item xs={12} md={2}>
-              <Card
+      <Grid
+        container
+        rowSpacing="24px"
+        columnSpacing="30px"
+        sx={(t) => ({
+          px: "20px",
+          [t.breakpoints.down("sm")]: {
+            px: "6px",
+          },
+        })}
+      >
+        {leadsValues.map((value) => (
+          <Grid key={value.label} item xs={12} md={2}>
+            <Card
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                p: "20px 10px",
+                rowGap: "20px",
+              }}
+            >
+              <Typography variant="h6">{t(value.label)}</Typography>
+              <Typography
+                variant="h4"
                 sx={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  p: "20px 10px",
-                  rowGap: "20px",
+                  color: getTextColor(value?.value ?? 0, value.limit ?? 0),
                 }}
               >
-                <Typography variant="h6">{t(value.label)}</Typography>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    color: getTextColor(value?.value ?? 0, value.limit ?? 0),
-                  }}
-                >
-                  {value.value} / {value.limit}
-                </Typography>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-        <Typography variant="h6" my="30px">
-          Emails:
-        </Typography>
-        <Grid
-          container
-          rowSpacing="24px"
-          columnSpacing="30px"
-          sx={(t) => ({
-            px: "20px",
-            [t.breakpoints.down("sm")]: {
-              px: "6px",
-            },
-          })}
-        >
-          {emailsValues.map((value) => (
-            <Grid key={value.label} item xs={12} md={2}>
-              <Card
+                {value.value} / {value.limit}
+              </Typography>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+      <Typography variant="h6" my="30px">
+        Emails:
+      </Typography>
+      <Grid
+        container
+        rowSpacing="24px"
+        columnSpacing="30px"
+        sx={(t) => ({
+          px: "20px",
+          [t.breakpoints.down("sm")]: {
+            px: "6px",
+          },
+        })}
+      >
+        {emailsValues.map((value) => (
+          <Grid key={value.label} item xs={12} md={2}>
+            <Card
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                p: "24px 20px",
+                rowGap: "20px",
+              }}
+            >
+              <Typography variant="h6">{t(value.label)}</Typography>
+              <Typography
+                variant="h4"
                 sx={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  p: "24px 20px",
-                  rowGap: "20px",
+                  color: getTextColor(value?.value ?? 0, value.limit ?? 0),
                 }}
               >
-                <Typography variant="h6">{t(value.label)}</Typography>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    color: getTextColor(value?.value ?? 0, value.limit ?? 0),
-                  }}
-                >
-                  {value.value} / {value.limit}
-                </Typography>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-        <Typography variant="h6" my="30px">
-          Other:
-        </Typography>
-        <Grid
-          container
-          rowSpacing="24px"
-          columnSpacing="30px"
-          sx={(t) => ({
-            px: "20px",
-            [t.breakpoints.down("sm")]: {
-              px: "6px",
-            },
-          })}
-        >
-          {otherValues.map((value) => (
-            <Grid key={value.label} item xs={12} md={2}>
-              <Card
+                {value.value} / {value.limit}
+              </Typography>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+      <Typography variant="h6" my="30px">
+        Other:
+      </Typography>
+      <Grid
+        container
+        rowSpacing="24px"
+        columnSpacing="30px"
+        sx={(t) => ({
+          px: "20px",
+          [t.breakpoints.down("sm")]: {
+            px: "6px",
+          },
+        })}
+      >
+        {otherValues.map((value) => (
+          <Grid key={value.label} item xs={12} md={2}>
+            <Card
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                p: "24px 20px",
+                rowGap: "20px",
+              }}
+            >
+              <Typography variant="h6">{t(value.label)}</Typography>
+              <Typography
+                variant="h4"
                 sx={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  p: "24px 20px",
-                  rowGap: "20px",
+                  color: getTextColor(value?.value ?? 0, value.limit ?? 0),
                 }}
               >
-                <Typography variant="h6">{t(value.label)}</Typography>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    color: getTextColor(value?.value ?? 0, value.limit ?? 0),
-                  }}
-                >
-                  {value.value} / {value.limit}
-                </Typography>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </PageContentWrapper>
+                {value.value} / {value.limit}
+              </Typography>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </PageLayout>
   );
 };

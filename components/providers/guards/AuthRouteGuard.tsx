@@ -13,6 +13,7 @@ export const ROUTES = {
   REGISTER: "/register",
   REGISTER_CONFIRMATION: "/register-confirmation",
   ONBOARDING: {
+    ROOT: "/onboarding",
     USER: "/onboarding/user",
     ORGANIZATION: "/onboarding/organization",
   },
@@ -52,10 +53,10 @@ const RouteGuard: FC<RouteGuardProps> = ({ children }): ReactElement => {
   const path = asPath.split("?")[0];
 
   const [checking, setChecking] = useState(true);
-  const { data: user, isLoading, isFetched } = useGetUser();
+  const { data: user, isFetched } = useGetUser();
 
   useEffect(() => {
-    console.log(asPath, user, isLoading, isFetched);
+    console.log(asPath, user, isFetched);
     if (!isFetched) return;
     setChecking(true);
 
