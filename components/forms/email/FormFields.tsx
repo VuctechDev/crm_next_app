@@ -8,6 +8,7 @@ import TextField from "../fields/TextField";
 import TagsSelect from "../fields/TagsSelect";
 import TemplateSelect from "../fields/TemplateSelect";
 import EmailBodyField from "../fields/EmailBodyField";
+import EmailAIWrapper from "@/components/ai/email/EmailAIButton";
 
 type Keys =
   | "from"
@@ -23,7 +24,8 @@ interface FormFieldsProps {
 }
 
 const FormFields: FC<FormFieldsProps> = ({ lead }): ReactElement => {
-  const { touched, errors, getFieldProps } = useFormikContext<InitialValues>();
+  const { touched, errors, getFieldProps, values } =
+    useFormikContext<InitialValues>();
   const { t } = useTranslation();
 
   const getErrorMessage = (name: Keys) => {
@@ -37,6 +39,12 @@ const FormFields: FC<FormFieldsProps> = ({ lead }): ReactElement => {
 
   return (
     <Grid container columnSpacing={4} rowGap={2}>
+      {values.to && (
+        <Grid item xs={12}>
+          <EmailAIWrapper />
+        </Grid>
+      )}
+
       {fields.map((name) => {
         const hideItem =
           (name === "tags" && !!lead) || (name === "to" && !lead);

@@ -57,7 +57,7 @@ const FilePicker: FC<FilePickerProps> = ({ type, error }): ReactElement => {
         formData.append("files", file);
         formData.append("tags", JSON.stringify(tags));
       });
-      const response = await fileProcessorApiClient.post(`${path}`, formData);
+      const response = await fileProcessorApiClient.post(`/process${path}`, formData);
       const data = response.data;
       if (!data.success) {
         return openSnackbar(data.message, "error");

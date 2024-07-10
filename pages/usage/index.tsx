@@ -46,7 +46,7 @@ const UsagePage: FC<UsagePageProps> = (): ReactElement => {
   const emailsValues = [
     {
       label: "AI generated Emails",
-      value: data?.data?.csv,
+      value: data?.data?.emails,
       limit: subscription?.data?.aiGeneratedEmails,
     },
     { label: "templates", value: 3, limit: subscription?.data?.emailTemplates },

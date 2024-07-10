@@ -29,7 +29,7 @@ const EmailBodyField: FC<EmailBodyFieldProps> = ({
     if (value) {
       quill?.clipboard.dangerouslyPasteHTML(value);
     }
-  }, [quill, values["template"]]);
+  }, [quill, values["template"], values["body"]]);
 
   const handleInstructionsModal = () =>
     setInstructionsModalOpen((prev) => !prev);

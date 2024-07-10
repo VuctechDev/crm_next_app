@@ -15,12 +15,14 @@ const SubmitButton: FC<SubmitButtonProps> = ({
   type = "submit",
   onClick,
   sx,
+  ...rest
 }): ReactElement => {
   const theme = useTheme();
   const a = sx ? { ...sx } : {};
   return (
     <Button
       fullWidth
+      {...rest}
       onClick={onClick}
       disabled={loading || disabled}
       variant="contained"

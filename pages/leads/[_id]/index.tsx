@@ -149,7 +149,7 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
           <TagsWrapper data={data?.tags ?? []} />
         </Card>
       </Box>
-
+      <Typography>{JSON.stringify(data)}</Typography>
       <Card
         sx={(t) => ({
           display: "inline-flex",
@@ -170,6 +170,7 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
         {data?.industry && (
           <Typography variant="h5">{data?.industry}</Typography>
         )}
+        {data?.description && <Typography>{data?.description}</Typography>}
         <Box sx={{ display: "flex", alignItems: "center", mt: "20px" }}>
           <LocationOnIcon sx={{ mr: "10px" }} />
           <Box

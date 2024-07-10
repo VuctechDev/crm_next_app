@@ -8,7 +8,7 @@ export const sendVerificationEmail = async (
   try {
     await sendEmail({
       from: `CRM APP <neotech@pikado.net>`, // sender address
-      to: "vuctechdev@gmail.com",
+      to,
       subject: `Email verification - CRM APP`, // Subject line
       html: `<span style="
             display: inline; 

@@ -30,13 +30,13 @@ const query = (query, values) => {
 
 const table = "usages";
 
-const renameQuery = `ALTER TABLE ${table} RENAME COLUMN sentBy TO user;`;
+const renameQuery = `ALTER TABLE ${table} RENAME COLUMN email TO emails;`;
 const renameQuery2 = `ALTER TABLE ${table} RENAME COLUMN recipient TO lead;`;
 const renameQuery3 = `ALTER TABLE ${table} RENAME COLUMN recipientEmail TO \`to\`;`;
 const dropQuery = `ALTER TABLE ${table} DROP COLUMN password`;
-const addQuery = `ALTER TABLE ${table} ADD createdLeads INT DEFAULT 0;`;
+const addQuery = `ALTER TABLE ${table} ADD email INT DEFAULT 0;`;
 const addQuery2 = `ALTER TABLE ${table} ADD tags JSON NOT NULL;`;
-const changeTypeQuery = `ALTER TABLE ${table} MODIFY html VARCHAR(2000);`;
+const changeTypeQuery = `ALTER TABLE ${table} MODIFY description VARCHAR(500);`;
 const updateQuery = `UPDATE ${table} SET tags = '[]'`;
 
 const migrate = async () => {
@@ -47,7 +47,7 @@ const migrate = async () => {
     // await query(renameQuery);
     // await query(renameQuery2);
     // await query(renameQuery3);
-    await query(addQuery);
+    await query(renameQuery);
     console.log("TABLE UPDATED");
   } catch (error) {
     console.log(error);

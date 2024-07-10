@@ -6,6 +6,7 @@ export interface UsageType {
   period: string;
   cards: number;
   csv: number;
+  emails: number;
   createdLeads: number;
   organization: OrganizationType;
   createdAt: string;

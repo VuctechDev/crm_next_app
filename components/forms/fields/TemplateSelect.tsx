@@ -29,7 +29,6 @@ const TemplateSelect: FC<TemplateSelectProps> = ({
   }
 
   const handleSelect = (value: EmailTemplateType) => {
-    console.log(value);
     if (value) {
       const body = `${value?.body}<p><br/></p> <p><br/></p> ${signature?.body}`;
       setFieldValue("body", body);
