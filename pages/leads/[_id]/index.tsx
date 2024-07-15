@@ -149,7 +149,6 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
           <TagsWrapper data={data?.tags ?? []} />
         </Card>
       </Box>
-      <Typography>{JSON.stringify(data)}</Typography>
       <Card
         sx={(t) => ({
           display: "inline-flex",

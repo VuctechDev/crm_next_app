@@ -161,6 +161,12 @@ const EmailAIWrapper: FC<EmailAIWrapperProps> = ({ user }): ReactElement => {
                   sx={{ mb: "14px" }}
                   fullWidth
                   value={promptResult.subject}
+                  onChange={(e) =>
+                    setPromptResult((prev) => ({
+                      ...prev,
+                      subject: e.target.value,
+                    }))
+                  }
                 />
                 <FieldLabel label="body" />
                 <TextField
@@ -168,6 +174,12 @@ const EmailAIWrapper: FC<EmailAIWrapperProps> = ({ user }): ReactElement => {
                   value={promptResult.body}
                   multiline
                   rows={13}
+                  onChange={(e) =>
+                    setPromptResult((prev) => ({
+                      ...prev,
+                      body: e.target.value,
+                    }))
+                  }
                 />
               </>
             )}
