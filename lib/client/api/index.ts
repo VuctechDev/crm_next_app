@@ -36,6 +36,7 @@ export const refreshToken = async (): Promise<string> => {
   return "";
 };
 
+
 export const validateSession = async (): Promise<any> => {
   let accessToken = localStorage.getItem("accessToken") ?? "";
   if (!accessToken) {
