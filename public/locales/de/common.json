@@ -107,6 +107,7 @@
   "sentBy": "Gesendet von",
   "read": "Gelesen",
   "sent": "Gesendet",
+  "failed": "Neuspješno",
   "emails": "E-Mails",
   "emailSentSuccess": "E-Mail erfolgreich gesendet",
   "signature": "Signatur",

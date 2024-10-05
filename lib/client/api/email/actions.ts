@@ -1,5 +1,5 @@
 import { EmailType } from "@/db/emails";
-import { apiClient } from "..";
+import { apiClient, apiClient2 } from "..";
 
 const path = "/email";
 
@@ -17,6 +17,6 @@ export const sendEmail = async (data: {
   subject: string;
   lead: string;
 }): Promise<{ success: boolean }> => {
-  const response = await apiClient.post(`${path}`, data);
+  const response = await apiClient2.post(`${path}`, data);
   return response.data;
 };

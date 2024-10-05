@@ -42,3 +42,4 @@ export const deleteComment = async (_id: number) => {
   const response = await apiClient.delete(`${path}?_id=${_id}`);
   return response.data;
 };
+

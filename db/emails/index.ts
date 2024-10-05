@@ -14,7 +14,7 @@ export interface EmailType {
   lead: LeadType;
   tag: number;
   to: string;
-  open: boolean;
+  status: "failed" | "sent" | "read";
   createdAt: string;
   updatedAt: string;
 }
@@ -84,7 +84,7 @@ export const getPaginatedEmails = async (
     const data = await query<DBCommentType[]>(`
       SELECT 
         emails._id,
-        emails.open,
+        emails.status,
         JSON_OBJECT(
           '_id', users._id,
           'firstName', users.firstName,
@@ -118,7 +118,7 @@ export const getPaginatedEmails = async (
       createdAt: row.createdAt,
       subject: row.subject,
       updatedAt: row.updatedAt,
-      open: row.open,
+      status: row.status,
       to: row.to,
       from: row.from,
     })) as EmailType[];
@@ -131,7 +131,7 @@ export const getPaginatedEmails = async (
 export const markAsRead = async (_id: string): Promise<any> => {
   try {
     const data = (await query(
-      `UPDATE ${tableName} SET open = 1 WHERE _id = ${_id}`
+      `UPDATE ${tableName} SET status = "read" WHERE _id = ${_id}`
     )) as LeadType[];
     return data?.length ? data[0] : {};
   } catch (error) {

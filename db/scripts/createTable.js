@@ -118,7 +118,7 @@ const emails = `CREATE TABLE emails (
   organization INT,
   lead INT,
   to VARCHAR(50),
-  open TINYINT DEFAULT 0,
+  status TINYINT DEFAULT "failed",
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );`;

@@ -107,6 +107,7 @@
   "sentBy": "Sent by",
   "read": "Read",
   "sent": "Sent",
+  "failed": "Failed",
   "emails": "Emails",
   "emailSentSuccess": "Email has been successfully sent",
   "signature": "Signature",

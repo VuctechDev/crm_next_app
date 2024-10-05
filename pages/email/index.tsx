@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useState } from "react";
 import Card from "@mui/material/Card";
 import TableWrapper from "@/components/table/TableWrapper";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Palette, Typography } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import PageLayout from "@/components/page-layout/PageLayout";
@@ -66,63 +66,43 @@ const EmailPage: FC<EmailPageProps> = (): ReactElement => {
       key: "subject",
     },
     {
-      key: "open",
+      key: "status",
       render: (value: string, data: EmailType) => {
-        if (!value) {
-          return (
-            <Box
-              sx={(t) => ({
-                display: "flex",
-                justifyContent: "flex-end",
-                width: "100%",
-              })}
-            >
-              <Typography
-                variant="body2"
-                textAlign="center"
-                color="#fff"
-                sx={(t) => ({
-                  p: "6px",
-                  backgroundColor: t.palette.info.main,
-                  borderRadius: "12px",
-                  width: "70px",
-                })}
-              >
-                {t("sent")}
-              </Typography>
-            </Box>
-          );
-        } else {
-          return (
-            <Box
-              sx={(t) => ({
-                display: "flex",
-                justifyContent: "flex-end",
-                width: "100%",
-              })}
-            >
-              <Typography
-                sx={(t) => ({
-                  p: "6px",
-                  backgroundColor: t.palette.success.main,
-                  borderRadius: "12px",
-                  width: "70px",
-                })}
-                variant="body2"
-                textAlign="center"
-                color="#fff"
-              >
-                {t("read")}
-              </Typography>
-            </Box>
-          );
+        let bg: keyof Palette = "info";
+        if (value === "failed") {
+          bg = "warning";
+        } else if (value === "read") {
+          bg = "success";
         }
+        return (
+          <Box
+            sx={(t) => ({
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%",
+            })}
+          >
+            <Typography
+              variant="body2"
+              textAlign="center"
+              color="#fff"
+              sx={(t) => ({
+                p: "6px",
+                backgroundColor: t.palette[bg].main,
+                borderRadius: "12px",
+                width: "70px",
+              })}
+            >
+              {t(value)}
+            </Typography>
+          </Box>
+        );
       },
     },
     {
       key: "updatedAt",
       render: (value: string, data: EmailType) => {
-        if (!data.open) {
+        if (data.status !== "read") {
           return <Typography variant="body2">/</Typography>;
         } else {
           return (

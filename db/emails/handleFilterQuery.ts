@@ -14,9 +14,11 @@ export const handleFilterQuery = (query: Record<string, string>): string => {
       );
     } else if (["status"].includes(key)) {
       if (value === "sent") {
-        addCondition(`emails.open = 0`);
+        addCondition(`emails.status = "sent"`);
+      } else if (value === "read") {
+        addCondition(`emails.status = "read"`);
       } else {
-        addCondition(`emails.open = 1`);
+        addCondition(`emails.status = "failed"`);
       }
     } else if (["organization"].includes(key)) {
       addCondition(`emails.organization = ${value}`);

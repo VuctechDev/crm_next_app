@@ -5,6 +5,10 @@ export const apiClient = axios.create({
   baseURL: "/api",
 });
 
+export const apiClient2 = axios.create({
+  baseURL: "https://crm-api.pikado.net/api",
+});
+
 export const publicApiClient = axios.create({
   baseURL: "/api",
 });
@@ -45,6 +49,19 @@ export const validateSession = async (): Promise<any> => {
 };
 
 apiClient.interceptors.request.use(
+  async (config) => {
+    const accessToken = await validateSession();
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  }
+);
+
+apiClient2.interceptors.request.use(
   async (config) => {
     const accessToken = await validateSession();
     if (accessToken) {
