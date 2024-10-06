@@ -27,7 +27,7 @@ export const sendEmail = async (
         secure: Number(emailConfig.port) === 465, // true for 465, false for other ports
         auth: {
           user: emailConfig.email, // generated ethereal user
-          pass: emailConfig.password, // generated ethereal password
+          pass: emailConfig.password,
         },
         tls: {
           rejectUnauthorized: false,
