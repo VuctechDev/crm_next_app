@@ -164,6 +164,7 @@ const EmailPage: FC<EmailPageProps> = (): ReactElement => {
               options: [
                 { label: "sent", value: "sent" },
                 { label: "read", value: "read" },
+                { label: "failed", value: "failed" },
               ],
             },
           ]}

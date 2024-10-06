@@ -25,30 +25,41 @@ router
       if (!body || !from || !subject) {
         return res.status(400).json({ message: "badRequest" });
       }
-      if (tags?.length) {
-        const leads = await getEmailLeadsData({ tags });
-        const emailTemplates = leads.map((lead) => ({
-          ...req.body,
-          organization: organizationId,
-          user: userId,
-          lead: lead._id,
-          to: lead.email,
-        }));
-        const emails = await createNewEmail(emailTemplates);
-        await sendNewInAppEmail(emails, body, userId, leads);
-      } else if (to) {
-        const lead = await getEmailLeadsData({ _id: req.body.lead });
-        const emailTemplate = [
-          {
-            ...req.body,
-            organization: organizationId,
-            user: userId,
-          },
-        ];
-        const email = await createNewEmail(emailTemplate);
-        await sendNewInAppEmail(email, body, userId, lead);
-      }
+      // if (tags?.length) {
+      //   const leads = await getEmailLeadsData({ tags });
+      //   const emailTemplates = leads.map((lead) => ({
+      //     ...req.body,
+      //     organization: organizationId,
+      //     user: userId,
+      //     lead: lead._id,
+      //     to: lead.email,
+      //   }));
+      //   const emails = await createNewEmail(emailTemplates);
+      //   await sendNewInAppEmail(emails, body, userId, leads);
+      // } else if (to) {
+      //   const lead = await getEmailLeadsData({ _id: req.body.lead });
+      //   const emailTemplate = [
+      //     {
+      //       ...req.body,
+      //       organization: organizationId,
+      //       user: userId,
+      //     },
+      //   ];
+      //   const email = await createNewEmail(emailTemplate);
+      //   await sendNewInAppEmail(email, body, userId, lead);
+      // }
 
+      const leads = await getEmailLeadsData({ tags, _id: req.body.lead });
+      const emailTemplates = leads.map((lead) => ({
+        ...req.body,
+        organization: organizationId,
+        user: userId,
+        lead: lead._id,
+        to: lead.email,
+      }));
+      const emails = await createNewEmail(emailTemplates);
+      await sendNewInAppEmail(emails, body, userId, leads);
+      
       res.status(200).json({ success: true });
     } catch (error) {
       console.log("ERROR: ", error);

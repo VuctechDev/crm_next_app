@@ -25,14 +25,14 @@ const parseDynamicBody = (body: string, data?: LeadType): string => {
   if (!dynamicBody || !data) {
     return body;
   }
-  const parsed = segments.map((x, i: number) => {
+  const parsed = segments.map((segment, i: number) => {
     if (i % 2 === 1) {
-      if (x === "name") {
+      if (segment === "name") {
         return `${data?.firstName} ${data?.lastName}`;
       }
-      return data[x as keyof LeadType];
+      return data[segment as keyof LeadType];
     }
-    return x;
+    return segment;
   });
 
   return parsed.join("");
@@ -54,7 +54,7 @@ export const sendNewInAppEmail = async (
   userId: string,
   leads: LeadType[]
 ) => {
-  const emailConfig = await getConfig(userId);
+  const credentials = await getConfig(userId);
 
   const configs = data.map((item) => ({
     from: item.from,
@@ -69,13 +69,13 @@ export const sendNewInAppEmail = async (
     ),
   }));
 
-  if (emailConfig) {
+  if (credentials) {
     const password = decrypt({
-      iv: emailConfig?.iv ?? "",
-      encryptedData: emailConfig?.password ?? "",
+      iv: credentials?.iv ?? "",
+      encryptedData: credentials?.password ?? "",
     });
     for (const config of configs) {
-      await sendEmail(config, { ...emailConfig, password });
+      await sendEmail(config, { ...credentials, password });
     }
   } else {
     for (const config of configs) {

@@ -17,17 +17,17 @@ let defaultTransporter = nodemailer.createTransport({
 
 export const sendEmail = async (
   config: Mail.Options,
-  emailConfig?: EmailConfigType
+  credentials?: EmailConfigType
 ) => {
   try {
-    if (emailConfig) {
+    if (credentials) {
       const transporter = nodemailer.createTransport({
-        host: emailConfig.host,
-        port: Number(emailConfig.port),
-        secure: Number(emailConfig.port) === 465, // true for 465, false for other ports
+        host: credentials.host,
+        port: Number(credentials.port),
+        secure: Number(credentials.port) === 465, // true for 465, false for other ports
         auth: {
-          user: emailConfig.email, // generated ethereal user
-          pass: emailConfig.password,
+          user: credentials.email, // generated ethereal user
+          pass: credentials.password,
         },
         tls: {
           rejectUnauthorized: false,

@@ -7,6 +7,7 @@ export const apiClient = axios.create({
 
 export const apiClient2 = axios.create({
   baseURL: "https://crm-api.pikado.net/api",
+  // baseURL: "http://localhost:1808/api",
 });
 
 export const publicApiClient = axios.create({
@@ -35,7 +36,6 @@ export const refreshToken = async (): Promise<string> => {
   }
   return "";
 };
-
 
 export const validateSession = async (): Promise<any> => {
   let accessToken = localStorage.getItem("accessToken") ?? "";
