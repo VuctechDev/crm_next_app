@@ -28,8 +28,7 @@ export const sendVerificationEmail = async (
             ">Confirm your Email by clicking on the link 
             <a href="${process.env.API_BASE_URL}/api/auth/verification?code=${authCode}&_id=${userId}&email=${to}">Verify</a>
            
-            </span>     
-             <img src="${process.env.API_BASE_URL}/api/email/read?_id=123456789" width="1" height="1" style="display:none;">      
+            </span>  
             `,
     });
   } catch (error) {}
