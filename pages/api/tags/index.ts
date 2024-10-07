@@ -39,14 +39,14 @@ router
         return res.status(400).json({ message: "tagAlreadyExists" });
       }
 
-      await createNewTag({
+      const _id = await createNewTag({
         tag,
         description,
         color,
         organization: organizationId,
       });
 
-      res.status(200).json({ success: true });
+      res.status(200).json({ success: true, _id });
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "somethingWentWrong" });

@@ -38,36 +38,6 @@ export interface DBCommentType
 
 const tableName = "emails";
 
-export const createNewEmail = async (
-  data: EmailCreateType[]
-): Promise<EmailType[]> => {
-  const values = data.map((item) => [
-    item.subject,
-    item.user,
-    item.organization,
-    item.lead,
-    item.to,
-    item.from,
-  ]);
-  try {
-    const data = await query<Promise<EmailType[]>>(
-      `INSERT INTO ${tableName} (
-        subject,
-        user,
-        organization,
-        lead,
-        \`to\`, 
-        \`from\`
-        ) VALUES ? RETURNING _id, subject, user, organization, lead, \`to\`, \`from\``,
-      values
-    );
-    console.log("NEW EMAIL CREATED: ");
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getPaginatedEmails = async (
   filters: Record<string, string>,
   organization: string
@@ -123,17 +93,6 @@ export const getPaginatedEmails = async (
       from: row.from,
     })) as EmailType[];
     return { data: formattedResults, total: total?.[0]?.total ?? 0 };
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const markAsRead = async (_id: string): Promise<any> => {
-  try {
-    const data = (await query(
-      `UPDATE ${tableName} SET status = "read" WHERE _id = ${_id}`
-    )) as LeadType[];
-    return data?.length ? data[0] : {};
   } catch (error) {
     throw error;
   }

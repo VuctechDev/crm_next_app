@@ -16,16 +16,3 @@ export const encrypt = (
   encrypted += cipher.final("hex");
   return { iv: iv.toString("hex"), encryptedData: encrypted };
 };
-
-export const decrypt = (encryptedData: {
-  iv: string;
-  encryptedData: string;
-}): string => {
-  const iv = Buffer.from(encryptedData.iv, "hex");
-  const encryptedText = Buffer.from(encryptedData.encryptedData, "hex");
-  const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
-  let decrypted = decipher.update(encryptedText); // No encoding needed when using Buffer
-  decrypted = Buffer.concat([decrypted, decipher.final()]);
-  return decrypted.toString("utf8");
-};
-

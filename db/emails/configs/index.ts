@@ -69,17 +69,6 @@ export const createNewConfig = async (data: EmailConfigCreateType) => {
   }
 };
 
-export const getConfig = async (userId: string) => {
-  try {
-    const data = await query<EmailConfigType[]>(
-      `SELECT * FROM ${tableName} WHERE user = '${userId}'`
-    );
-    return data?.length ? data[0] : null;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getConfigPublic = async (userId: string) => {
   try {
     const data = await query<DBEmailConfigType[]>(

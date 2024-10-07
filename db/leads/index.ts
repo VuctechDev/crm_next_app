@@ -124,31 +124,6 @@ export const getPaginatedLeads = async (
   }
 };
 
-export const getEmailLeadsData = async (data: {
-  tags?: number[];
-  _id?: string;
-}): Promise<LeadType[]> => {
-  let filtersQuery = `_id = '${data._id}'`;
-  if (data.tags) {
-    filtersQuery = data.tags.reduce((prev, value) => {
-      if (prev) {
-        return `${prev} OR JSON_CONTAINS(tags, '${value}', '$')`;
-      }
-      return `JSON_CONTAINS(tags, '${value}', '$')`;
-    }, "");
-  }
-
-  try {
-    const data = await query<LeadType[]>(
-      `SELECT email, _id, firstName, lastName, company from ${tableName} WHERE ${filtersQuery}`
-    );
-
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getCSVExportLeads = async (
   filters: Record<string, string>,
   owner: string
