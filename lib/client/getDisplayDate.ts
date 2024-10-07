@@ -4,7 +4,7 @@ const hour = 60 * 1000 * 60;
 
 const getFromUTC = (time: string): number => {
   const d = time ? new Date(time) : new Date();
-  return d.getTime() + 4 * hour - new Date().getTimezoneOffset() * 60 * 1000;
+  return d.getTime() + 2 * hour - new Date().getTimezoneOffset() * 60 * 1000;
   // return time;
 };
 
