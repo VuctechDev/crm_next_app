@@ -138,7 +138,7 @@
   "notSupportedDynamicKey": "wird nicht als dynamischer Textschlüssel unterstützt.",
   "learnAboutDynamicKeys": "Verbessern Sie Ihre E-Mail-Kampagnen mit dynamischem E-Mail-Text",
   "learnMore": "Erfahren Sie mehr",
-  "aiUploadedCards": "AI hochgeladene Karten",
+  "aiCreatedLeads": "AI hochgeladene Karten",
   "CSVCreatedLeads": "CSV importiert",
   "leadsCreation": "Lead-Erstellung:",
   "manualyCreatedLeads": "Manuell erstellt",
@@ -153,5 +153,6 @@
   "september": "September",
   "october": "Oktober",
   "november": "November",
-  "december": "Dezember"
+  "december": "Dezember",
+  "TagCantBeDeletedWhileLeads": "Tag can't be deleted while leads are assigned to it."
 }

@@ -26,7 +26,11 @@ interface Props {
   handleQueryChange: (query: string) => void;
   handleRowSelect: (id: string) => void;
   hover?: boolean;
-  filterKeys?: { label: string; options?: { label: string; value: string }[] }[];
+  filterKeys?: {
+    label: string;
+    initialValue?: string;
+    options?: { label: string; value: string }[];
+  }[];
 }
 const TableWrapper: React.FC<Props> = ({
   data,

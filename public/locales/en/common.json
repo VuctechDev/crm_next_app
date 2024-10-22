@@ -138,7 +138,7 @@
   "notSupportedDynamicKey": "is not supported as a dynamic body key.",
   "learnAboutDynamicKeys": "Enhance your email campaigns with dynamic email body",
   "learnMore": "Learn More",
-  "aiUploadedCards": "AI uploaded Cards",
+  "aiCreatedLeads": "AI powered Leads created",
   "CSVCreatedLeads": "CSV imported",
   "leadsCreation": "Leads creation:",
   "manualyCreatedLeads": "Manually created",
@@ -174,5 +174,7 @@
   "offerColaboration": "Offer colaboration",
   "checkOpportunities": "Check opportunities",
   "additionalContext": "Additional context",
-  "goal": "Goal"
+  "goal": "Goal",
+  "TagCantBeDeletedWhileLeads": "Tag can't be deleted while leads are assigned to it.",
+  "campaigns": "Campaigns"
 }

@@ -229,18 +229,6 @@ const LeadPage: FC<LeadPageProps> = (): ReactElement => {
   );
 };
 
-// export const getStaticPaths = async ({ locale }: { locale: string }) => {
-//   const paths = Array(500)
-//     .fill(null)
-//     .map((x, i) => ({ params: { _id: `${i + 1000}` } }));
-
-//   console.log(paths);
-
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
 
 export const getStaticPaths = async () => {
   return {

@@ -103,7 +103,7 @@ const UsagePage: FC<UsagePageProps> = (): ReactElement => {
         })}
       >
         {leadsValues.map((value) => (
-          <Grid key={value.label} item xs={12} md={2}>
+          <Grid key={value.label} item xs={12} md={3}>
             <Card
               sx={{
                 width: "100%",
@@ -142,7 +142,7 @@ const UsagePage: FC<UsagePageProps> = (): ReactElement => {
         })}
       >
         {emailsValues.map((value) => (
-          <Grid key={value.label} item xs={12} md={2}>
+          <Grid key={value.label} item xs={12} md={3}>
             <Card
               sx={{
                 width: "100%",
@@ -181,7 +181,7 @@ const UsagePage: FC<UsagePageProps> = (): ReactElement => {
         })}
       >
         {otherValues.map((value) => (
-          <Grid key={value.label} item xs={12} md={2}>
+          <Grid key={value.label} item xs={12} md={3}>
             <Card
               sx={{
                 width: "100%",

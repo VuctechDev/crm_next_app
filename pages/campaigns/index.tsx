@@ -18,26 +18,29 @@ import CreateIcon from "@mui/icons-material/Create";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import TagItem from "@/components/tags/TagItem";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/components/providers/guards/AuthRouteGuard";
+
+const data = [{
+    _id: "scnbcc", 
+    name: "", 
+    description: "", 
+    tags: ""
+}]
 
 const headers = [
-  { key: "tag" },
-  { key: "leads" },
+  { key: "name" },
+  { key: "tags" },
   { key: "description" },
   { key: "createdAt" },
   { key: "" },
 ];
 
-interface TagsPageProps {}
+interface CampaignsPageProps {}
 
-const TagsPage: FC<TagsPageProps> = (): ReactElement => {
+const CampaignsPage: FC<CampaignsPageProps> = (): ReactElement => {
   const [query, setQuery] = useState("page=0&limit=10");
   const [deleteId, setDeleteId] = useState("");
-  const [selectedTag, setSelectedTag] = useState<TagType | null>(null);
 
-  const router = useRouter();
+  const [selectedTag, setSelectedTag] = useState<TagType | null>(null);
   const { data, isLoading } = useGetPaginatedTags(query);
   const { mutateAsync: deleteTag } = useDeleteTag();
   const handleQueryChange = (query: string) => {
@@ -45,9 +48,6 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
   };
 
   const handleModal = (_id?: number) => setDeleteId(_id ? `${_id}` : "");
-
-  const handleLeadsPreview = (tagID: string) =>
-    router.push(`${ROUTES.LEADS.ROOT}?tag=${tagID}`);
 
   const handleDelete = async () => {
     try {
@@ -101,12 +101,6 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
             onClick={() => setSelectedTag(data)}
           />
           <TooltipIconButton
-            disabledMessage={!data.leadsCount ? "NoLeadsAssigned" : ""}
-            title="viewAssignedLeads"
-            icon={<VisibilityOutlinedIcon />}
-            onClick={() => handleLeadsPreview(value)}
-          />
-          <TooltipIconButton
             disabledMessage={
               data.leadsCount ? "TagCantBeDeletedWhileLeads" : ""
             }
@@ -121,11 +115,10 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
   ];
 
   return (
-    <PageLayout title="tags">
+    <PageLayout title="campaigns">
       <Grid
         container
         rowSpacing="24px"
-        columnSpacing={5}
         sx={(t) => ({
           px: "20px",
           [t.breakpoints.down("sm")]: {
@@ -158,7 +151,12 @@ const TagsPage: FC<TagsPageProps> = (): ReactElement => {
             />
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid
+          item
+          xs={1}
+          sx={(t) => ({ [t.breakpoints.down("sm")]: { display: "none" } })}
+        />
+        <Grid item xs={12} md={3}>
           <Card
             sx={(t) => ({
               width: "100%",
@@ -201,4 +199,4 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export default TagsPage;
+export default CampaignsPage;

@@ -26,6 +26,7 @@ import { TagType } from "@/db/tags";
 import { useGetTags } from "@/lib/client/api/tags/queries";
 import TagsWrapper from "@/components/tags/TagsWrapper";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { getSearchQuery } from "@/lib/client/getSearchQuery";
 
 interface LeadsPageProps {
   params: { locale: string };
@@ -44,15 +45,16 @@ const headers = [
 ];
 
 const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
+  const selectedTag = getSearchQuery("tag");
+
   const { t } = useTranslation();
   const router = useRouter();
-  const [query, setQuery] = useState("page=0&limit=10");
+  const [query, setQuery] = useState(`page=0&limit=10&tags=${selectedTag}`);
   const { data, isLoading } = useGetLeads(query);
   const { data: tags } = useGetTags();
   const [csvModalOpen, setCSVModalOpen] = useState(false);
   const inputRef = useRef("");
   const [deleteModalId, setDeleteModalId] = useState("");
-
   const { mutateAsync } = useDeleteLead(deleteModalId);
 
   const handleDelete = async () => {
@@ -213,6 +215,7 @@ const LeadsPage: FC<LeadsPageProps> = (): ReactElement => {
             },
             {
               label: "tags",
+              initialValue: selectedTag,
               options: tags?.data.map((tag) => ({
                 value: `${tag._id}`,
                 label: tag.tag,

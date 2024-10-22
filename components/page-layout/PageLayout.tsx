@@ -25,6 +25,7 @@ import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import AppBar from "./AppBar";
 import PublicPageWrapper from "./PublicPageWrapper";
 import PageContentWrapper from "./PageContentWrapper";
+import CampaignIcon from "@mui/icons-material/Campaign";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -47,6 +48,12 @@ const drawerItems = [
         href: ROUTES.LEADS.ADD.ROOT,
       },
     ],
+  },
+  {
+    label: "campaigns",
+    icon: <CampaignIcon />,
+    href: ROUTES.CAMPAIGNS,
+    nestedLinks: [],
   },
 
   {

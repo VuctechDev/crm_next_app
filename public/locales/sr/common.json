@@ -138,7 +138,7 @@
   "notSupportedDynamicKey": "nije podržan kao dinamički ključ tela.",
   "learnAboutDynamicKeys": "Poboljšajte vaše email kampanje sa dinamičkim telom emaila",
   "learnMore": "Saznajte više",
-  "aiUploadedCards": "AI otpremljene karte",
+  "aiCreatedLeads": "AI otpremljene karte",
   "CSVCreatedLeads": "CSV uvezeni",
   "leadsCreation": "Kreiranje leadova:",
   "manualyCreatedLeads": "Ručni unos",
@@ -153,5 +153,7 @@
   "september": "Septembar",
   "october": "Oktobar",
   "november": "Novembar",
-  "december": "Decembar"
+  "december": "Decembar",
+  "TagCantBeDeletedWhileLeads": "Tag can't be deleted while leads are assigned to it."
+  
 }

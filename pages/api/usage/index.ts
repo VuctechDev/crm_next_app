@@ -11,10 +11,6 @@ router
   .use(authGuard)
   .get(async (req: NextApiRequestExtended, res: NextApiResponse) => {
     const { organizationId } = req.headers;
-    // if (!organizationId) {
-    //   const data = await getTags(organizationId);
-    //   return res.status(200).json({ data });
-    // }
 
     const timezone = "America/New_York"; // replace with your timezone
     const period = moment().tz(timezone).format("YYYY-MM");

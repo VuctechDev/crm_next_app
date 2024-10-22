@@ -9,6 +9,7 @@ export interface TagType {
   color: string;
   organization: string;
   user: UserType;
+  leadsCount: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -82,18 +83,21 @@ export const getPaginatedTags = async (
       organization: organizationId,
     });
 
-    console.log("filtersQuery", filtersQuery);
-
     const total = (await query(
       `SELECT COUNT(*) AS total FROM ${tableName} ${filtersQuery}`
     )) as [{ total: number }];
+
     const offset = +filters?.page * +filters.limit;
     const data = await query<TagType[]>(
-      `SELECT * FROM ${tableName} 
-      ${filtersQuery} 
-      ORDER BY _id DESC 
-      LIMIT ${filters?.limit} 
-      OFFSET ${offset}`
+      `SELECT t.*, 
+              (SELECT COUNT(*) 
+               FROM leads l 
+               WHERE JSON_CONTAINS(l.tags, CAST(t._id AS CHAR)) AND l.archived != 1) AS leadsCount
+       FROM ${tableName} t
+       ${filtersQuery}
+       ORDER BY t._id DESC 
+       LIMIT ${filters?.limit} 
+       OFFSET ${offset}`
     );
     return { data, total: total?.[0]?.total ?? 0 };
   } catch (error) {

@@ -10,6 +10,7 @@ interface RouteGuardProps {
 export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
+  CAMPAIGNS: "/campaigns",
   REGISTER: "/register",
   REGISTER_CONFIRMATION: "/register-confirmation",
   ONBOARDING: {

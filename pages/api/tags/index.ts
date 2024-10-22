@@ -20,6 +20,7 @@ router
     const filters = req.query as Record<string, string>;
     if (!filters.page || !filters.limit) {
       const data = await getTags(organizationId);
+
       return res.status(200).json({ data });
     }
 

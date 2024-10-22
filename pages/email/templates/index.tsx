@@ -91,7 +91,7 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
     <PageLayout title="templates">
       <Grid
         container
-        columnSpacing="80px"
+        columnSpacing={5}
         rowSpacing="24px"
         sx={(t) => ({
           px: "20px",
@@ -128,7 +128,6 @@ const TemplatesPage: FC<TemplatesPageProps> = (): ReactElement => {
             />
           </Card>
         </Grid>
-        {/* <Grid item xs={1} /> */}
         <Grid item xs={12} md={6}>
           <Card
             sx={(t) => ({

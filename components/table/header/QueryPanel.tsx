@@ -8,7 +8,11 @@ import useDebounce from "@/hooks/useDebounce";
 import { useTranslation } from "next-i18next";
 
 interface QueryPanelProps {
-  keys: { label: string; options?: { label: string; value: string }[] }[];
+  keys: {
+    label: string;
+    initialValue?: string;
+    options?: { label: string; value: string }[];
+  }[];
   handleQueriesChange: (query: string) => void;
 }
 
@@ -32,7 +36,7 @@ const QueryPanel: FC<QueryPanelProps> = ({
   const [filters, setFilters] = useState<Record<string, string>>(
     [...keys, { label: "search" }].reduce(
       (acc: Record<string, string>, key) => {
-        acc[key.label] = "";
+        acc[key.label] = key.initialValue ?? "";
         return acc;
       },
       {}
@@ -40,7 +44,6 @@ const QueryPanel: FC<QueryPanelProps> = ({
   );
 
   const handleFilters = (key: string, value: string) => {
-    
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 

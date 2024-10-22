@@ -56,7 +56,7 @@ const TagsForm: FC<TagsFormProps> = ({ data, handleClear }): ReactElement => {
           >
             <Typography color="#fff"> {data.tag}</Typography>
             <IconButton onClick={handleClear}>
-              <CloseIcon fontSize="small" />
+              <CloseIcon fontSize="small" htmlColor="#fff" />
             </IconButton>
           </Box>
         )}
