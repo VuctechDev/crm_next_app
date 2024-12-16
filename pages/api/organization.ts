@@ -4,6 +4,7 @@ import { authGuard } from "./auth/authGuard";
 import { updateUserFromOrganization } from "@/db/users";
 import { createNewOrganization } from "@/db/organizations";
 import { NextApiRequestExtended } from "@/types/reaquest";
+import { handleRequestMismatch } from "@/lib/server/utils/handleCors";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
@@ -22,7 +23,5 @@ export default router.handler({
     console.log(error);
     res.status(501).json({ error: `Something went wrong! ${error.message}` });
   },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' not allowed` });
-  },
+  onNoMatch: handleRequestMismatch,
 });

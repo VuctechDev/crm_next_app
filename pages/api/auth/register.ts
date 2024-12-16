@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { sendVerificationEmail } from "@/lib/server/services/nodemailer/verification";
 import { generateCode } from "@/lib/server/utils/generateRandomCode";
 import { createNewVerificationSession } from "@/db/auth/verification-sessions";
+import { handleRequestMismatch } from "@/lib/server/utils/handleCors";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -34,7 +35,5 @@ export default router.handler({
     console.log(error);
     res.status(501).json({ error: `Something went wrong! ${error.message}` });
   },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' not allowed` });
-  },
+  onNoMatch: handleRequestMismatch,
 });

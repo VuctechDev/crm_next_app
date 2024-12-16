@@ -7,6 +7,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import bcrypt from "bcrypt";
 import { getUser } from "@/db/users";
+import {
+  handleRequestMismatch,
+  setHeaders,
+} from "@/lib/server/utils/handleCors";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -34,6 +38,8 @@ router.post(async (req: NextApiRequest, res: NextApiResponse) => {
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
 
+  // setHeaders(res, req.headers.origin ?? "");
+
   res.status(200).json({ accessToken, refreshToken });
 });
 
@@ -42,7 +48,5 @@ export default router.handler({
     console.log(error);
     res.status(501).json({ error: `Something went wrong! ${error.message}` });
   },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' not allowed` });
-  },
+  onNoMatch: handleRequestMismatch,
 });

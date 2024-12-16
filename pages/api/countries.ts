@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import { authGuard } from "./auth/authGuard";
 import { getAuth } from "@/db/auth";
+import { handleRequestMismatch } from "@/lib/server/utils/handleCors";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -33,7 +34,5 @@ export default router.handler({
   onError(error: any, req, res) {
     res.status(501).json({ error: `Something went wrong! ${error.message}` });
   },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' not allowed` });
-  },
+  onNoMatch: handleRequestMismatch,
 });

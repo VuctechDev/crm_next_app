@@ -5,6 +5,7 @@ import { createNewUser, getUser } from "@/db/users";
 import { getOrganization } from "@/db/organizations";
 import { countries } from "@/lib/shared/consts/countries";
 import { NextApiRequestExtended } from "@/types/reaquest";
+import { handleRequestMismatch, setHeaders } from "@/lib/server/utils/handleCors";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 // nemanja.elas@gmail.com
@@ -31,6 +32,7 @@ router
         handler = { ...handler, organization };
       }
     }
+    
     return res.status(200).json(handler);
   })
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {
@@ -44,7 +46,5 @@ export default router.handler({
   onError(error: any, req, res) {
     res.status(501).json({ error: `Something went wrong! ${error.message}` });
   },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' not allowed` });
-  },
+  onNoMatch: handleRequestMismatch,
 });

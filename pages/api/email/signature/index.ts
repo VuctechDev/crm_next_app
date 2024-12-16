@@ -7,6 +7,7 @@ import {
   updateSignature,
 } from "@/db/emails/signatures";
 import { authGuard } from "../../auth/authGuard";
+import { handleRequestMismatch } from "@/lib/server/utils/handleCors";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 
@@ -57,7 +58,5 @@ export default router.handler({
   onError(error: any, req, res) {
     res.status(501).json({ error: `Something went wrong! ${error.message}` });
   },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' not allowed` });
-  },
+  onNoMatch: handleRequestMismatch,
 });
