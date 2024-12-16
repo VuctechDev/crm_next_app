@@ -29,7 +29,7 @@ export const generateRefreshToken = (user: any) => {
     },
     REFRESH_SECRET,
     {
-      expiresIn: "24h",
+      expiresIn: "7d",
     }
   );
 };

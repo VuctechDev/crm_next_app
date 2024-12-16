@@ -15,7 +15,9 @@ export const publicApiClient = axios.create({
 });
 
 export const fileProcessorApiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_FILE_PROCESSOR_URL,
+  baseURL:
+    process.env.NEXT_PUBLIC_FILE_PROCESSOR_URL ||
+    "https://t44cgg44gc40w0s4sc40kk48.vuctechdev.online/",
 });
 
 export const isTokenExpired = (token: string): boolean => {

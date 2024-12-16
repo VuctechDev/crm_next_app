@@ -16,6 +16,7 @@ export const useLogin = () => {
     onError: (error) => openSnackbar(error.message, "error"),
   });
 };
+
 export const useLogout = () => {
   const { locale, push } = useRouter();
   const { openSnackbar } = useSnackbar();
