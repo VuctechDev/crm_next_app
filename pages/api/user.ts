@@ -5,7 +5,7 @@ import { createNewUser, getUser } from "@/db/users";
 import { getOrganization } from "@/db/organizations";
 import { countries } from "@/lib/shared/consts/countries";
 import { NextApiRequestExtended } from "@/types/reaquest";
-import { handleRequestMismatch, setHeaders } from "@/lib/server/utils/handleCors";
+import { handleRequestMismatch } from "@/lib/server/utils/handleCors";
 
 const router = createRouter<NextApiRequestExtended, NextApiResponse>();
 // nemanja.elas@gmail.com
@@ -32,7 +32,7 @@ router
         handler = { ...handler, organization };
       }
     }
-    
+
     return res.status(200).json(handler);
   })
   .post(async (req: NextApiRequestExtended, res: NextApiResponse) => {

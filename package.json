@@ -10,7 +10,8 @@
     "ct": "node ./db/scripts/createTable.js",
     "dt": "node ./db/scripts/deleteTable.js",
     "mig": "node ./db/scripts/migrations.js",
-    "knip": "knip"
+    "knip": "knip",
+    "push": "GIT_SSH_COMMAND='ssh -i /.ssh/id_rsa_vuctech' git push"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.588.0",

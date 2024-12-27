@@ -7,10 +7,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 import bcrypt from "bcrypt";
 import { getUser } from "@/db/users";
-import {
-  handleRequestMismatch,
-  setHeaders,
-} from "@/lib/server/utils/handleCors";
+import { handleRequestMismatch } from "@/lib/server/utils/handleCors";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -37,8 +34,6 @@ router.post(async (req: NextApiRequest, res: NextApiResponse) => {
 
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
-
-  // setHeaders(res, req.headers.origin ?? "");
 
   res.status(200).json({ accessToken, refreshToken });
 });
