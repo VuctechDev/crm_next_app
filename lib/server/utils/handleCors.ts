@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 const allowedOrigins = [
   "http://localhost:5173",
   "https://client.vuctechdev.online",
+  "https://crm-next-app-delta.vercel.app",
 ];
 
 export const setHeaders = (

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 const allowedOrigins = [
   "http://localhost:5173",
   "https://client.vuctechdev.online",
+  "https://crm-next-app-delta.vercel.app",
 ]; // List of allowed origins
 
 export function middleware(req) {
